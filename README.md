@@ -21,4 +21,25 @@ Lipunmyyntijärjestelmällä on tarkoitus:
 
 ## Järjestelmän määrittely
 
+TicketGurun käyttäjäroolit:
+* Admin; esihenkilö tms ylempi henkilö joka vastaa tapahtumien myynnistä
+* Lipunmyyjä, asiakkaiden kanssa tekemisissä oleva myyjä joka myy tapahtumaliput
+* Lipuntarkastaja; tapahtumassa oleva työntekijä joka tarkastaa ostetut liput ja myy tulostettuja lippuja
+
+###Käyttäjätarinat käyttäjärooleittain
+
+Admin
+* Admin-oikeudet omaavan henkilön pitäisi pystyä lisäämään järjestelmään tapahtumia ja määrittämään niille tapahtuman nimen, ajankohdan, lippujen määrän ja lippujen hinnan.
+* Admin-oikeudet omaavan henkilön pitäisi pystyä muokkaamaan tai poistamaan järjestelmään lisättyjä tapahtumia (muuttamaan ajankohtaa, nimeä, lippujen hintoja)
+* Admin-oikeudet omaavan henkilön tulisi päästä tarkastelemaan myyntiraporttia jokaisesta tapahtumasta, josta selviää kaikki tapahtumakohtaiset myynnit ja kaikki myyntitapahtumat yksityiskohtineen (aika, nro ja summa)
+
+Lipunmyyjä
+* Lipunmyyjän oikeudet omaavan henkilön pitäisi pystyä myymään X-määrän aikuisten ja/tai lasten lippuja asiakkaalle ja tulostamaan myyntiä vastaavan määrän lippuja.
+* Lipunmyyjän oikeudet omaavan käyttäjän pitäisi pystyä tulostamaan kaikki jäljelle jääneet liput järjestelmästä ennakkomyynnin päätyttyä.
+
+Yleistä
+* Tietokannan (SQL) luominen projektille, mihin muualta järjestelmästä voidaan tehdä muutoksia.
+* Tulostettujen lippujen pitäisi jokaisen sisältää uniikki koodi jonka avulla lipun ostanut asiakas pääsee tapahtumaan.
+* Järjestelmällä pitäisi olla yksinkertainen kirjautumissysteemi jota kautta lipunmyyjät, adminit ja lipuntarkastajat pääsevät kirjautumaan järjestelmään.
+
 ## Käyttöliittymä

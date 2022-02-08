@@ -26,7 +26,12 @@ TicketGurun käyttäjäroolit:
 * Lipunmyyjä, asiakkaiden kanssa tekemisissä oleva myyjä joka myy tapahtumaliput
 * Lipuntarkastaja; tapahtumassa oleva työntekijä joka tarkastaa ostetut liput ja myy tulostettuja lippuja
 
-###Käyttäjätarinat käyttäjärooleittain
+### Käyttäjätarinat käyttäjärooleittain
+
+Yleistä
+* Tietokannan (SQL) luominen projektille, mihin muualta järjestelmästä voidaan tehdä muutoksia.
+* Tulostettujen lippujen pitäisi jokaisen sisältää uniikki koodi jonka avulla lipun ostanut asiakas pääsee tapahtumaan.
+* Järjestelmällä pitäisi olla yksinkertainen kirjautumissysteemi jota kautta lipunmyyjät, adminit ja lipuntarkastajat pääsevät kirjautumaan järjestelmään.
 
 Admin
 * Admin-oikeudet omaavan henkilön pitäisi pystyä lisäämään järjestelmään tapahtumia ja määrittämään niille tapahtuman nimen, ajankohdan, lippujen määrän ja lippujen hinnan.
@@ -36,10 +41,5 @@ Admin
 Lipunmyyjä
 * Lipunmyyjän oikeudet omaavan henkilön pitäisi pystyä myymään X-määrän aikuisten ja/tai lasten lippuja asiakkaalle ja tulostamaan myyntiä vastaavan määrän lippuja.
 * Lipunmyyjän oikeudet omaavan käyttäjän pitäisi pystyä tulostamaan kaikki jäljelle jääneet liput järjestelmästä ennakkomyynnin päätyttyä.
-
-Yleistä
-* Tietokannan (SQL) luominen projektille, mihin muualta järjestelmästä voidaan tehdä muutoksia.
-* Tulostettujen lippujen pitäisi jokaisen sisältää uniikki koodi jonka avulla lipun ostanut asiakas pääsee tapahtumaan.
-* Järjestelmällä pitäisi olla yksinkertainen kirjautumissysteemi jota kautta lipunmyyjät, adminit ja lipuntarkastajat pääsevät kirjautumaan järjestelmään.
 
 ## Käyttöliittymä

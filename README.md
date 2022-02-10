@@ -30,17 +30,25 @@ TicketGurun käyttäjäroolit:
 
 Yleistä
 * Tietokannan (SQL) luominen projektille, mihin muualta järjestelmästä voidaan tehdä muutoksia.
-* Tulostettujen lippujen pitäisi jokaisen sisältää uniikki koodi jonka avulla lipun ostanut asiakas pääsee tapahtumaan.
+* Tulostettujen lippujen pitäisi jokaisen sisältää uniikki koodi(QR?) jonka avulla lipun ostanut asiakas pääsee tapahtumaan.
 * Järjestelmällä pitäisi olla yksinkertainen kirjautumissysteemi jota kautta lipunmyyjät, adminit ja lipuntarkastajat pääsevät kirjautumaan järjestelmään.
 
-Admin
-* Admin-oikeudet omaavan henkilön pitäisi pystyä lisäämään järjestelmään tapahtumia ja määrittämään niille tapahtuman nimen, ajankohdan, lippujen määrän ja lippujen hinnan.
-* Admin-oikeudet omaavan henkilön pitäisi pystyä muokkaamaan tai poistamaan järjestelmään lisättyjä tapahtumia (muuttamaan ajankohtaa, nimeä, lippujen hintoja)
-* Admin-oikeudet omaavan henkilön tulisi päästä tarkastelemaan myyntiraporttia jokaisesta tapahtumasta, josta selviää kaikki tapahtumakohtaiset myynnit ja kaikki myyntitapahtumat yksityiskohtineen (aika, nro ja summa)
-
 Lipunmyyjä
-* Lipunmyyjän oikeudet omaavan henkilön pitäisi pystyä myymään X-määrän aikuisten ja/tai lasten lippuja asiakkaalle ja tulostamaan myyntiä vastaavan määrän lippuja.
-* Lipunmyyjän oikeudet omaavan käyttäjän pitäisi pystyä tulostamaan kaikki jäljelle jääneet liput järjestelmästä ennakkomyynnin päätyttyä.
+* Lipunmyyjänä haluaisin päästä tarkastelemaan tarjolla olevia tapahtumia järjestelmän kautta jotta tiedän mitä lippuja myydä. A1
+* Lipunmyyjänä haluaisin myydä X määrän lippuja aikuiselle/lapselle jotta pääsen tekemään työtäni. A2
+* Lipunmyyjänä haluaisin tulostaa myymäni lipun/liput asiakkaalle jotta asiakas saa ostamansa tuotteen. A3
+* Lipunmyyjänä haluaisin ennakkomyynnin päätyttyä helposti tulostaa kaikki myymättömät liput jotta niitä päästään myymään fyysisesti tapahtuman ovilla. A4
+
+Admin
+* Adminina haluaisin pystyä lisäämään järjestelmään tapahtumia jotta lipunmyyjällä olisi töitä. B1
+* Adminina haluaisin pystyä asettamaan tietylle tapahtumalle lippujen myyntimäärän jotta olisi jotain mitä myydä. B2
+* Adminina haluaisin pystyä asettamaan tapahtuman aikuisten sekä lasten lipuille erilliset hinnat. B3
+* Adminina haluaisin pystyä muokkaamaan jotain tapahtumaa (asettamaan uuden ajan/muokkaamaan kaupunkia/muuttamaan kuvausta tai nimeä) B4
+* Adminina haluaisin järjestelmän luomaan jokaista tulostettua lippua kohden uniikin koodin jotta asiakas pääsee lipullaan koodia vastaan tapahtumaan. B5
+* Adminina haluaisin päästä tarkastelemaan myyntiraporttia jokaisesta tapahtumasta, josta selviää kaikki myynnit ja kaikki myyntitapahtumat yksityiskohtineen (aika, nro ja summa). B6
+
+Lipuntarkastaja
+* Lipuntarkastajana haluan pystyä tarkastamaan tapahtuman ovella, että asiakkaan lippu on oikea ja aito kyseiseen tapahtumaan. C1
 
 ## Käyttöliittymä
 

@@ -1,11 +1,9 @@
 package fi.triforce.TicketGuru.Domain;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
@@ -17,8 +15,8 @@ public class Ticket {
 	private long ticketTypeID;
 	private int ticketCode;
 	private boolean ticketUsed;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "ticketsale_id", referencedColumnName="ticketSaleId")
+	@ManyToOne
+	@JoinColumn(name = "ticketsale_id", nullable=false)
 	private TicketSale ticketSale;
 
 	

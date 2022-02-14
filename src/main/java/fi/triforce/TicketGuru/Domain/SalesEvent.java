@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
@@ -28,4 +27,12 @@ public class SalesEvent {
     private LocalDate dateOfSale;
     @OneToMany(mappedBy = "salesEvent")
     private List<Ticket> tickets;
+
+    public LocalDate getDateOfSale() {
+        return this.dateOfSale;
+    }
+
+    public void setDateOfSale(LocalDate newDate) {
+        this.dateOfSale = newDate;
+    }
 }

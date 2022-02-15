@@ -9,7 +9,7 @@ Tiimi:
 ## Johdanto
 
 TicketGuru on lipunmyyntijärjestelmä joka on tarkoitettu lippujen myymiseen asiakkaan myyntipisteessä. TicketGurun tilaajana toimii **LippupalveluX**.
-Järjestelmä toteutetaan Spring Boot-frameworkissä Javalla ja siinä käytetään -määrittelemätön SQL-tietokantaa.
+Järjestelmä toteutetaan Spring Boot-frameworkissä Javalla ja siinä käytetään PostgreSQL-tietokantaa.
 
 Myyntijärjestelmä toteutetaan desktopympäristöön sekä lippujen tapahtumassa tarkistusta varten mobiiliin.
 
@@ -61,3 +61,9 @@ Tapahtumaa luotaessa käyttäjä voi lisätä hintaryhmiä (esimerkiksi katsomon
 "Lisää lipputyyppi" luo taulukkoon uuden rivin, johon käyttäjä voi pudotusvalikosta valita hintaryhmän ja lipputyypin.
 
 ![Käyttöliittymäkaavio myyntiraporteista](assets/images/ui-kaavio-3.png)
+
+## Tietokanta
+
+![Relaatiokaavio tietosisällöstä](assets/images/relaatiokaavio.png)
+
+Järjestelmän tietokanta toteutetaan ylläolevan kaavion mukaisesti. Tieto on strukturoitu järjestelmässä Java-luokkiin, joista tietoa voidaan luoda, poistaa ja muuttaa palvelimella pyörivään PostgreSQL-relaatiotietokantaan.

@@ -4,10 +4,17 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import lombok.*;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Ticket {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -16,43 +23,11 @@ public class Ticket {
 	private int ticketCode;
 	private boolean ticketUsed;
 	@ManyToOne
-	@JoinColumn(name = "salesevent_id", nullable=false)
+	@JoinColumn(name = "salesEvent_id")
 	private SalesEvent salesEvent;
-
-	
-	
-	public Ticket() {}	
-
-	public Ticket(long ticketTypeID, int ticketCode, boolean ticketUsed) {
-		super();
-		this.ticketTypeID = ticketTypeID;
-		this.ticketCode = ticketCode;
-		this.ticketUsed = ticketUsed;
-	}
-
-	public long getTicketTypeID() {
-		return ticketTypeID;
-	}
-
-	public void setTicketTypeID(long ticketTypeID) {
-		this.ticketTypeID = ticketTypeID;
-	}
-
-	public int getTicketCode() {
-		return ticketCode;
-	}
-
-	public void setTicketCode(int ticketCode) {
-		this.ticketCode = ticketCode;
-	}
-
-	public boolean isTicketUsed() {
-		return ticketUsed;
-	}
-
-	public void setTicketUsed(boolean ticketUsed) {
-		this.ticketUsed = ticketUsed;
-	}
+	@ManyToOne
+	@JoinColumn(name = "ticketType_id")
+	private TicketType ticketType;
 
 	@Override
 	public String toString() {

@@ -16,8 +16,8 @@ public class Ticket {
 	private int ticketCode;
 	private boolean ticketUsed;
 	@ManyToOne
-	@JoinColumn(name = "ticketsale_id", nullable=false)
-	private TicketSale ticketSale;
+	@JoinColumn(name = "salesevent_id", nullable=false)
+	private SalesEvent salesEvent;
 
 	
 	

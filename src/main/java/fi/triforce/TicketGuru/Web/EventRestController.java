@@ -24,8 +24,8 @@ import fi.triforce.TicketGuru.Domain.Venue;
 import fi.triforce.TicketGuru.Domain.VenueRepository;
 
 @RestController
-@RequestMapping("/api")
-public class MainRestController {
+@RequestMapping("/api/events")
+public class EventRestController {
 
 	@Autowired
 	private EventRepository er;
@@ -33,14 +33,12 @@ public class MainRestController {
 	@Autowired
 	private VenueRepository vr;
 
-	@GetMapping("/events")
+	@GetMapping
 	public List<Event> eventListRest() {
 		return (List<Event>) er.findAll();
 	}
 
-	// Events
-
-	@GetMapping("/events/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<Event> eventGetSingleRest(@PathVariable(name = "id") Long id)
 			throws ResourceNotFoundException {
 		Event event = er.findById(id)
@@ -48,13 +46,15 @@ public class MainRestController {
 		return ResponseEntity.ok(event);
 	}
 
-	@PostMapping("/events")
-	public ResponseEntity<Event> eventPostRest(@RequestBody Event event) {
+	@PostMapping("/{venueId}")
+	public ResponseEntity<Event> eventPostRest(@RequestBody Event event, @PathVariable(name="venueId") Long venueId) {
 		event.setDate(LocalDate.now());
+		Venue venue = vr.findById(venueId).orElseThrow(() -> new ResourceNotFoundException("Cannot find a venue with the id " + venueId));
+		event.setEventVenue(venue);
 		return ResponseEntity.ok(er.save(event));
 	}
 
-	@DeleteMapping("/events/{id}")
+	@DeleteMapping("/{id}")
 	@ResponseBody
 	public String eventDeleteSingleRest(@PathVariable(name = "id") Long id)
 			throws ResourceNotFoundException {
@@ -64,7 +64,7 @@ public class MainRestController {
 		return "Deleted " + event.getEventDescription();
 	}
 
-	@PutMapping("/events/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<Event> eventUpdateSingleRest(@PathVariable(name = "id") Long id,
 			@Valid @RequestBody Event newEvent)
 			throws ResourceNotFoundException {
@@ -75,26 +75,6 @@ public class MainRestController {
 		event.setNumberOfTickets(newEvent.getNumberOfTickets());
 		event.setEventVenue(newEvent.getEventVenue());
 		return ResponseEntity.ok(er.save(event));
-	}
-
-	// Venues
-
-	@GetMapping("/venues")
-	public List<Venue> venueListRest() {
-		return (List<Venue>) vr.findAll();
-	}
-
-    @GetMapping("/venues/{id}")
-	public ResponseEntity<Venue> venueGetSingleRest(@PathVariable(name = "id") Long id)
-			throws ResourceNotFoundException {
-		Venue venue = vr.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Cannot find a venue with the id " + id));
-		return ResponseEntity.ok(venue);
-	}
-
-    @PostMapping("/venues")
-	public ResponseEntity<Venue> venuePostRest(@RequestBody Venue venue) {
-		return ResponseEntity.ok(vr.save(venue));
 	}
 
 }

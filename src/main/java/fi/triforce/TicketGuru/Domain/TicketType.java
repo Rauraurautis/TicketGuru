@@ -20,18 +20,17 @@ public class TicketType {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long ticketTypeID;
-	private long eventId;
 	private String ticketTypeDescription;
 	private float price;
 	@ManyToOne
-	@JoinColumn(name="event_id")
+	@JoinColumn(name="eventId")
 	private Event event;
 	@OneToMany(mappedBy="ticketType")
 	private List<Ticket> tickets;
 	
 	@Override
 	public String toString() {
-		return "TicketType [ticketTypeID=" + ticketTypeID + ", eventId=" + eventId + ", ticketTypeDescription="
+		return "TicketType [ticketTypeID=" + ticketTypeID + ", eventId=" + ", ticketTypeDescription="
 				+ ticketTypeDescription + ", price=" + price + "]";
 	}
 	

@@ -27,7 +27,6 @@ public class Event {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long eventID;
 	private String eventDescription;
-	private long venueId;
 	private long numberOfTickets;
 	private LocalDate date;
 	@ManyToOne
@@ -38,7 +37,7 @@ public class Event {
 
 	@Override
 	public String toString() {
-		return "Event [eventID=" + eventID + ", eventDescription=" + eventDescription + ", venueId=" + venueId
+		return "Event [eventID=" + eventID + ", eventDescription=" + eventDescription + ", venueId="
 				+ ", numberOfTickets=" + numberOfTickets + ", date=" + date + "]";
 	}
 	

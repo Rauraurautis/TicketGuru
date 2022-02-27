@@ -1,12 +1,9 @@
 package fi.triforce.TicketGuru.Web;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.hibernate.annotations.SourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fi.triforce.TicketGuru.Domain.Event;
 import fi.triforce.TicketGuru.Domain.EventRepository;
-import fi.triforce.TicketGuru.Domain.Venue;
-import fi.triforce.TicketGuru.Domain.VenueRepository;
 
 @RestController
 @RequestMapping("/api/events")
@@ -31,9 +26,6 @@ public class EventRestController {
 
 	@Autowired
 	private EventRepository er;
-
-	@Autowired
-	private VenueRepository vr;
 
 	@GetMapping
 	public List<Event> eventListRest() {
@@ -50,11 +42,7 @@ public class EventRestController {
 
 	@PostMapping
 	public ResponseEntity<Event> eventPostRest(@RequestBody Event event) {
-		event.setDate(LocalDate.now());
-		if (event.getVenueId() != null) {
-			Venue venue = vr.findById(event.getVenueId()).get();
-			event.setEventVenue(venue);
-		}
+		
 		return ResponseEntity.ok(er.save(event));
 	}
 

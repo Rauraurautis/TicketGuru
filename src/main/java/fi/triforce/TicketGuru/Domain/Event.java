@@ -25,10 +25,10 @@ import java.util.List;
 public class Event {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long eventID;
+	private Long eventID;
 	private String eventDescription;
-	private long venueId;
-	private long numberOfTickets;
+	private Long numberOfTickets;
+	private Long venueId;
 	private LocalDate date;
 	@ManyToOne
 	@JoinTable(name = "venue_id")
@@ -38,7 +38,7 @@ public class Event {
 
 	@Override
 	public String toString() {
-		return "Event [eventID=" + eventID + ", eventDescription=" + eventDescription + ", venueId=" + venueId
+		return "Event [eventID=" + eventID + ", eventDescription=" + eventDescription + ", venueId="
 				+ ", numberOfTickets=" + numberOfTickets + ", date=" + date + "]";
 	}
 	

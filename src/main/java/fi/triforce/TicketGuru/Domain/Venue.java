@@ -7,6 +7,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.*;
 
 
@@ -24,6 +27,7 @@ public class Venue {
     private String venueAddress;
     private String venueCity;
     @OneToMany(mappedBy = "eventVenue")
+    @JsonIgnore
     private List<Event> events;
     
     @Override

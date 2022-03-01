@@ -49,6 +49,7 @@ public class Venue {
     //@Column()
     private String venueCity;
     @OneToMany(mappedBy="venue")
+    @JsonIgnore
 	private List<Event> events;
     @Override
     public String toString() {

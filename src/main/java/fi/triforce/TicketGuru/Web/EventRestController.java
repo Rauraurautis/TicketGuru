@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fi.triforce.TicketGuru.Domain.Event;
 import fi.triforce.TicketGuru.Domain.EventRepository;
+import fi.triforce.TicketGuru.Domain.Venue;
 import fi.triforce.TicketGuru.Domain.VenueRepository;
 
 @RestController
@@ -46,7 +47,9 @@ public class EventRestController {
 
 	@PostMapping
 	public ResponseEntity<Event> eventPostRest(@RequestBody Event event) {
-		
+		Long venueId = event.getEventVenue().getVenueId();
+		Venue venue = vr.findById(venueId).orElse(null);
+		event.setEventVenue(venue);
 		return ResponseEntity.ok(er.save(event));
 	}
 
@@ -60,17 +63,19 @@ public class EventRestController {
 		return "Deleted " + event.getEventDescription();
 	}
 
-
 	@PutMapping("/{id}")
 	public ResponseEntity<Event> eventUpdateSingleRest(@PathVariable(name = "id") Long id,
 			@Valid @RequestBody Event newEvent)
 			throws ResourceNotFoundException {
 		Event event = er.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + id));
+				System.out.println(newEvent.getEventVenue());
+		Long venueId = newEvent.getEventVenue().getVenueId();
+		Venue venue = vr.findById(venueId).orElse(null);
+		event.setEventVenue(venue);
 		event.setEventDescription(newEvent.getEventDescription());
-		event.setDate(newEvent.getDate());
+		event.setDateOfEvent(newEvent.getDateOfEvent());
 		event.setNumberOfTickets(newEvent.getNumberOfTickets());
-		event.setVenue(newEvent.getVenue());
 		return ResponseEntity.ok(er.save(event));
 	}
 

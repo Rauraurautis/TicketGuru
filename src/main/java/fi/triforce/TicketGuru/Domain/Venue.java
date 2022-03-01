@@ -19,7 +19,7 @@ import lombok.*;
 @Getter
 @Setter
 
-public class Venue {
+/*public class Venue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long venueId;
@@ -35,5 +35,24 @@ public class Venue {
         return "Venue [venueAddress=" + venueAddress + ", venueCity=" + venueCity + ", venueId=" + venueId
                 + ", venueName=" + venueName + "]";
     }
+}*/
 
+public class Venue {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long venueId;
+    //@Column()
+    private String venueName;
+    //@Column()
+    private String venueAddress;
+    //@Column()
+    private String venueCity;
+    @OneToMany(mappedBy="eventVenue")
+    @JsonIgnore
+	private List<Event> events;
+    @Override
+    public String toString() {
+        return "Venue [venueAddress=" + venueAddress + ", venueCity=" + venueCity + ", venueId=" + venueId
+                + ", venueName=" + venueName + "]";
+    }
 }

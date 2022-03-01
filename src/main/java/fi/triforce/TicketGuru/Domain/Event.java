@@ -5,7 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -47,17 +46,17 @@ public class Event {
 	private Long numberOfTickets;
 	//@Column()
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm", shape = JsonFormat.Shape.STRING)
-	private LocalDateTime date;
+	private LocalDateTime dateOfEvent;
 	@ManyToOne
 	@JoinColumn(name="venueId")
-	private Venue venue;
+	private Venue eventVenue;
 	@OneToMany(mappedBy="event")
 	private List<TicketType> ticketTypes;
 
 	@Override
 	public String toString() {
 		return "Event [eventID=" + eventID + ", eventDescription=" + eventDescription + ", venueId="
-				+ ", numberOfTickets=" + numberOfTickets + ", date=" + date + "]";
+				+ ", numberOfTickets=" + numberOfTickets + ", date=" + dateOfEvent + "]";
 	}
 	
 	

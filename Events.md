@@ -55,7 +55,8 @@ Uuden tapahtuman luonti ja lisäys tietokantaan.
 
 **METHOD** : `POST`
 
-Tapahtuman tiedot json-muodossa. Ei pakollisia kenttiä
+**REQUEST BODY**
+Tapahtuman tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi)
 
 Esim:
 
@@ -63,6 +64,16 @@ Esim:
 {
 "eventDescription":"Lady Gaga, Monster Tour","numberOfTickets":3400
 }
+```
+
+### Onnistunut response
+
+**Code** : `200 OK`
+
+**Response body esim** Vastaus palauttaa tallennetun entityn
+
+```json
+{"eventID":5,"eventDescription":"Lady Gaga, Monster Tour","numberOfTickets":3400,"date":null,"venue":null,"ticketTypes":[]}
 ```
 
 ## Tapahtuman poisto
@@ -74,3 +85,42 @@ Yksittäisen tapahtuman poisto tietokannasta. Tapahtuman Id/primary key annetaan
 **URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtuman eventId tietokannassa. 
 
 **METHOD** : `DELETE`
+
+### Onnistunut response
+
+**Code** : `200 OK`
+
+**Response body esim**
+
+`Deleted Lady Gaga, Monster Tour`
+
+## Tapahtuman muokkaus
+
+Olemassa olevan tapahtuman tietojen muokkaus.
+
+**URL** : `/api/events/:pk`
+
+**URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtuman eventId tietokannassa. 
+
+**METHOD** : `PUT`
+
+**REQUEST BODY**
+Tapahtuman tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi)
+
+Esim:
+
+```json
+{
+"eventDescription":"Lady Gaga, Monster Tour","numberOfTickets":3400
+}
+```
+
+### Onnistunut response
+
+**Code** : `200 OK`
+
+**Response body esim** Vastaus palauttaa tallennetun entityn
+
+```json
+{"eventID":5,"eventDescription":"Lady Gaga, Monster Tour","numberOfTickets":3400,"date":null,"venue":null,"ticketTypes":[]}
+```

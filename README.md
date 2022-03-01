@@ -70,4 +70,7 @@ Järjestelmän tietokanta toteutetaan ylläolevan kaavion mukaisesti. Tieto on s
 
 ## REST API
 
-TicketGurun Rest API vastaanottaa ja lähettää tietokannan dataa JSON:muodossa listattuna.
+TicketGurun Rest API vastaanottaa ja lähettää tietokannan dataa JSON muodossa listattuna.
+
+* [Tapahtumat](Events.md)
+* [Tapahtumapaikat](Venues.md)

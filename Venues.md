@@ -1,0 +1,132 @@
+# API/Venues
+
+## Kaikkien tapahtumapaikkojen listaus
+
+Listaa kaikki tietokannassa olevat tapahtumapaikat.
+
+**URL** : `/api/venues`
+
+**METHOD** : `GET`
+
+### Onnistunut response
+
+**Code** : `200 OK`
+
+**Esimerkki**
+
+```json
+[
+{"venueId":1,"venueName":"Sibeliustalo","venueAddress":"Ankkurikatu 7, 15140","venueCity":"Lahti"},{"venueId":2,"venueName":"Tampere-talo","venueAddress":"Yliopistonkatu 55, 33100","venueCity":"Tampere"},{"venueId":3,"venueName":"Nokia Areena","venueAddress":"Sorinkatu 3, 33100","venueCity":"Tampere"},{"venueId":4,"venueName":"Tavastia","venueAddress":"Urho Kekkosen katu 4, 00100","venueCity":"Helsinki"}
+]
+```
+
+## Yksittäisen tapahtumapaikan tiedot
+
+Näyttää yksittäisen tapahtumapaikan tiedot. Tapahtumapaikan Id/primary key annetaan URL:ssa.
+
+**URL** : `/api/venues/:pk`
+
+**URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtumapaikan venueId tietokannassa. 
+
+**METHOD** : `GET`
+
+### Onnistunut response
+
+**Code** : `200 OK`
+
+**Esimerkki**
+
+```json
+{"venueId":1,"venueName":"Sibeliustalo","venueAddress":"Ankkurikatu 7, 15140","venueCity":"Lahti"}
+```
+
+### Virheellinen response
+
+**Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
+
+**Code** : `404 NOT FOUND`
+
+**Message** : `Cannot find a venue with the id {id}`
+
+## Tapahtumapaikan lisäys
+
+Uuden tapahtumapaikan luonti ja lisäys tietokantaan.
+
+**URL** : `/api/venues/`
+
+**METHOD** : `POST`
+
+**REQUEST BODY**
+Paikan tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi)
+
+Esim:
+
+```json
+{
+"venueName":"Sibeliustalo","venueAddress":"Ankkurikatu 7, 15140","venueCity":"Lahti"
+}
+```
+
+### Onnistunut response
+
+**Code** : `200 OK`
+
+**Response body esim** Vastaus palauttaa tallennetun entityn
+
+```json
+{
+"venueId":1,"venueName":"Sibeliustalo","venueAddress":"Ankkurikatu 7, 15140","venueCity":"Lahti"
+}
+```
+
+## Tapahtumapaikan poisto
+
+Yksittäisen tapahtumapaikan poisto tietokannasta. Paikan Id/primary key annetaan URL:ssa.
+
+**URL** : `/api/venues/:pk`
+
+**URL-PARAMETERS** : `pk=[Long]` jossa pk on paikan venueId tietokannassa. 
+
+**METHOD** : `DELETE`
+
+### Onnistunut response
+
+**Code** : `200 OK`
+
+**Response body esim**
+
+`Deleted Sibeliustalo`
+
+## Tapahtumapaikan muokkaus
+
+Olemassa olevan tapahtumapaikan tietojen muokkaus.
+
+**URL** : `/api/venues/:pk`
+
+**URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtumapaikan eventId tietokannassa. 
+
+**METHOD** : `PUT`
+
+**REQUEST BODY**
+Tapahtumapaikan tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi)
+Pois jätetyt kentät päivittävät vanhan tiedon null:ksi.
+
+Esim:
+
+```json
+{
+"venueName":"Sibeliustalo","venueAddress":"Ankkurikatu 7, 15140","venueCity":"Lahti"
+}
+```
+
+### Onnistunut response
+
+**Code** : `200 OK`
+
+**Response body esim** Vastaus palauttaa tallennetun entityn
+
+```json
+{
+"venueId":1,"venueName":"Sibeliustalo","venueAddress":"Ankkurikatu 7, 15140","venueCity":"Lahti"
+}
+```

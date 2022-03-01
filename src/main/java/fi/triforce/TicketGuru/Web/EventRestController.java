@@ -56,7 +56,7 @@ public class EventRestController {
 		return "Deleted " + event.getEventDescription();
 	}
 
-	@PutMapping("/{id}")
+/*	@PutMapping("/{id}")
 	public ResponseEntity<Event> eventUpdateSingleRest(@PathVariable(name = "id") Long id,
 			@Valid @RequestBody Event newEvent)
 			throws ResourceNotFoundException {
@@ -66,6 +66,18 @@ public class EventRestController {
 		event.setDate(newEvent.getDate());
 		event.setNumberOfTickets(newEvent.getNumberOfTickets());
 		event.setEventVenue(newEvent.getEventVenue());
+		return ResponseEntity.ok(er.save(event));
+	}*/
+	@PutMapping("/{id}")
+	public ResponseEntity<Event> eventUpdateSingleRest(@PathVariable(name = "id") Long id,
+			@Valid @RequestBody Event newEvent)
+			throws ResourceNotFoundException {
+		Event event = er.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + id));
+		event.setEventDescription(newEvent.getEventDescription());
+		event.setDate(newEvent.getDate());
+		event.setNumberOfTickets(newEvent.getNumberOfTickets());
+		event.setVenue(newEvent.getVenue());
 		return ResponseEntity.ok(er.save(event));
 	}
 

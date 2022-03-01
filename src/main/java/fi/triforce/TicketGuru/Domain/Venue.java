@@ -35,7 +35,6 @@ import lombok.*;
         return "Venue [venueAddress=" + venueAddress + ", venueCity=" + venueCity + ", venueId=" + venueId
                 + ", venueName=" + venueName + "]";
     }
-
 }*/
 
 public class Venue {
@@ -48,7 +47,7 @@ public class Venue {
     private String venueAddress;
     //@Column()
     private String venueCity;
-    @OneToMany(mappedBy="venue")
+    @OneToMany(mappedBy="eventVenue")
     @JsonIgnore
 	private List<Event> events;
     @Override

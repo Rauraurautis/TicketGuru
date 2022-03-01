@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fi.triforce.TicketGuru.Domain.Event;
 import fi.triforce.TicketGuru.Domain.EventRepository;
+import fi.triforce.TicketGuru.Domain.VenueRepository;
 
 @RestController
 @RequestMapping("/api/events")
@@ -26,6 +27,9 @@ public class EventRestController {
 
 	@Autowired
 	private EventRepository er;
+
+	@Autowired
+	private VenueRepository vr;
 
 	@GetMapping
 	public List<Event> eventListRest() {
@@ -56,6 +60,7 @@ public class EventRestController {
 		return "Deleted " + event.getEventDescription();
 	}
 
+
 	@PutMapping("/{id}")
 	public ResponseEntity<Event> eventUpdateSingleRest(@PathVariable(name = "id") Long id,
 			@Valid @RequestBody Event newEvent)
@@ -65,7 +70,7 @@ public class EventRestController {
 		event.setEventDescription(newEvent.getEventDescription());
 		event.setDate(newEvent.getDate());
 		event.setNumberOfTickets(newEvent.getNumberOfTickets());
-		event.setEventVenue(newEvent.getEventVenue());
+		event.setVenue(newEvent.getVenue());
 		return ResponseEntity.ok(er.save(event));
 	}
 

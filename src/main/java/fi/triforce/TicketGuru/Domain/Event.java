@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -25,7 +26,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Event {
-	@Id
+	/*@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long eventID;
 	private String eventDescription;
@@ -35,6 +36,21 @@ public class Event {
 	@ManyToOne
 	@JoinTable(name = "venue_id")
 	private Venue eventVenue;
+	@OneToMany(mappedBy="event")
+	private List<TicketType> ticketTypes;*/
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long eventID;
+	//@Column()
+	private String eventDescription;
+	//@Column()
+	private Long numberOfTickets;
+	//@Column()
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm", shape = JsonFormat.Shape.STRING)
+	private LocalDateTime date;
+	@ManyToOne
+	@JoinColumn(name="venueId")
+	private Venue venue;
 	@OneToMany(mappedBy="event")
 	private List<TicketType> ticketTypes;
 

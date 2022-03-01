@@ -56,13 +56,18 @@ Uuden tapahtuman luonti ja lisäys tietokantaan.
 **METHOD** : `POST`
 
 **REQUEST BODY**
-Tapahtuman tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi)
+Tapahtuman tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi).
+Tapahtuman tapahtumapaikka annetaan sen id:nä(venueId) muodossa:
+
+`"eventVenue":{"venueId": {id}}`
+
+Mikäli id:llä ei löydy tapahtumapaikkaa, eventVenueksi tulee **null**.
 
 Esim:
 
 ```json
 {
-"eventDescription":"Lady Gaga, Monster Tour","numberOfTickets":3400
+"eventDescription":"Lady Gaga, Monster Tour","numberOfTickets":3400, "eventVenue":{"venueId": {2}}
 }
 ```
 
@@ -106,6 +111,7 @@ Olemassa olevan tapahtuman tietojen muokkaus.
 
 **REQUEST BODY**
 Tapahtuman tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi)
+Pois jätetyt kentät päivittävät vanhan tiedon null:ksi.
 
 Esim:
 

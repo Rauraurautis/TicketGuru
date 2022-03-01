@@ -67,3 +67,7 @@ Tapahtumaa luotaessa käyttäjä voi lisätä hintaryhmiä (esimerkiksi katsomon
 ![Relaatiokaavio tietosisällöstä](assets/images/relaatiokaavio.png)
 
 Järjestelmän tietokanta toteutetaan ylläolevan kaavion mukaisesti. Tieto on strukturoitu järjestelmässä Java-luokkiin, joista tietoa voidaan luoda, poistaa ja muuttaa palvelimella pyörivään PostgreSQL-relaatiotietokantaan.
+
+## REST API
+
+TicketGurun Rest API vastaanottaa ja lähettää tietokannan dataa JSON:muodossa listattuna.

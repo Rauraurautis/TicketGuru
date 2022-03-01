@@ -25,7 +25,7 @@ public class SalesEvent {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long salesEventId;
     private LocalDate dateOfSale;
-    @OneToMany(mappedBy = "salesEvent")
+    @OneToMany(mappedBy = "ticketSale")
     private List<Ticket> tickets;
 
     public LocalDate getDateOfSale() {

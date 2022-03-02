@@ -110,8 +110,7 @@ Olemassa olevan tapahtuman tietojen muokkaus.
 **METHOD** : `PUT`
 
 **REQUEST BODY**
-Tapahtuman tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi)
-Pois jätetyt kentät päivittävät vanhan tiedon null:ksi.
+Tapahtuman tiedot json-muodossa
 
 Esim:
 

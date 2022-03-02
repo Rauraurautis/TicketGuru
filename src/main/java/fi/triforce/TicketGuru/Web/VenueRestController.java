@@ -1,5 +1,6 @@
 package fi.triforce.TicketGuru.Web;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import fi.triforce.TicketGuru.Domain.Venue;
@@ -47,11 +47,12 @@ public class VenueRestController {
 	}
 
 	@DeleteMapping("/{id}")
-	@ResponseBody
-	public String venueDeleteSingleRest(@PathVariable(name = "id") Long id) throws ResourceNotFoundException {
+	public ResponseEntity<?> venueDeleteSingleRest(@PathVariable(name = "id") Long id) throws ResourceNotFoundException {
 		Venue venue = vr.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cannot find a venue with the id " + id));
 		vr.delete(venue);
-		return "Deleted " + venue.getVenueName();
+		HashMap<String, String> returnMsg = new HashMap<String, String>();
+		returnMsg.put("message", "Deleted a venue with the id " + id);
+		return ResponseEntity.ok(returnMsg);
 	}
 	
 	@PutMapping("/{id}")

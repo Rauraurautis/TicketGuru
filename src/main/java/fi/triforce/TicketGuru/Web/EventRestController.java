@@ -74,6 +74,7 @@ public class EventRestController {
 		Long venueId = newEvent.getEventVenue().getVenueId();
 		Venue venue = vr.findById(venueId).orElse(null);
 		event.setEventVenue(venue);
+		event.setEventTitle(newEvent.getEventTitle());
 		event.setEventDescription(newEvent.getEventDescription());
 		event.setDateOfEvent(newEvent.getDateOfEvent());
 		event.setNumberOfTickets(newEvent.getNumberOfTickets());

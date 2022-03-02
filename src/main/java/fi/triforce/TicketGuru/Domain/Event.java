@@ -41,6 +41,7 @@ public class Event {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long eventID;
 	//@Column()
+	private String eventTitle;
 	private String eventDescription;
 	//@Column()
 	private Long numberOfTickets;
@@ -55,7 +56,7 @@ public class Event {
 
 	@Override
 	public String toString() {
-		return "Event [eventID=" + eventID + ", eventDescription=" + eventDescription + ", venueId="
+		return "Event [eventID=" + eventID + ", eventTitle=" + eventTitle + ", eventDescription=" + eventDescription + ", venueId="
 				+ ", numberOfTickets=" + numberOfTickets + ", date=" + dateOfEvent + "]";
 	}
 	

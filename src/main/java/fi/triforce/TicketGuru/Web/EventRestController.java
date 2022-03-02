@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fi.triforce.TicketGuru.Domain.Event;
 import fi.triforce.TicketGuru.Domain.EventRepository;
+import fi.triforce.TicketGuru.Domain.TicketType;
+import fi.triforce.TicketGuru.Domain.TicketTypeRepository;
 import fi.triforce.TicketGuru.Domain.Venue;
 import fi.triforce.TicketGuru.Domain.VenueRepository;
 
@@ -31,6 +33,9 @@ public class EventRestController {
 
 	@Autowired
 	private VenueRepository vr;
+	
+	@Autowired
+	private TicketTypeRepository tr;
 
 	@GetMapping
 	public List<Event> eventListRest() {
@@ -80,5 +85,24 @@ public class EventRestController {
 		event.setNumberOfTickets(newEvent.getNumberOfTickets());
 		return ResponseEntity.ok(er.save(event));
 	}
+	
+	@GetMapping("/{id}/tickettypes")
+	public List<TicketType> ticketTypesListRest(@PathVariable(name = "id") Long id)
+			throws ResourceNotFoundException {
+		Event event = er.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + id));
+		return (List<TicketType>) tr.findByEvent(event);
+	}
+	
+	@PostMapping("/{id}/tickettypes")
+	public ResponseEntity<TicketType> ticketTypePostRest(@PathVariable(name = "id") Long eventId, @RequestBody TicketType newType) 
+			throws ResourceNotFoundException {
+		Event event = er.findById(eventId)
+				.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + eventId));
+		newType.setEvent(event);
+		return ResponseEntity.ok(tr.save(newType));
+	}
+	
+	
 
 }

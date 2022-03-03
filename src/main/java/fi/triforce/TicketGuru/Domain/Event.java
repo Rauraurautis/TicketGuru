@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -52,6 +54,7 @@ public class Event {
 	@JoinColumn(name="venueId")
 	private Venue eventVenue;
 	@OneToMany(mappedBy="event")
+	@JsonIgnoreProperties("event")//Pysäyttää infinite loopin jsonissa 
 	private List<TicketType> ticketTypes;
 
 	@Override

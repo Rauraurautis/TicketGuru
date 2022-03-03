@@ -110,6 +110,17 @@ public class EventRestController {
 		return ResponseEntity.ok(tr.save(newType));
 	}
 	
+	//Yksittäinen tickettype
+	@GetMapping("/{id}/tickettypes/{ttid}")
+	public ResponseEntity<TicketType> ticketTypeGetSingleRest(@PathVariable(name = "id") Long eventId, @PathVariable(name = "ttid") Long ttId)
+			throws ResourceNotFoundException {
+		er.findById(eventId)
+				.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + eventId));
+		TicketType ticketType = tr.findById(ttId)
+				.orElseThrow(() -> new ResourceNotFoundException("Cannot find a tickettype with the id " + ttId));
+		return ResponseEntity.ok(ticketType);
+	}
+	
 	//Tickettype poisto
 	@DeleteMapping("/{id}/tickettypes/{ttid}")
 	public ResponseEntity<?> eventDeleteSingleRest(@PathVariable(name = "id") Long eventId, @PathVariable(name = "ttid") Long ticketTypeId)
@@ -122,6 +133,20 @@ public class EventRestController {
 		HashMap<String, String> returnMsg = new HashMap<String, String>();
 		returnMsg.put("message", "Deleted a tickettype with the id " + ticketTypeId);
 		return ResponseEntity.ok(returnMsg);
+	}
+	
+	//Tickettype muokkaus
+	@PutMapping("/{id}/tickettypes/{ttid}")
+	public ResponseEntity<TicketType> ticketTypeUpdateSingleRest(@PathVariable(name = "id") Long eventId, @PathVariable(name = "ttid") Long ticketTypeId,
+			@Valid @RequestBody TicketType newType)
+			throws ResourceNotFoundException {
+		er.findById(eventId)
+				.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + eventId));
+		TicketType ticketType = tr.findById(ticketTypeId)
+				.orElseThrow(() -> new ResourceNotFoundException("Cannot find a tickettype with the id " + ticketTypeId));
+		ticketType.setPrice(newType.getPrice());
+		ticketType.setTicketTypeDescription(newType.getTicketTypeDescription());
+		return ResponseEntity.ok(tr.save(ticketType));
 	}
 	
 	

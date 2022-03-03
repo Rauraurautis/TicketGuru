@@ -35,7 +35,7 @@ public class EventRestController {
 	private VenueRepository vr;
 	
 	@Autowired
-	private TicketTypeRepository tr;
+	private TicketTypeRepository ttr;
 	
 	//Kaikkien eventtien listaus
 	@GetMapping
@@ -97,7 +97,7 @@ public class EventRestController {
 			throws ResourceNotFoundException {
 		Event event = er.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + id));
-		return (List<TicketType>) tr.findByEvent(event);
+		return (List<TicketType>) ttr.findByEvent(event);
 	}
 	
 	//Tickettype lisäys
@@ -107,7 +107,7 @@ public class EventRestController {
 		Event event = er.findById(eventId)
 				.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + eventId));
 		newType.setEvent(event);
-		return ResponseEntity.ok(tr.save(newType));
+		return ResponseEntity.ok(ttr.save(newType));
 	}
 	
 	//Yksittäinen tickettype
@@ -116,7 +116,7 @@ public class EventRestController {
 			throws ResourceNotFoundException {
 		er.findById(eventId)
 				.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + eventId));
-		TicketType ticketType = tr.findById(ttId)
+		TicketType ticketType = ttr.findById(ttId)
 				.orElseThrow(() -> new ResourceNotFoundException("Cannot find a tickettype with the id " + ttId));
 		return ResponseEntity.ok(ticketType);
 	}
@@ -127,9 +127,9 @@ public class EventRestController {
 			throws ResourceNotFoundException {
 		er.findById(eventId)
 				.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + eventId));
-		TicketType ticketType = tr.findById(ticketTypeId)
+		TicketType ticketType = ttr.findById(ticketTypeId)
 				.orElseThrow(() -> new ResourceNotFoundException("Cannot find a tickettype with the id " + ticketTypeId));
-		tr.delete(ticketType);
+		ttr.delete(ticketType);
 		HashMap<String, String> returnMsg = new HashMap<String, String>();
 		returnMsg.put("message", "Deleted a tickettype with the id " + ticketTypeId);
 		return ResponseEntity.ok(returnMsg);
@@ -142,11 +142,11 @@ public class EventRestController {
 			throws ResourceNotFoundException {
 		er.findById(eventId)
 				.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + eventId));
-		TicketType ticketType = tr.findById(ticketTypeId)
+		TicketType ticketType = ttr.findById(ticketTypeId)
 				.orElseThrow(() -> new ResourceNotFoundException("Cannot find a tickettype with the id " + ticketTypeId));
 		ticketType.setPrice(newType.getPrice());
 		ticketType.setTicketTypeDescription(newType.getTicketTypeDescription());
-		return ResponseEntity.ok(tr.save(ticketType));
+		return ResponseEntity.ok(ttr.save(ticketType));
 	}
 	
 	

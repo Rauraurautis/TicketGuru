@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fi.triforce.TicketGuru.Domain.Event;
 import fi.triforce.TicketGuru.Domain.EventRepository;
+import fi.triforce.TicketGuru.Domain.SalesEvent;
+import fi.triforce.TicketGuru.Domain.SalesEventRepository;
 import fi.triforce.TicketGuru.Domain.TicketType;
 import fi.triforce.TicketGuru.Domain.TicketTypeRepository;
 import fi.triforce.TicketGuru.Domain.Venue;
@@ -36,6 +38,9 @@ public class EventRestController {
 	
 	@Autowired
 	private TicketTypeRepository tr;
+
+	@Autowired
+	private SalesEventRepository sr;
 	
 	//Kaikkien eventtien listaus
 	@GetMapping
@@ -149,6 +154,11 @@ public class EventRestController {
 		return ResponseEntity.ok(tr.save(ticketType));
 	}
 	
+	//Yksittäisen tapahtuman kuittien listaus
+	@GetMapping("/{id}/salesevents")
+	public List<SalesEvent> getSalesEventsByEvent(@PathVariable(name = "id") Long eventId) {
+		return sr.getAllSalesEventsByEventId(eventId);
+	}
 	
 
 }

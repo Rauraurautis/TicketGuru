@@ -6,3 +6,10 @@ INSERT INTO event (event_description, number_of_tickets) VALUES ('Lady Gaga, Mon
 INSERT INTO event (event_description, number_of_tickets) VALUES ('Fröbelin Palikat, Never Stop The Madness', 250);
 INSERT INTO event (event_description, number_of_tickets) VALUES ('Alice Cooper, Poison Concert One Night Only', 2800);
 INSERT INTO event (event_description, number_of_tickets) VALUES ('Elvis, I Never Left Tour', 6000);
+INSERT INTO sales_event (sales_event_id, event) VALUES (1, 1);
+INSERT INTO sales_event (sales_event_id, event) VALUES (2, 1);
+INSERT INTO sales_event (sales_event_id, event) VALUES (3, 2);
+INSERT INTO sales_event (sales_event_id, event) VALUES (4, 2);
+INSERT INTO sales_event (sales_event_id, event) VALUES (5, 2);
+INSERT INTO sales_event (sales_event_id, event) VALUES (6, 3);
+INSERT INTO sales_event (sales_event_id, event) VALUES (7, 4);

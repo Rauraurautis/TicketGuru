@@ -20,50 +20,57 @@ import lombok.Setter;
 import java.time.*;
 import java.util.List;
 
-
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 public class Event {
-	/*@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long eventID;
-	private String eventDescription;
-	private Long numberOfTickets;
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm", shape = JsonFormat.Shape.STRING)
-	private LocalDateTime date;
-	@ManyToOne
-	@JoinTable(name = "venue_id")
-	private Venue eventVenue;
-	@OneToMany(mappedBy="event")
-	private List<TicketType> ticketTypes;*/
+	/*
+	 * @Id
+	 * 
+	 * @GeneratedValue(strategy=GenerationType.IDENTITY)
+	 * private Long eventID;
+	 * private String eventDescription;
+	 * private Long numberOfTickets;
+	 * 
+	 * @JsonFormat(pattern = "dd-MM-yyyy HH:mm", shape = JsonFormat.Shape.STRING)
+	 * private LocalDateTime date;
+	 * 
+	 * @ManyToOne
+	 * 
+	 * @JoinTable(name = "venue_id")
+	 * private Venue eventVenue;
+	 * 
+	 * @OneToMany(mappedBy="event")
+	 * private List<TicketType> ticketTypes;
+	 */
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long eventID;
-	//@Column()
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long eventId;
+	// @Column()
 	private String eventTitle;
 	private String eventDescription;
-	//@Column()
+	// @Column()
 	private Long numberOfTickets;
-	//@Column()
+	// @Column()
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm", shape = JsonFormat.Shape.STRING)
 	private LocalDateTime dateOfEvent;
 	@ManyToOne
-	@JoinColumn(name="venueId")
+	@JoinColumn(name = "venueId")
 	private Venue eventVenue;
-	@OneToMany(mappedBy="event")
-	@JsonIgnoreProperties("event")//Pysäyttää infinite loopin jsonissa 
+	@OneToMany(mappedBy = "event")
+	@JsonIgnoreProperties({"event", "eventId"}) // Pysäyttää infinite loopin jsonissa (EI NÄYTÄ TOIMIVAN)
 	private List<TicketType> ticketTypes;
+	@OneToMany(mappedBy = "event")
+	@JsonIgnore
+	private List<SalesEvent> salesEvents;
 
 	@Override
 	public String toString() {
-		return "Event [eventID=" + eventID + ", eventTitle=" + eventTitle + ", eventDescription=" + eventDescription + ", venueId="
+		return "Event [eventID=" + eventId + ", eventTitle=" + eventTitle + ", eventDescription=" + eventDescription
+				+ ", venueId="
 				+ ", numberOfTickets=" + numberOfTickets + ", date=" + dateOfEvent + "]";
 	}
-	
-	
-	
 
 }

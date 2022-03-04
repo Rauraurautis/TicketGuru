@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -28,12 +29,11 @@ public class SalesEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long salesEventId;
-    @ManyToOne
-    @JoinColumn(name = "event")
-    @JsonIgnoreProperties("event.eventVenue")
-    private Event event;
+    @ManyToMany(mappedBy = "salesEvents")
+    @JsonIgnoreProperties("event")
+    private List<Event> events;
     private LocalDate dateOfSale;
-    @OneToMany(mappedBy = "ticketId")
+    @OneToMany(mappedBy = "ticketSale")
     private List<Ticket> tickets;
 
     public LocalDate getDateOfSale() {

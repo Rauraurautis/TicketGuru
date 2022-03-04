@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface SalesEventRepository extends JpaRepository<SalesEvent, Long> {
     
-    @Query("FROM SalesEvent WHERE event.eventId = ?1")
+    @Query("FROM SalesEvent se JOIN se.events see where see.eventId = ?1")
     List<SalesEvent> getAllSalesEventsByEventId(Long id);
 
 }

@@ -38,6 +38,9 @@ public class EventRestController {
 	
 	@Autowired
 	private TicketTypeRepository ttr;
+	
+	@Autowired
+	private SalesEventRepository sr;
 
 	
 	//Kaikkien eventtien listaus

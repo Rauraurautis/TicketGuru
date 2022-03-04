@@ -60,7 +60,7 @@ public class Event {
 	@JoinColumn(name = "venueId")
 	private Venue eventVenue;
 	@OneToMany(mappedBy = "event")
-	@JsonIgnoreProperties({"event", "eventId"}) // Pysäyttää infinite loopin jsonissa (EI NÄYTÄ TOIMIVAN)
+	@JsonIgnoreProperties("event") // Pysäyttää infinite loopin jsonissa
 	private List<TicketType> ticketTypes;
 	@OneToMany(mappedBy = "event")
 	@JsonIgnore

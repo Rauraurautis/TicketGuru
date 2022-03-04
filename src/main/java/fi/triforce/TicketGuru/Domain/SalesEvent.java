@@ -33,7 +33,7 @@ public class SalesEvent {
     @JsonIgnoreProperties("event.eventVenue")
     private Event event;
     private LocalDate dateOfSale;
-    @OneToMany(mappedBy = "ticketSale")
+    @OneToMany(mappedBy = "ticketId")
     private List<Ticket> tickets;
 
     public LocalDate getDateOfSale() {

@@ -26,10 +26,10 @@ public class SalesEventRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SalesEvent> venueGetSingleRest(@PathVariable(name = "id") Long id)
+    public ResponseEntity<SalesEvent> salesEventGetSingleRest(@PathVariable(name = "id") Long id)
             throws ResourceNotFoundException {
         SalesEvent salesEvent = sr.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cannot find a venue with the id " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Cannot find a sales event with the id " + id));
         return ResponseEntity.ok(salesEvent);
     }
 

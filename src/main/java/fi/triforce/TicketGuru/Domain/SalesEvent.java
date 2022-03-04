@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
@@ -22,8 +24,11 @@ import lombok.Setter;
 public class SalesEvent {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long salesEventId;
+    @ManyToOne
+    @JoinColumn(name = "event")
+    private Event event;
     private LocalDate dateOfSale;
     @OneToMany(mappedBy = "ticketSale")
     private List<Ticket> tickets;

@@ -20,8 +20,7 @@ import javax.persistence.GenerationType;
 public class Ticket {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long ticketID;
-	private long ticketTypeID;
+	private long ticketId;
 	private int ticketCode;
 	private boolean ticketUsed;
 	@ManyToOne
@@ -31,10 +30,11 @@ public class Ticket {
 	@JoinColumn(name = "ticketType_id")
 	@JsonIgnoreProperties("event")
 	private TicketType ticketType;
+	private float finalPrice;
 
 	@Override
 	public String toString() {
-		return "Ticket [ticketID=" + ticketID + ", ticketTypeID=" + ticketTypeID + ", ticketCode=" + ticketCode
+		return "Ticket [ticketID=" + ticketId + ", ticketCode=" + ticketCode
 				+ ", ticketUsed=" + ticketUsed + "]";
 	}
 	

@@ -15,7 +15,7 @@ public class SalesObject {
 	private Long ticketTypeId;
 	private int nrOfTickets;
 	private int nrOfDiscounted;
-	private int discountPercentage;
+	private float discountPercentage;
 	
 	public SalesObject(Long eventId, Long ticketTypeId, int nrOfTickets, int nrOfDiscounted, int discountPercentage) {
 		super();

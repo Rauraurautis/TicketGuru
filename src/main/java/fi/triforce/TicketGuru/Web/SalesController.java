@@ -1,5 +1,9 @@
 package fi.triforce.TicketGuru.Web;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,10 +35,15 @@ public class SalesController {
 	private TicketRepository tr;
 	
 	@PostMapping
-	public ResponseEntity<?> makeASaleRest(@RequestBody SalesObject sale) {
-		SalesEvent receipt = new SalesEvent();
-		
+	public ResponseEntity<?> makeASaleRest(@RequestBody List<SalesObject> sale) {
+		SalesEvent receipt = createTicketsFromSalesObjects(sale);
 		return ResponseEntity.ok(receipt);
+	}
+	
+	private SalesEvent createTicketsFromSalesObjects(List<SalesObject> sale) {
+		SalesEvent receipt = new SalesEvent();
+		receipt.setDateOfSale(LocalDateTime.now());
+		return receipt;
 	}
 	
 }

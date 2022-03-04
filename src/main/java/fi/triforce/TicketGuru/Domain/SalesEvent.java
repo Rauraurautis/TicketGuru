@@ -1,6 +1,7 @@
 package fi.triforce.TicketGuru.Domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -32,15 +33,15 @@ public class SalesEvent {
     @ManyToMany(mappedBy = "salesEvents")
     @JsonIgnoreProperties("event")
     private List<Event> events;
-    private LocalDate dateOfSale;
+    private LocalDateTime dateOfSale;
     @OneToMany(mappedBy = "ticketSale")
     private List<Ticket> tickets;
 
-    public LocalDate getDateOfSale() {
+    public LocalDateTime getDateOfSale() {
         return this.dateOfSale;
     }
 
-    public void setDateOfSale(LocalDate newDate) {
+    public void setDateOfSale(LocalDateTime newDate) {
         this.dateOfSale = newDate;
     }
 }

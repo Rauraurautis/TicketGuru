@@ -20,11 +20,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SalesObject {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private HashMap<Long, HashMap<Long, Integer>> events;
-	private int totalTickets;
+
+	private Long eventId;
+	private Long ticketTypeId;
+	private int nrOfTickets;
+	private int nrOfDiscounted;
+	private int discountPercentage;
 	
 	
 

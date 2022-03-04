@@ -1,22 +1,12 @@
 package fi.triforce.TicketGuru.Domain;
 
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+//Ei tarkoitus olla entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class SalesObject {
@@ -26,6 +16,17 @@ public class SalesObject {
 	private int nrOfTickets;
 	private int nrOfDiscounted;
 	private int discountPercentage;
+	
+	public SalesObject(Long eventId, Long ticketTypeId, int nrOfTickets, int nrOfDiscounted, int discountPercentage) {
+		super();
+		this.eventId = eventId;
+		this.ticketTypeId = ticketTypeId;
+		this.nrOfTickets = nrOfTickets;
+		this.nrOfDiscounted = nrOfDiscounted;
+		this.discountPercentage = discountPercentage;
+	}
+	
+	
 	
 	
 

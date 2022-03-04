@@ -36,10 +36,12 @@ public class SalesController {
 	
 	@PostMapping
 	public ResponseEntity<?> makeASaleRest(@RequestBody List<SalesObject> sale) {
+		System.out.println(sale);
 		SalesEvent receipt = createTicketsFromSalesObjects(sale);
 		return ResponseEntity.ok(receipt);
 	}
 	
+	//Purkaa rivit lippuentityiksi, liittää saleseventtiin yms. Osan toiminnoista voisi ehkä siirtää SalesObjectin metodeiksi.
 	private SalesEvent createTicketsFromSalesObjects(List<SalesObject> sale) {
 		SalesEvent receipt = new SalesEvent();
 		receipt.setDateOfSale(LocalDateTime.now());

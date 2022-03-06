@@ -31,6 +31,7 @@ public class TicketType {
 	@JsonIgnoreProperties("ticketTypes")//Pysäyttää infinite loopin jsonissa 
 	private Event event;
 	@OneToMany(mappedBy="ticketType")
+	@JsonIgnore
 	private List<Ticket> tickets;
 	
 	@Override

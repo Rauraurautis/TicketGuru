@@ -63,6 +63,7 @@ public class SalesController {
 					ticket.setTicketSale(newSale);
 					ticket.setTicketType(tt);
 					ticket.setTicketUsed(false);
+					tr.save(ticket);
 				}
 			}
 			//Luodaan normaalihintaiset
@@ -72,6 +73,7 @@ public class SalesController {
 				ticket.setTicketSale(newSale);
 				ticket.setTicketType(tt);
 				ticket.setTicketUsed(false);
+				tr.save(ticket);
 			}
 		}
 		newSale.setDateOfSale(LocalDateTime.now());

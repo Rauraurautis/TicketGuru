@@ -37,6 +37,8 @@ public class SalesController {
 	@Autowired
 	private TicketRepository tr;
 	
+	private int discountTicketsLeft;
+	
 	@PostMapping
 	public ResponseEntity<?> makeASaleRest(@RequestBody List<SalesObject> sale) {
 		System.out.println(sale);
@@ -54,7 +56,23 @@ public class SalesController {
 			TicketType tt = ttr.findById(sale.get(i).getTicketTypeId())
 					.orElseThrow(() -> new ResourceNotFoundException("Cannot find a tickettype with the id " + sale.get(index).getTicketTypeId()));
 			
-			sale.get(i).generateTickets(tt, newSale, tr);
+			discountTicketsLeft = sale.get(i).getNrOfDiscounted();
+
+			for (int o = 0; o < sale.get(i).getNrOfTickets(); o++)
+			{
+				Ticket ticket = new Ticket();
+				ticket.setTicketSale(newSale);
+				ticket.setTicketType(tt);
+				ticket.setTicketUsed(false);
+				if (discountTicketsLeft > 0) {
+					discountTicketsLeft--;
+					ticket.setFinalPrice(tt.getPrice() * (1 - sale.get(i).getDiscountPercentage()));
+				} else {
+					ticket.setFinalPrice(tt.getPrice());
+				}
+				newSale.addTicket(ticket);
+				tr.save(ticket);				
+			}
 
 		}
 		newSale.setDateOfSale(LocalDateTime.now());

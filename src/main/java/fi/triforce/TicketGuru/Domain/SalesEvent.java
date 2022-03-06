@@ -2,6 +2,7 @@ package fi.triforce.TicketGuru.Domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -43,5 +44,12 @@ public class SalesEvent {
 
     public void setDateOfSale(LocalDateTime newDate) {
         this.dateOfSale = newDate;
+    }
+    
+    public void addTicket(Ticket ticket) {
+    	if (this.tickets == null) {
+    		this.tickets = new ArrayList<>();
+    	}
+    	tickets.add(ticket);
     }
 }

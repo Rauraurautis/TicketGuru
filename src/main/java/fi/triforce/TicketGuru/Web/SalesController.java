@@ -54,27 +54,8 @@ public class SalesController {
 			TicketType tt = ttr.findById(sale.get(i).getTicketTypeId())
 					.orElseThrow(() -> new ResourceNotFoundException("Cannot find a tickettype with the id " + sale.get(index).getTicketTypeId()));
 			
-			//Luodaan alennushintaiset
-			if(sale.get(i).getNrOfDiscounted() > 0) {
-				for(int o=0;o < sale.get(i).getNrOfDiscounted(); o++) {
-					float discountedPrice = tt.getPrice() * (1 - sale.get(i).getDiscountPercentage());
-					Ticket ticket = new Ticket();
-					ticket.setFinalPrice(discountedPrice);
-					ticket.setTicketSale(newSale);
-					ticket.setTicketType(tt);
-					ticket.setTicketUsed(false);
-					tr.save(ticket);
-				}
-			}
-			//Luodaan normaalihintaiset
-			for(int o=0;o < (sale.get(i).getNrOfTickets() - sale.get(i).getNrOfDiscounted()); o++) {
-				Ticket ticket = new Ticket();
-				ticket.setFinalPrice(tt.getPrice());
-				ticket.setTicketSale(newSale);
-				ticket.setTicketType(tt);
-				ticket.setTicketUsed(false);
-				tr.save(ticket);
-			}
+			sale.get(i).generateTickets(tt, newSale, tr);
+
 		}
 		newSale.setDateOfSale(LocalDateTime.now());
 		return newSale;

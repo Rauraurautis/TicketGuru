@@ -33,10 +33,10 @@ public class SalesEvent {
     private Long salesEventId;
     @ManyToMany(mappedBy = "salesEvents")
     @JsonIgnoreProperties("event")
-    private List<Event> events;
+    private List<Event> events = new ArrayList<Event>();
     private LocalDateTime dateOfSale;
     @OneToMany(mappedBy = "ticketSale")
-    private List<Ticket> tickets;
+    private List<Ticket> tickets = new ArrayList<Ticket>();
 
     public LocalDateTime getDateOfSale() {
         return this.dateOfSale;
@@ -45,11 +45,12 @@ public class SalesEvent {
     public void setDateOfSale(LocalDateTime newDate) {
         this.dateOfSale = newDate;
     }
-    
+
     public void addTicket(Ticket ticket) {
-    	if (this.tickets == null) {
-    		this.tickets = new ArrayList<>();
-    	}
-    	tickets.add(ticket);
+        this.tickets.add(ticket);
+    }
+
+    public void addEvent(Event event) {
+        this.events.add(event);
     }
 }

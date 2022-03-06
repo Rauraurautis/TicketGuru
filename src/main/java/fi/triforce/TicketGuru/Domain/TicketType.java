@@ -22,7 +22,7 @@ import lombok.*;
 @Setter
 public class TicketType {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long ticketTypeID;
 	private String ticketTypeDescription;
 	private float price;

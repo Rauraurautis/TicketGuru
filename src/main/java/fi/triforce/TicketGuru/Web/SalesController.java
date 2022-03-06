@@ -71,6 +71,7 @@ public class SalesController {
 				} else {
 					ticket.setFinalPrice(tt.getPrice());
 				}
+				ticket.generateTicketCode();
 				newSale.addTicket(ticket);
 				newSale.addEvent(event);
 				tr.save(ticket);				

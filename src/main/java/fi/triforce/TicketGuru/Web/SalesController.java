@@ -52,8 +52,6 @@ public class SalesController {
 		SalesEvent newSale = sr.save(new SalesEvent());
 		for(int i=0; i < sale.size(); i++) {
 			SalesObject salesObject = sale.get(i);
-			Event event = er.findById(salesObject.getEventId())
-					.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + salesObject.getEventId()));		
 			TicketType tt = ttr.findById(salesObject.getTicketTypeId())
 					.orElseThrow(() -> new ResourceNotFoundException("Cannot find a tickettype with the id " + salesObject.getTicketTypeId()));
 			

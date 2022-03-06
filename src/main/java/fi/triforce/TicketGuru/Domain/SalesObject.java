@@ -13,7 +13,6 @@ import lombok.Setter;
 @Setter
 public class SalesObject {
 
-	private Long eventId;
 	private Long ticketTypeId;
 	private int nrOfTickets;
 	private int nrOfDiscounted;
@@ -21,9 +20,8 @@ public class SalesObject {
 	
 	private int discountTicketsLeft;
 	
-	public SalesObject(Long eventId, Long ticketTypeId, int nrOfTickets, int nrOfDiscounted, float discountPercentage) {
+	public SalesObject(Long ticketTypeId, int nrOfTickets, int nrOfDiscounted, float discountPercentage) {
 		super();
-		this.eventId = eventId;
 		this.ticketTypeId = ticketTypeId;
 		this.nrOfTickets = nrOfTickets;
 		this.nrOfDiscounted = nrOfDiscounted;

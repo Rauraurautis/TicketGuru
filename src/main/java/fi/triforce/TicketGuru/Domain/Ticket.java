@@ -13,6 +13,8 @@ import lombok.*;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+import java.util.UUID;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +24,7 @@ public class Ticket {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long ticketId;
-	private int ticketCode;
+	private String ticketCode;
 	private boolean ticketUsed;
 	@ManyToOne
 	@JoinColumn(name = "salesEvent_id")
@@ -40,6 +42,8 @@ public class Ticket {
 				+ ", ticketUsed=" + ticketUsed + "]";
 	}
 	
-	
+	public void generateTicketCode() {
+		this.ticketCode = String.valueOf(UUID.randomUUID());
+	}	
 
 }

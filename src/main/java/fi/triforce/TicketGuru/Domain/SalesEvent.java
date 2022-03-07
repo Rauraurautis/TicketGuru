@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ public class SalesEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long salesEventId;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime dateOfSale;
     @OneToMany(mappedBy = "ticketSale")
     private List<Ticket> tickets = new ArrayList<Ticket>();

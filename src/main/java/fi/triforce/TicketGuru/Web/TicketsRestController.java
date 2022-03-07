@@ -10,7 +10,8 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fi.triforce.TicketGuru.Domain.EventRepository;
@@ -21,6 +22,7 @@ import fi.triforce.TicketGuru.Domain.TicketTypeRepository;
 
 
 @RestController
+@RequestMapping("/api/events/")
 public class TicketsRestController {
 	
 	@Autowired
@@ -31,7 +33,7 @@ public class TicketsRestController {
 	private TicketRepository tr;
 	
 	//Listaa kaikki tapahtuman liput
-	@GetMapping("/api/events/{eventid}/tickets")
+	@GetMapping("{eventid}/tickets")
 	public List<Ticket> ticketsListRest(@PathVariable(name = "eventid") Long eventId) {
 		er.findById(eventId)
 		.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + eventId));
@@ -39,7 +41,7 @@ public class TicketsRestController {
 	}
 	
 	//Yksittäisen lipun tiedot
-	@GetMapping("/api/events/{eventid}/tickets/{ticketid}")
+	@GetMapping("{eventid}/tickets/{ticketid}")
 	public ResponseEntity<Ticket> singleTicketRest(@PathVariable(name = "eventid") Long eventId, @PathVariable(name = "ticketid") Long ticketId) {
 		er.findById(eventId)
 		.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + eventId));
@@ -57,5 +59,5 @@ public class TicketsRestController {
 		}
 		return tickets;
 	}
-	
+
 }

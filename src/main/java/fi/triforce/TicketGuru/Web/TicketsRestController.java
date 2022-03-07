@@ -10,7 +10,7 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fi.triforce.TicketGuru.Domain.EventRepository;
@@ -47,6 +47,17 @@ public class TicketsRestController {
 		.orElseThrow(() -> new ResourceNotFoundException("Cannot find a ticket with the id " + ticketId));
 		return ResponseEntity.ok(ticket);
 	}
+	
+	//Yksittäisen lipun merkkaus käytetyksi
+		@PutMapping("/api/events/{eventid}/tickets/{ticketid}")
+		public ResponseEntity<Ticket> setTicketUsed(@PathVariable(name = "eventid") Long eventId, @PathVariable(name = "ticketid") Long ticketId) {
+			er.findById(eventId)
+			.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + eventId));
+			Ticket ticket = tr.findById(ticketId)
+			.orElseThrow(() -> new ResourceNotFoundException("Cannot find a ticket with the id " + ticketId));
+			ticket.setTicketUsed(true);
+			return ResponseEntity.ok(tr.save(ticket));
+		}
 		
 	//Inserted eventid must be confirmed
 	private List<Ticket> listTicketsforEvent(Long eventId) {

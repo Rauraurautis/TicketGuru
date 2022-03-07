@@ -158,7 +158,7 @@ public class EventRestController {
 	//Yksittäisen tapahtuman kuittien listaus
 	@GetMapping("/{id}/salesevents")
 	public List<SalesEvent> getSalesEventsByEvent(@PathVariable(name = "id") Long eventId) {
-		return sr.getAllSalesEventsByEventId(eventId);
+		return sr.getAllSalesEventsByEvent(eventId);
 	}
 	
 

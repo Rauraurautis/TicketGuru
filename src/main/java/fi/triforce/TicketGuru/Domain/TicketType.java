@@ -23,7 +23,7 @@ import lombok.*;
 public class TicketType {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long ticketTypeID;
+	private long ticketTypeId;
 	private String ticketTypeDescription;
 	private float price;
 	@ManyToOne
@@ -36,7 +36,7 @@ public class TicketType {
 	
 	@Override
 	public String toString() {
-		return "TicketType [ticketTypeID=" + ticketTypeID + ", eventId=" + ", ticketTypeDescription="
+		return "TicketType [ticketTypeID=" + ticketTypeId + ", eventId=" + ", ticketTypeDescription="
 				+ ticketTypeDescription + ", price=" + price + "]";
 	}
 	

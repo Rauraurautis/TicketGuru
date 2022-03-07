@@ -27,9 +27,6 @@ import fi.triforce.TicketGuru.Domain.SalesEvent;
 public class SalesController {
 	
 	@Autowired
-	private EventRepository er;
-	
-	@Autowired
 	private TicketTypeRepository ttr;
 	
 	@Autowired
@@ -71,11 +68,11 @@ public class SalesController {
 				}
 				ticket.generateTicketCode();
 				newSale.addTicket(ticket);
-				newSale.addEvent(tt.getEvent());
 				tr.save(ticket);				
 			}
 
 		}
+		
 		newSale.setDateOfSale(LocalDateTime.now());
 		sr.save(newSale);
 		return newSale;

@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -31,9 +30,6 @@ public class SalesEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long salesEventId;
-    @ManyToMany(mappedBy = "salesEvents")
-    @JsonIgnoreProperties("event")
-    private List<Event> events = new ArrayList<Event>();
     private LocalDateTime dateOfSale;
     @OneToMany(mappedBy = "ticketSale")
     private List<Ticket> tickets = new ArrayList<Ticket>();
@@ -48,9 +44,5 @@ public class SalesEvent {
 
     public void addTicket(Ticket ticket) {
         this.tickets.add(ticket);
-    }
-
-    public void addEvent(Event event) {
-        this.events.add(event);
     }
 }

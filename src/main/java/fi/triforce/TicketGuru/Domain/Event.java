@@ -64,10 +64,6 @@ public class Event {
 	@OneToMany(mappedBy = "event")
 	@JsonIgnoreProperties("event") // Pysäyttää infinite loopin jsonissa
 	private List<TicketType> ticketTypes;
-	@ManyToMany
-	@JoinTable(name = "salesevent_event_row", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "salesevent_id"))
-	@JsonIgnoreProperties("events")
-	private List<SalesEvent> salesEvents;
 
 	@Override
 	public String toString() {

@@ -8,4 +8,5 @@ INSERT INTO event (event_description, number_of_tickets) VALUES ('Alice Cooper, 
 INSERT INTO event (event_description, number_of_tickets) VALUES ('Elvis, I Never Left Tour', 6000);
 INSERT INTO ticket_type (event_id, ticket_type_description, price) VALUES (1, 'Normaalilippu', 50);
 INSERT INTO ticket_type (event_id, ticket_type_description, price) VALUES (1, 'Lastenlippu', 20);
+INSERT INTO ticket_type (event_id, ticket_type_description, price) VALUES (2, 'Lastenlippu', 20);
 

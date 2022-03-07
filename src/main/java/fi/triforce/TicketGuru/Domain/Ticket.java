@@ -25,7 +25,7 @@ public class Ticket {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long ticketId;
 	private String ticketCode;
-	private boolean ticketUsed;
+	private Boolean ticketUsed;
 	@ManyToOne
 	@JoinColumn(name = "salesEvent_id")
 	@JsonIgnore
@@ -45,5 +45,7 @@ public class Ticket {
 	public void generateTicketCode() {
 		this.ticketCode = String.valueOf(UUID.randomUUID());
 	}	
+
+	
 
 }

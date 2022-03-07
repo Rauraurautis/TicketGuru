@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fi.triforce.TicketGuru.Domain.Venue;
 import fi.triforce.TicketGuru.Domain.VenueRepository;
+import fi.triforce.TicketGuru.utils.ReturnMsg;
 
 @RestController
 @RequestMapping("/api/venues")
@@ -50,9 +51,7 @@ public class VenueRestController {
 	public ResponseEntity<?> venueDeleteSingleRest(@PathVariable(name = "id") Long id) throws ResourceNotFoundException {
 		Venue venue = vr.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cannot find a venue with the id " + id));
 		vr.delete(venue);
-		HashMap<String, String> returnMsg = new HashMap<String, String>();
-		returnMsg.put("message", "Deleted a venue with the id " + id);
-		return ResponseEntity.ok(returnMsg);
+		return ResponseEntity.ok(new ReturnMsg("Deleted a venue with the id " + id).getReturnMsg());
 	}
 	
 	@PutMapping("/{id}")

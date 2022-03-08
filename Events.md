@@ -16,8 +16,51 @@ Listaa kaikki tietokannassa olevat tapahtumat.
 
 ```json
 [
-{"eventID":1,"eventDescription":"Lady Gaga, Monster Tour","numberOfTickets":3400,"date":null,"eventVenue":null,"ticketTypes":[]},
-{"eventID":2,"eventDescription":"Fröbelin Palikat, Never Stop The Madness","numberOfTickets":250,"date":null,"eventVenue":null,"ticketTypes":[]},{"eventID":3,"eventDescription":"Alice Cooper, Poison Concert One Night Only","numberOfTickets":2800,"date":null,"eventVenue":null,"ticketTypes":[]},{"eventID":4,"eventDescription":"Elvis, I Never Left Tour","numberOfTickets":6000,"date":null,"eventVenue":null,"ticketTypes":[]}
+    {
+        "eventId": 1,
+        "eventTitle": "Lady Gaga Live",
+        "eventDescription": "Lady Gaga, Monster Tour 2022",
+        "numberOfTickets": 3400,
+        "dateOfEvent": null,
+        "eventVenue": {
+            "venueId": 2,
+            "venueName": "Tampere-talo",
+            "venueAddress": "Yliopistonkatu 55, 33100",
+            "venueCity": "Tampere"
+        },
+        "ticketTypes": [
+            {
+                "ticketTypeId": 1,
+                "ticketTypeDescription": "Normaalilippu",
+                "price": 50.0
+            },
+            {
+                "ticketTypeId": 2,
+                "ticketTypeDescription": "Lastenlippu",
+                "price": 20.0
+            }
+        ]
+    },
+    {
+        "eventId": 2,
+        "eventTitle": "FrÃ¶belin Palikat Live",
+        "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
+        "numberOfTickets": 250,
+        "dateOfEvent": null,
+        "eventVenue": {
+            "venueId": 4,
+            "venueName": "Tavastia",
+            "venueAddress": "Urho Kekkosen katu 4, 00100",
+            "venueCity": "Helsinki"
+        },
+        "ticketTypes": [
+            {
+                "ticketTypeId": 3,
+                "ticketTypeDescription": "Lastenlippu",
+                "price": 20.0
+            }
+        ]
+    }
 ]
 ```
 
@@ -38,8 +81,34 @@ Näyttää yksittäisen tapahtuman tiedot. Tapahtuman Id/primary key annetaan UR
 **Esimerkki**
 
 ```json
-{"eventID":1,"eventDescription":"Lady Gaga, Monster Tour","numberOfTickets":3400,"date":null,"eventVenue":null,"ticketTypes":[]}
+{
+    "eventId": 1,
+    "eventTitle": "Lady Gaga Live",
+    "eventDescription": "Lady Gaga, Monster Tour 2022",
+    "numberOfTickets": 3400,
+    "dateOfEvent": null,
+    "eventVenue": {
+        "venueId": 2,
+        "venueName": "Tampere-talo",
+        "venueAddress": "Yliopistonkatu 55, 33100",
+        "venueCity": "Tampere"
+    },
+    "ticketTypes": [
+        {
+            "ticketTypeId": 1,
+            "ticketTypeDescription": "Normaalilippu",
+            "price": 50.0
+        },
+        {
+            "ticketTypeId": 2,
+            "ticketTypeDescription": "Lastenlippu",
+            "price": 20.0
+        }
+    ]
+}
 ```
+
+
 
 ### Virheellinen response
 
@@ -56,7 +125,7 @@ Uuden tapahtuman luonti ja lisäys tietokantaan.
 **METHOD** : `POST`
 
 **REQUEST BODY**
-Tapahtuman tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi).
+Tapahtuman tiedot json-muodossa(poislukien id, joka autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi).
 Tapahtuman tapahtumapaikka annetaan sen id:nä(venueId) muodossa:
 
 `"eventVenue":{"venueId": {id}}`
@@ -67,7 +136,7 @@ Esim:
 
 ```json
 {
-"eventDescription":"Lady Gaga, Monster Tour","numberOfTickets":3400, "eventVenue":{"venueId": {2}}
+"eventTitle":"Kolmas Nainen Live","eventDescription":"Kolmas Nainen Lavalla","numberOfTickets":500,"dateOfEvent":"15-12-2022 21:00","eventVenue":{"venueId":1}
 }
 ```
 
@@ -78,7 +147,20 @@ Esim:
 **Response body esim** Vastaus palauttaa tallennetun entityn
 
 ```json
-{"eventID":5,"eventDescription":"Lady Gaga, Monster Tour","numberOfTickets":3400,"date":null,"venue":null,"ticketTypes":[]}
+{
+    "eventId": 9,
+    "eventTitle": "Kolmas Nainen Live",
+    "eventDescription": "Kolmas Nainen Lavalla",
+    "numberOfTickets": 500,
+    "dateOfEvent": "15-12-2022 21:00",
+    "eventVenue": {
+        "venueId": 1,
+        "venueName": "Sibeliustalo",
+        "venueAddress": "Ankkurikatu 7, 15140",
+        "venueCity": "Lahti"
+    },
+    "ticketTypes": null
+}
 ```
 
 ## Tapahtuman poisto
@@ -97,7 +179,7 @@ Yksittäisen tapahtuman poisto tietokannasta. Tapahtuman Id/primary key annetaan
 
 **Response body esim**
 
-`Deleted Lady Gaga, Monster Tour`
+"message": "Deleted an event with the id 8"
 
 ## Tapahtuman muokkaus
 
@@ -110,13 +192,13 @@ Olemassa olevan tapahtuman tietojen muokkaus.
 **METHOD** : `PUT`
 
 **REQUEST BODY**
-Tapahtuman tiedot json-muodossa
+PAKOLLISENA kaikki perustiedot json-muodossa tai puutteellisiin kenttiin tulee arvoksi NULL. Lipputyyppejä ei tarvitse antaa.
 
 Esim:
 
 ```json
 {
-"eventDescription":"Lady Gaga, Monster Tour","numberOfTickets":3400
+"eventTitle":"Lady Gaga Live","eventDescription":"Lady Gaga, Not-The-Old-Monster Tour","numberOfTickets":4000,"dateOfEvent":"19-08-2022 21:00","eventVenue":{"venueId":1}
 }
 ```
 
@@ -127,5 +209,29 @@ Esim:
 **Response body esim** Vastaus palauttaa tallennetun entityn
 
 ```json
-{"eventID":5,"eventDescription":"Lady Gaga, Monster Tour","numberOfTickets":3400,"date":null,"venue":null,"ticketTypes":[]}
+{
+    "eventId": 1,
+    "eventTitle": "Lady Gaga Live",
+    "eventDescription": "Lady Gaga, Not-The-Old-Monster Tour",
+    "numberOfTickets": 4000,
+    "dateOfEvent": "19-08-2022 21:00",
+    "eventVenue": {
+        "venueId": 1,
+        "venueName": "Sibeliustalo",
+        "venueAddress": "Ankkurikatu 7, 15140",
+        "venueCity": "Lahti"
+    },
+    "ticketTypes": [
+        {
+            "ticketTypeId": 1,
+            "ticketTypeDescription": "Normaalilippu",
+            "price": 50.0
+        },
+        {
+            "ticketTypeId": 2,
+            "ticketTypeDescription": "Lastenlippu",
+            "price": 20.0
+        }
+    ]
+}
 ```

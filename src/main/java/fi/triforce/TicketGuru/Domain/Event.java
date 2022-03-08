@@ -28,25 +28,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Event {
-	/*
-	 * @Id
-	 * 
-	 * @GeneratedValue(strategy=GenerationType.IDENTITY)
-	 * private Long eventID;
-	 * private String eventDescription;
-	 * private Long numberOfTickets;
-	 * 
-	 * @JsonFormat(pattern = "dd-MM-yyyy HH:mm", shape = JsonFormat.Shape.STRING)
-	 * private LocalDateTime date;
-	 * 
-	 * @ManyToOne
-	 * 
-	 * @JoinTable(name = "venue_id")
-	 * private Venue eventVenue;
-	 * 
-	 * @OneToMany(mappedBy="event")
-	 * private List<TicketType> ticketTypes;
-	 */
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long eventId;

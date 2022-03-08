@@ -74,3 +74,6 @@ TicketGurun Rest API vastaanottaa ja lähettää tietokannan dataa JSON muodossa
 
 * [Tapahtumat](Events.md)
 * [Tapahtumapaikat](Venues.md)
+* [Liput](Tickets.md)
+* [Lipputyypit](TicketTypes.md)
+* [Ostotapahtumat](SalesEvents.md)

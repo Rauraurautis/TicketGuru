@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import fi.triforce.TicketGuru.Domain.Event;
 import fi.triforce.TicketGuru.Domain.EventRepository;
 import fi.triforce.TicketGuru.Domain.SalesEventRepository;
 import fi.triforce.TicketGuru.Domain.SalesObject;
@@ -26,9 +27,6 @@ import fi.triforce.TicketGuru.Domain.SalesEvent;
 public class SalesController {
 	
 	@Autowired
-	private EventRepository er;
-	
-	@Autowired
 	private TicketTypeRepository ttr;
 	
 	@Autowired
@@ -36,6 +34,8 @@ public class SalesController {
 	
 	@Autowired
 	private TicketRepository tr;
+	
+	private int discountTicketsLeft;
 	
 	@PostMapping
 	public ResponseEntity<?> makeASaleRest(@RequestBody List<SalesObject> sale) {
@@ -48,33 +48,33 @@ public class SalesController {
 	private SalesEvent createTicketsFromSalesObjects(List<SalesObject> sale) throws ResourceNotFoundException {
 		SalesEvent newSale = sr.save(new SalesEvent());
 		for(int i=0; i < sale.size(); i++) {
-			int index = i;
-			er.findById(sale.get(i).getEventId())
-					.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + sale.get(index).getEventId()));		
-			TicketType tt = ttr.findById(sale.get(i).getTicketTypeId())
-					.orElseThrow(() -> new ResourceNotFoundException("Cannot find a tickettype with the id " + sale.get(index).getTicketTypeId()));
+			SalesObject salesObject = sale.get(i);	
+			TicketType tt = ttr.findById(salesObject.getTicketTypeId())
+					.orElseThrow(() -> new ResourceNotFoundException("Cannot find a tickettype with the id " + salesObject.getTicketTypeId()));
 			
-			//Luodaan alennushintaiset
-			if(sale.get(i).getNrOfDiscounted() > 0) {
-				for(int o=0;o < sale.get(i).getNrOfDiscounted(); o++) {
-					float discountedPrice = tt.getPrice() * (1 - sale.get(i).getDiscountPercentage());
-					Ticket ticket = new Ticket();
-					ticket.setFinalPrice(discountedPrice);
-					ticket.setTicketSale(newSale);
-					ticket.setTicketType(tt);
-					ticket.setTicketUsed(false);
-				}
-			}
-			//Luodaan normaalihintaiset
-			for(int o=0;o < (sale.get(i).getNrOfTickets() - sale.get(i).getNrOfDiscounted()); o++) {
+			discountTicketsLeft = salesObject.getNrOfDiscounted();
+
+			for (int o = 0; o < salesObject.getNrOfTickets(); o++)
+			{
 				Ticket ticket = new Ticket();
-				ticket.setFinalPrice(tt.getPrice());
 				ticket.setTicketSale(newSale);
 				ticket.setTicketType(tt);
 				ticket.setTicketUsed(false);
+				if (discountTicketsLeft > 0) {
+					discountTicketsLeft--;
+					ticket.setFinalPrice(tt.getPrice() * (1 - salesObject.getDiscountPercentage()));
+				} else {
+					ticket.setFinalPrice(tt.getPrice());
+				}
+				ticket.generateTicketCode();
+				newSale.addTicket(ticket);
+				tr.save(ticket);				
 			}
+
 		}
+		
 		newSale.setDateOfSale(LocalDateTime.now());
+		sr.save(newSale);
 		return newSale;
 	}
 	

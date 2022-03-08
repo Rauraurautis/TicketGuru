@@ -22,8 +22,8 @@ import lombok.*;
 @Setter
 public class TicketType {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long ticketTypeID;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private long ticketTypeId;
 	private String ticketTypeDescription;
 	private float price;
 	@ManyToOne
@@ -31,11 +31,12 @@ public class TicketType {
 	@JsonIgnoreProperties("ticketTypes")//Pysäyttää infinite loopin jsonissa 
 	private Event event;
 	@OneToMany(mappedBy="ticketType")
+	@JsonIgnore
 	private List<Ticket> tickets;
 	
 	@Override
 	public String toString() {
-		return "TicketType [ticketTypeID=" + ticketTypeID + ", eventId=" + ", ticketTypeDescription="
+		return "TicketType [ticketTypeID=" + ticketTypeId + ", eventId=" + ", ticketTypeDescription="
 				+ ticketTypeDescription + ", price=" + price + "]";
 	}
 	

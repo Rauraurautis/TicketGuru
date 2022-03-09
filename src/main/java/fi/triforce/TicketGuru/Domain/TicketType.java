@@ -28,7 +28,7 @@ public class TicketType {
 	private float price;
 	@ManyToOne
 	@JoinColumn(name="eventId")
-	@JsonIgnoreProperties("ticketTypes")//Pysäyttää infinite loopin jsonissa 
+	@JsonIgnoreProperties({"ticketTypes", "eventVenue"})//Pysäyttää infinite loopin jsonissa 
 	private Event event;
 	@OneToMany(mappedBy="ticketType")
 	@JsonIgnore

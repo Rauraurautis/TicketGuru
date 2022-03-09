@@ -108,8 +108,6 @@ Näyttää yksittäisen tapahtuman tiedot. Tapahtuman Id/primary key annetaan UR
 }
 ```
 
-
-
 ### Virheellinen response
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
@@ -132,7 +130,7 @@ Tapahtuman tapahtumapaikka annetaan sen id:nä(venueId) muodossa:
 
 Mikäli id:llä ei löydy tapahtumapaikkaa, eventVenueksi tulee **null**.
 
-Esim:
+**Esimerkki**
 
 ```json
 {
@@ -183,7 +181,11 @@ Yksittäisen tapahtuman poisto tietokannasta. Tapahtuman Id/primary key annetaan
 
 **Response body esim**
 
-"message": "Deleted an event with the id 8"
+```json
+{
+    "message": "Deleted an event with the id {Id}"
+}
+```
 
 ## Tapahtuman muokkaus
 
@@ -198,7 +200,7 @@ Olemassa olevan tapahtuman tietojen muokkaus.
 **REQUEST BODY**
 PAKOLLISENA kaikki perustiedot json-muodossa tai puutteellisiin kenttiin tulee arvoksi **null**. Lipputyyppejä ei tule antaa, ne muokataan muualta.
 
-Esim:
+**Esimerkki**
 
 ```json
 {
@@ -243,6 +245,7 @@ Esim:
     ]
 }
 ```
+
 ### Virheellinen response
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
@@ -323,12 +326,12 @@ Uuden lipputyypin luonti tapahtumalle ja lisäys tietokantaan.
 **METHOD** : `POST`
 
 **REQUEST BODY**
-Lipputyypin tiedot annetaan json-muodossa(poislukien id, joka autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi).
+Lipputyypin tiedot annetaan json-muodossa(poislukien id, joka autogeneroidaan).
 Tietokentät:
 	[String] ticketTypeDescription
-	[float] price	**Desimaalierottaja annettava pisteenä**
+	[float] price	**Desimaalierottaja annettava pisteenä!**
 
-Esim:
+**Esimerkki**
 
 ```json
 {
@@ -363,13 +366,20 @@ Esim:
     }
 }
 ```
+
+### Virheellinen response
+
+**Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
+**Code** : `404 NOT FOUND`
+**Message** : `Cannot find an event with the id {id}`
+
 ## Lipputyypin poisto
 
 Yksittäisen lipputyypin poisto tietokannasta. Tapahtuman Id/primary key annetaan URL:ssa sekä lipputyypin Id/pk annetaan URL:ssa.
 
 **URL** : `/api/events/:pk/tickettypes/:pk`
 
-**URL-PARAMETERS** : `pk=[Long]` jossa ensimmäinen pk on tapahtuman eventId tietokannassa ja toinen lippytyypin ticketTypeId.
+**URL-PARAMETERS** : `pk=[Long]` jossa ensimmäinen pk on tapahtuman eventId tietokannassa ja toinen lipputyypin ticketTypeId.
 
 **METHOD** : `DELETE`
 
@@ -379,22 +389,36 @@ Yksittäisen lipputyypin poisto tietokannasta. Tapahtuman Id/primary key annetaa
 
 **Response body esim**
 
-"message": "Deleted a tickettype with the id {Id}"
+```json
+{
+    "message": "Deleted a tickettype with the id 6"
+}
+```
+
+### Virheellinen response
+
+**Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
+**Code** : `404 NOT FOUND`
+**Message** : `Cannot find an event with the id {id}`
+
+**Ehto** : Jos url-parametrina annettua lippytyyppiä ei löydy
+**Code** : `404 NOT FOUND`
+**Message** : `Cannot find a tickettype with the id {id}`
 
 ## Lipputyypin muokkaus
 
-Tapahtumassa olevan lipputyypin tietojen muokkaus.
+Tapahtumassa olevan lipputyypin tietojen muokkaus. Tapahtuman Id/primary key annetaan URL:ssa sekä lipputyypin Id/pk annetaan URL:ssa.
 
 **URL** : `/api/events/:pk/tickettypes/:pk`
 
-**URL-PARAMETERS** : `pk=[Long]` jossa ensimmäinen pk on tapahtuman eventId tietokannassa ja toinen lippytyypin ticketTypeId.
+**URL-PARAMETERS** : `pk=[Long]` jossa ensimmäinen pk on tapahtuman eventId tietokannassa ja toinen lipputyypin ticketTypeId.
 
 **METHOD** : `PUT`
 
 **REQUEST BODY**
 PAKOLLISENA kaikki perustiedot json-muodossa tai puutteellisiin kenttiin tulee arvoksi **null**. Lipputyyppejä ei tule antaa, ne muokataan muualta.
 
-Esim:
+**Esimerkki**
 
 ```json
 {
@@ -433,4 +457,386 @@ Esim:
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
 **Code** : `404 NOT FOUND`
-**Message** : `Cannot find a tickettype with the id {Id}`
+**Message** : `Cannot find an event with the id {id}`
+
+**Ehto** : Jos url-parametrina annettua lipputyyppiä ei löydy
+**Code** : `404 NOT FOUND`
+**Message** : `Cannot find a tickettype with the id {id}`
+
+
+## Tapahtumaan ostettujen lippujen haku
+
+Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
+
+**URL** : `/api/events/:pk/tickettypes`
+
+**URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtuman eventId tietokannassa. 
+
+**METHOD** : `GET`
+
+### Onnistunut response
+
+**Code** : `200 OK`
+
+**Esimerkki**
+```json
+[
+    {
+        "ticketId": 3,
+        "ticketCode": "98b0b9ea-4531-44dc-96a0-6d1d46e8edaa",
+        "ticketUsed": false,
+        "ticketType": {
+            "ticketTypeId": 3,
+            "ticketTypeDescription": "Lastenlippu",
+            "price": 20.0,
+            "event": {
+                "eventId": 2,
+                "eventTitle": "FrÃ¶belin Palikat Live",
+                "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
+                "numberOfTickets": 250,
+                "dateOfEvent": null,
+                "eventVenue": {
+                    "venueId": 4,
+                    "venueName": "Tavastia",
+                    "venueAddress": "Urho Kekkosen katu 4, 00100",
+                    "venueCity": "Helsinki"
+                }
+            }
+        },
+        "finalPrice": 20.0
+    },
+    {
+        "ticketId": 4,
+        "ticketCode": "811ed243-ef7f-46bd-975f-816660477d16",
+        "ticketUsed": false,
+        "ticketType": {
+            "ticketTypeId": 3,
+            "ticketTypeDescription": "Lastenlippu",
+            "price": 20.0,
+            "event": {
+                "eventId": 2,
+                "eventTitle": "FrÃ¶belin Palikat Live",
+                "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
+                "numberOfTickets": 250,
+                "dateOfEvent": null,
+                "eventVenue": {
+                    "venueId": 4,
+                    "venueName": "Tavastia",
+                    "venueAddress": "Urho Kekkosen katu 4, 00100",
+                    "venueCity": "Helsinki"
+                }
+            }
+        },
+        "finalPrice": 20.0
+    },
+    {
+        "ticketId": 11,
+        "ticketCode": "606e6afb-3915-44e3-b572-274ee34a0f69",
+        "ticketUsed": false,
+        "ticketType": {
+            "ticketTypeId": 3,
+            "ticketTypeDescription": "Lastenlippu",
+            "price": 20.0,
+            "event": {
+                "eventId": 2,
+                "eventTitle": "FrÃ¶belin Palikat Live",
+                "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
+                "numberOfTickets": 250,
+                "dateOfEvent": null,
+                "eventVenue": {
+                    "venueId": 4,
+                    "venueName": "Tavastia",
+                    "venueAddress": "Urho Kekkosen katu 4, 00100",
+                    "venueCity": "Helsinki"
+                }
+            }
+        },
+        "finalPrice": 18.0
+    },
+    {
+        "ticketId": 12,
+        "ticketCode": "6a2eaeb5-2d2d-4d27-9fc5-31867ae127f9",
+        "ticketUsed": false,
+        "ticketType": {
+            "ticketTypeId": 3,
+            "ticketTypeDescription": "Lastenlippu",
+            "price": 20.0,
+            "event": {
+                "eventId": 2,
+                "eventTitle": "FrÃ¶belin Palikat Live",
+                "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
+                "numberOfTickets": 250,
+                "dateOfEvent": null,
+                "eventVenue": {
+                    "venueId": 4,
+                    "venueName": "Tavastia",
+                    "venueAddress": "Urho Kekkosen katu 4, 00100",
+                    "venueCity": "Helsinki"
+                }
+            }
+        },
+        "finalPrice": 20.0
+    }
+]
+```
+### Virheellinen response
+
+**Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
+**Code** : `404 NOT FOUND`
+**Message** : `Cannot find an event with the id {id}`
+
+## Tapahtumaan ostetun yksittäisen lipun haku
+
+Näyttää yksittäisen tapahtuman yhden lipun tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
+
+**URL** : `/api/events/:pk/tickets/:pk`
+
+**URL-PARAMETERS** : `pk=[Long]` jossa ensimmäinen pk on tapahtuman eventId tietokannassa ja toinen lipputyypin ticketId. 
+
+**METHOD** : `GET`
+
+### Onnistunut response
+
+**Code** : `200 OK`
+
+**Esimerkki**
+
+```json
+{
+    "ticketId": 2,
+    "ticketCode": "e55e5130-6b72-40cc-93d7-fdfe6f9aed83",
+    "ticketUsed": false,
+    "ticketType": {
+        "ticketTypeId": 2,
+        "ticketTypeDescription": "Lastenlippu",
+        "price": 20.0,
+        "event": {
+            "eventId": 1,
+            "eventTitle": "Lady Gaga Live",
+            "eventDescription": "Lady Gaga, Monster Tour 2022",
+            "numberOfTickets": 3400,
+            "dateOfEvent": "17-04-2022 12:00",
+            "eventVenue": {
+                "venueId": 2,
+                "venueName": "Tampere-talo",
+                "venueAddress": "Yliopistonkatu 55, 33100",
+                "venueCity": "Tampere"
+            }
+        }
+    },
+    "finalPrice": 20.0
+}
+```
+
+### Virheellinen response
+
+**Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
+**Code** : `404 NOT FOUND`
+**Message** : `Cannot find an event with the id {id}`
+
+**Ehto** : Jos url-parametrina annettua lippua ei löydy
+**Code** : `404 NOT FOUND`
+**Message** : `Cannot find a ticket with the id {id}`
+
+
+## Tapahtumaan ostetun lipun muuttaminen käytetyksi
+
+Muuttaa aiemmin ostetun lipun ticketUsed-kentän arvoksi True. Default on False.
+
+**URL** : `/api/events/:pk/tickets`
+
+**URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtuman eventId tietokannassa. 
+
+**METHOD** : `PUT`
+
+**REQUEST BODY**
+PAKOLLISENA ostetun lipun uniikki lippukoodi [String]ticketCode, joka on tyyliltään seuraavaa muototyyppiä: "e55e5130-6b72-40cc-93d7-fdfe6f9aed83",
+sekä [boolean]ticketUsed.
+
+**Esimerkki**
+
+```json
+{
+	"ticketCode":"e55e5130-6b72-40cc-93d7-fdfe6f9aed83",
+	"ticketUsed":True
+}
+```
+
+### Onnistunut response
+
+**Code** : `200 OK`
+
+**Esimerkki**
+
+```json
+{
+    "ticketId": 3,
+    "ticketCode": "e55e5130-6b72-40cc-93d7-fdfe6f9aed83",
+    "ticketUsed": true,
+    "ticketType": {
+        "ticketTypeId": 3,
+        "ticketTypeDescription": "Lastenlippu",
+        "price": 20.0,
+        "event": {
+            "eventId": 2,
+            "eventTitle": "FrÃ¶belin Palikat Live",
+            "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
+            "numberOfTickets": 250,
+            "dateOfEvent": null,
+            "eventVenue": {
+                "venueId": 4,
+                "venueName": "Tavastia",
+                "venueAddress": "Urho Kekkosen katu 4, 00100",
+                "venueCity": "Helsinki"
+            }
+        }
+    },
+    "finalPrice": 20.0
+}
+```
+
+### Virheellinen response
+
+**Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
+**Code** : `404 NOT FOUND`
+**Message** : `Cannot find an event with the id {id}`
+
+**Ehto** : Jos request-parametrina annettua lippua ei löydy
+**Message** : `No ticket found with the code {ticketCode}`
+
+**Ehto** : Jos request-parametrina annettu lippu on jo käytetty, eli muutettu muotoon ticketUsed==True
+**Message** : `The ticket with the ticketcode {ticketCode} has already been used`
+
+## Yksittäisen tapahtuman lipunmyyntitietojen haku
+
+Näyttää yksittäisen tapahtuman kaikkien ostettujen lippujen tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
+
+**URL** : `/api/events/:pk/salesevents`
+
+**URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtuman eventId tietokannassa. 
+
+**METHOD** : `GET`
+
+### Onnistunut response
+
+**Code** : `200 OK`
+
+**Esimerkki**
+
+```json
+[
+    {
+        "salesEventId": 2,
+        "dateOfSale": "09-03-2022 00:26",
+        "tickets": [
+            {
+                "ticketId": 2,
+                "ticketCode": "e55e5130-6b72-40cc-93d7-fdfe6f9aed83",
+                "ticketUsed": false,
+                "ticketType": {
+                    "ticketTypeId": 2,
+                    "ticketTypeDescription": "Lastenlippu",
+                    "price": 20.0,
+                    "event": {
+                        "eventId": 1,
+                        "eventTitle": "Lady Gaga Live",
+                        "eventDescription": "Lady Gaga, Monster Tour 2022",
+                        "numberOfTickets": 3400,
+                        "dateOfEvent": "17-04-2022 12:00",
+                        "eventVenue": {
+                            "venueId": 2,
+                            "venueName": "Tampere-talo",
+                            "venueAddress": "Yliopistonkatu 55, 33100",
+                            "venueCity": "Tampere"
+                        }
+                    }
+                },
+                "finalPrice": 20.0
+            },
+            {
+                "ticketId": 3,
+                "ticketCode": "98b0b9ea-4531-44dc-96a0-6d1d46e8edaa",
+                "ticketUsed": true,
+                "ticketType": {
+                    "ticketTypeId": 3,
+                    "ticketTypeDescription": "Lastenlippu",
+                    "price": 20.0,
+                    "event": {
+                        "eventId": 2,
+                        "eventTitle": "FrÃ¶belin Palikat Live",
+                        "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
+                        "numberOfTickets": 250,
+                        "dateOfEvent": null,
+                        "eventVenue": {
+                            "venueId": 4,
+                            "venueName": "Tavastia",
+                            "venueAddress": "Urho Kekkosen katu 4, 00100",
+                            "venueCity": "Helsinki"
+                        }
+                    }
+                },
+                "finalPrice": 20.0
+            }
+        ]
+    },
+    {
+        "salesEventId": 3,
+        "dateOfSale": "09-03-2022 00:42",
+        "tickets": [
+            {
+                "ticketId": 7,
+                "ticketCode": "63c9767f-e471-4cef-bf47-bf0786bd1c69",
+                "ticketUsed": false,
+                "ticketType": {
+                    "ticketTypeId": 2,
+                    "ticketTypeDescription": "Lastenlippu",
+                    "price": 20.0,
+                    "event": {
+                        "eventId": 1,
+                        "eventTitle": "Lady Gaga Live",
+                        "eventDescription": "Lady Gaga, Monster Tour 2022",
+                        "numberOfTickets": 3400,
+                        "dateOfEvent": "17-04-2022 12:00",
+                        "eventVenue": {
+                            "venueId": 2,
+                            "venueName": "Tampere-talo",
+                            "venueAddress": "Yliopistonkatu 55, 33100",
+                            "venueCity": "Tampere"
+                        }
+                    }
+                },
+                "finalPrice": 16.0
+            },
+            {
+                "ticketId": 8,
+                "ticketCode": "44dd1683-d479-4241-817f-ef23c4f4541a",
+                "ticketUsed": false,
+                "ticketType": {
+                    "ticketTypeId": 2,
+                    "ticketTypeDescription": "Lastenlippu",
+                    "price": 20.0,
+                    "event": {
+                        "eventId": 1,
+                        "eventTitle": "Lady Gaga Live",
+                        "eventDescription": "Lady Gaga, Monster Tour 2022",
+                        "numberOfTickets": 3400,
+                        "dateOfEvent": "17-04-2022 12:00",
+                        "eventVenue": {
+                            "venueId": 2,
+                            "venueName": "Tampere-talo",
+                            "venueAddress": "Yliopistonkatu 55, 33100",
+                            "venueCity": "Tampere"
+                        }
+                    }
+                },
+                "finalPrice": 16.0
+            }
+        ]
+    }
+]
+```
+### Virheellinen response
+
+**Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
+**Code** : `404 NOT FOUND`
+**Message** : `Cannot find an event with the id {id}`

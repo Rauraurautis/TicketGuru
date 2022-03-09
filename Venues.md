@@ -16,7 +16,29 @@ Listaa kaikki tietokannassa olevat tapahtumapaikat.
 
 ```json
 [
-{"venueId":1,"venueName":"Sibeliustalo","venueAddress":"Ankkurikatu 7, 15140","venueCity":"Lahti"},{"venueId":2,"venueName":"Tampere-talo","venueAddress":"Yliopistonkatu 55, 33100","venueCity":"Tampere"},{"venueId":3,"venueName":"Nokia Areena","venueAddress":"Sorinkatu 3, 33100","venueCity":"Tampere"},{"venueId":4,"venueName":"Tavastia","venueAddress":"Urho Kekkosen katu 4, 00100","venueCity":"Helsinki"}
+	{
+	"venueId":1,
+	"venueName":"Sibeliustalo",
+	"venueAddress":"Ankkurikatu 7, 15140",
+	"venueCity":"Lahti"
+	},
+	{
+	"venueId":2,
+	"venueName":"Tampere-talo",
+	"venueAddress":"Yliopistonkatu 55, 33100",
+	"venueCity":"Tampere"
+	},
+	{
+	"venueId":3,
+	"venueName":"Nokia Areena","venueAddress":"Sorinkatu 3, 33100",
+	"venueCity":"Tampere"
+	},
+	{
+	"venueId":4,
+	"venueName":"Tavastia",
+	"venueAddress":"Urho Kekkosen katu 4, 00100",
+	"venueCity":"Helsinki"
+	}
 ]
 ```
 
@@ -37,7 +59,12 @@ Näyttää yksittäisen tapahtumapaikan tiedot. Tapahtumapaikan Id/primary key a
 **Esimerkki**
 
 ```json
-{"venueId":1,"venueName":"Sibeliustalo","venueAddress":"Ankkurikatu 7, 15140","venueCity":"Lahti"}
+{
+	"venueId":1,
+	"venueName":"Sibeliustalo",
+	"venueAddress":"Ankkurikatu 7, 15140",
+	"venueCity":"Lahti"
+}
 ```
 
 ### Virheellinen response
@@ -59,11 +86,13 @@ Uuden tapahtumapaikan luonti ja lisäys tietokantaan.
 **REQUEST BODY**
 Paikan tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi)
 
-Esim:
+**Esimerkki**
 
 ```json
 {
-"venueName":"Sibeliustalo","venueAddress":"Ankkurikatu 7, 15140","venueCity":"Lahti"
+	"venueName":"Kansalaistori",
+	"venueAddress":"Alvar Aallon kuja 1, 00100",
+	"venueCity":"Helsinki"
 }
 ```
 
@@ -75,7 +104,10 @@ Esim:
 
 ```json
 {
-"venueId":1,"venueName":"Sibeliustalo","venueAddress":"Ankkurikatu 7, 15140","venueCity":"Lahti"
+	"venueId":5,
+	"venueName":"Kansalaistori",
+	"venueAddress":"Alvar Aallon kuja 1, 00100",
+	"venueCity":"Helsinki"
 }
 ```
 
@@ -95,7 +127,11 @@ Yksittäisen tapahtumapaikan poisto tietokannasta. Paikan Id/primary key annetaa
 
 **Response body esim**
 
-`Deleted Sibeliustalo`
+```json
+{
+    "message": "Deleted a tickettype with the id 6"
+}
+```
 
 ## Tapahtumapaikan muokkaus
 
@@ -111,11 +147,13 @@ Olemassa olevan tapahtumapaikan tietojen muokkaus.
 Tapahtumapaikan tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi)
 Pois jätetyt kentät päivittävät vanhan tiedon null:ksi.
 
-Esim:
+**Esimerkki**
 
 ```json
 {
-"venueName":"Sibeliustalo","venueAddress":"Ankkurikatu 7, 15140","venueCity":"Lahti"
+	"venueName":"Sibeliustalo",
+	"venueAddress":"Ankkurikatu 7, 15140",
+	"venueCity":"Suomen Chicago"
 }
 ```
 
@@ -127,6 +165,9 @@ Esim:
 
 ```json
 {
-"venueId":1,"venueName":"Sibeliustalo","venueAddress":"Ankkurikatu 7, 15140","venueCity":"Lahti"
+	"venueId":1,
+	"venueName":"Sibeliustalo",
+	"venueAddress":"Ankkurikatu 7, 15140",
+	"venueCity":"Suomen Chicago"
 }
 ```

@@ -72,6 +72,7 @@ Järjestelmän tietokanta toteutetaan ylläolevan kaavion mukaisesti. Tieto on s
 
 TicketGurun Rest API vastaanottaa ja lähettää tietokannan dataa JSON muodossa listattuna.
 
-* [Tapahtumien käsittely: Tapahtumat, Tapahtumapaikat, Lipputyypit, Liput](Events.md)
-* [Myyntitapahtuman lisäys](Sales.md)
+* [Tapahtumien käsittely: Tapahtumat, Lipputyypit, Liput](Events.md)
+* [Tapahtumapaikkojen käsittely](Venues.md)
+* [Myyntitapahtumien lisäys](Sales.md)
 * [Myyntitapahtumien haku](SalesEvents.md)

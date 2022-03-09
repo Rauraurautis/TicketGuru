@@ -1,8 +1,6 @@
 package fi.triforce.TicketGuru.Domain;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

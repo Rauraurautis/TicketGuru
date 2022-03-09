@@ -6,7 +6,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.*;
 
@@ -32,7 +31,7 @@ public class Ticket {
 	private SalesEvent ticketSale;
 	@ManyToOne
 	@JoinColumn(name = "ticketType_id")
-	/*@JsonIgnoreProperties("event")*/
+	//@JsonIgnoreProperties("event")
 	private TicketType ticketType;
 	private float finalPrice;
 

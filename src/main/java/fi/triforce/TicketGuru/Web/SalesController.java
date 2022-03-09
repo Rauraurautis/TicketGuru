@@ -1,6 +1,5 @@
 package fi.triforce.TicketGuru.Web;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fi.triforce.TicketGuru.Domain.Event;
-import fi.triforce.TicketGuru.Domain.EventRepository;
 import fi.triforce.TicketGuru.Domain.SalesEventRepository;
 import fi.triforce.TicketGuru.Domain.SalesObject;
 import fi.triforce.TicketGuru.Domain.Ticket;

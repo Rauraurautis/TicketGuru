@@ -1,6 +1,5 @@
 package fi.triforce.TicketGuru.Web;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.validation.Valid;

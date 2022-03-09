@@ -1,6 +1,5 @@
 package fi.triforce.TicketGuru.Domain;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -34,6 +31,7 @@ public class SalesEvent {
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime dateOfSale;
     @OneToMany(mappedBy = "ticketSale")
+    @JsonIgnoreProperties("ticketUsed")
     private List<Ticket> tickets = new ArrayList<Ticket>();
 
     public LocalDateTime getDateOfSale() {

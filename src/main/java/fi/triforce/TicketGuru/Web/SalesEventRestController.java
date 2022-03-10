@@ -3,7 +3,6 @@ package fi.triforce.TicketGuru.Web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fi.triforce.TicketGuru.Domain.SalesEvent;
 import fi.triforce.TicketGuru.Domain.SalesEventRepository;
+import fi.triforce.TicketGuru.exception.ResourceNotFoundException;
 
 @RestController
 @RequestMapping("/api/salesevents")

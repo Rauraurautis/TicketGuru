@@ -1,5 +1,11 @@
-package fi.triforce.TicketGuru.Domain;
+package fi.triforce.TicketGuru.dto;
 
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.validation.annotation.Validated;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,11 +15,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@Validated
 public class SalesObject {
-
+	@NotNull
 	private Long ticketTypeId;
+	@NotNull
+	@Min(1)
 	private int nrOfTickets;
+	@Min(0)
+	@Max(10)
 	private int nrOfDiscounted;
+	@Min(0)
+	@Max(1)
 	private float discountPercentage;
 	
 	private int discountTicketsLeft;

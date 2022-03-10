@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 
 import javax.validation.Validator;
-import javax.validation.Path.Node;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

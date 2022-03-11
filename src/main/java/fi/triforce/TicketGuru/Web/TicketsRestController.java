@@ -5,7 +5,6 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +19,7 @@ import fi.triforce.TicketGuru.Domain.Ticket;
 import fi.triforce.TicketGuru.Domain.TicketRepository;
 import fi.triforce.TicketGuru.Domain.TicketType;
 import fi.triforce.TicketGuru.Domain.TicketTypeRepository;
+import fi.triforce.TicketGuru.exception.ResourceNotFoundException;
 import fi.triforce.TicketGuru.utils.ReturnMsg;
 
 @RestController

@@ -5,7 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fi.triforce.TicketGuru.Domain.Venue;
 import fi.triforce.TicketGuru.Domain.VenueRepository;
+import fi.triforce.TicketGuru.exception.ResourceNotFoundException;
 import fi.triforce.TicketGuru.utils.ReturnMsg;
 
 @RestController

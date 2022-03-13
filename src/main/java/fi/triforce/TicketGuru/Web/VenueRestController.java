@@ -5,7 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,8 +43,8 @@ public class VenueRestController {
 	}
 
     @PostMapping
-	public ResponseEntity<Venue> venuePostRest(@RequestBody Venue venue) {
-		return ResponseEntity.ok(vr.save(venue));
+	public ResponseEntity<Venue> venuePostRest(@Valid @RequestBody Venue venue) {
+    	return new ResponseEntity<Venue>(vr.save(venue), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/{id}")

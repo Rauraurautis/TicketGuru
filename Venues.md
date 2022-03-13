@@ -84,7 +84,7 @@ Uuden tapahtumapaikan luonti ja lisäys tietokantaan.
 **METHOD** : `POST`
 
 **REQUEST BODY**
-Paikan tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi)
+Paikan tiedot json-muodossa (poislukien id, joka on autogeneroidaan). Kentät venueName, venueAddress ja venueCity ovat kaikki pakollisia.
 
 **Esimerkki**
 
@@ -98,7 +98,7 @@ Paikan tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Ei pakollis
 
 ### Onnistunut response
 
-**Code** : `200 OK`
+**Code** : `201 Created`
 
 **Response body esim** Vastaus palauttaa tallennetun entityn
 
@@ -144,8 +144,7 @@ Olemassa olevan tapahtumapaikan tietojen muokkaus.
 **METHOD** : `PUT`
 
 **REQUEST BODY**
-Tapahtumapaikan tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi)
-Pois jätetyt kentät päivittävät vanhan tiedon null:ksi.
+Tapahtumapaikan tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Kentät venueName, venueAddress ja venueCity ovat kaikki pakollisia.
 
 **Esimerkki**
 

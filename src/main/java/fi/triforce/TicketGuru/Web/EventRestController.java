@@ -1,13 +1,14 @@
 package fi.triforce.TicketGuru.Web;
 
 import java.util.List;
-
+import java.util.Set;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,10 +27,14 @@ import fi.triforce.TicketGuru.Domain.TicketTypeRepository;
 import fi.triforce.TicketGuru.Domain.Venue;
 import fi.triforce.TicketGuru.Domain.VenueRepository;
 import fi.triforce.TicketGuru.exception.ResourceNotFoundException;
+import fi.triforce.TicketGuru.exception.ValidationException;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import fi.triforce.TicketGuru.utils.ReturnMsg;
 
 @RestController
 @RequestMapping("/api/events")
+//@Validated
 public class EventRestController {
 
 	@Autowired
@@ -43,6 +48,9 @@ public class EventRestController {
 
 	@Autowired
 	private SalesEventRepository sr;
+
+	@Autowired
+	private Validator validator;
 
 	// Kaikkien eventtien listaus
 	@GetMapping
@@ -96,7 +104,7 @@ public class EventRestController {
 		return ResponseEntity.ok(er.save(event));
 	}
 
-	// Tickettype listaus
+	// Tickettype listaus, heittää resnotfoundexcept
 	@GetMapping("/{id}/tickettypes")
 	public List<TicketType> ticketTypesListRest(@PathVariable(name = "id") Long id)
 			throws ResourceNotFoundException {
@@ -105,18 +113,26 @@ public class EventRestController {
 		return (List<TicketType>) ttr.findByEvent(event);
 	}
 
-	// Tickettype lisäys
+	// Tickettype lisäys, heittää resnotfoundexcept ja validationexcept, (String)ticketTypeDescription pakollinen, (float)price ei pakollinen, jolloin -> 0, mutta ei saa olla negatiivinen
 	@PostMapping("/{id}/tickettypes")
 	public ResponseEntity<TicketType> ticketTypePostRest(@PathVariable(name = "id") Long eventId,
-			@RequestBody TicketType newType)
-			throws ResourceNotFoundException {
+			@RequestBody TicketType newType)	//Tästä puuttuu tahallisesti tällä hetkellä @Valid, koska jos se on käytössä, niin erikoissäännöt eivät saa muuta kuin yleisilmoituksen. Atm toimii esim. "luku ei saa olla negatiivinen"
+			throws ResourceNotFoundException, ValidationException {
 		Event event = er.findById(eventId)
 				.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + eventId));
+		Set<ConstraintViolation<TicketType>> result = validator.validate(newType);
+		if (!result.isEmpty()) {
+			String errorMsg = result.toString();
+			String[] splitMsg = errorMsg.split("=");
+			String propertyName = splitMsg[2].split(",")[0] + " " + splitMsg[1].split(",")[0].replace("'", "");
+			throw new ValidationException(propertyName);
+		}
 		newType.setEvent(event);
-		return ResponseEntity.ok(ttr.save(newType));
+    	return new ResponseEntity<TicketType>(ttr.save(newType), HttpStatus.CREATED);
+	
 	}
 
-	// Yksittäinen tickettype
+	// Yksittäinen tickettype, heittää resnotfoundexcept
 	@GetMapping("/{id}/tickettypes/{ttid}")
 	public ResponseEntity<TicketType> ticketTypeGetSingleRest(@PathVariable(name = "id") Long eventId,
 			@PathVariable(name = "ttid") Long ttId)
@@ -128,7 +144,7 @@ public class EventRestController {
 		return ResponseEntity.ok(ticketType);
 	}
 
-	// Tickettype poisto
+	// Tickettype poisto, heittää resnotfoundexcept
 	@DeleteMapping("/{id}/tickettypes/{ttid}")
 	public ResponseEntity<?> eventDeleteSingleRest(@PathVariable(name = "id") Long eventId,
 			@PathVariable(name = "ttid") Long ticketTypeId)
@@ -142,17 +158,24 @@ public class EventRestController {
 		return ResponseEntity.ok(new ReturnMsg("Deleted a tickettype with the id " + ticketTypeId).getReturnMsg());
 	}
 
-	// Tickettype muokkaus
+	// Tickettype muokkaus, heittää resnotfoundexcept ja validationexcept, (String)ticketTypeDescription pakollinen, (float)price PAKOLLINEN tai muuten price muuttuu nollaksi, sekä se ei saa olla negatiivinen luku
 	@PutMapping("/{id}/tickettypes/{ttid}")
 	public ResponseEntity<TicketType> ticketTypeUpdateSingleRest(@PathVariable(name = "id") Long eventId,
 			@PathVariable(name = "ttid") Long ticketTypeId,
-			@Valid @RequestBody TicketType newType)
-			throws ResourceNotFoundException {
+			@RequestBody TicketType newType)
+			throws ResourceNotFoundException, ValidationException {
 		er.findById(eventId)
 				.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + eventId));
 		TicketType ticketType = ttr.findById(ticketTypeId)
 				.orElseThrow(
 						() -> new ResourceNotFoundException("Cannot find a tickettype with the id " + ticketTypeId));
+		Set<ConstraintViolation<TicketType>> result = validator.validate(newType);
+			if (!result.isEmpty()) {
+				String errorMsg = result.toString();
+				String[] splitMsg = errorMsg.split("=");
+				String propertyName = splitMsg[2].split(",")[0] + " " + splitMsg[1].split(",")[0].replace("'", "");
+				throw new ValidationException(propertyName);
+			}
 		ticketType.setPrice(newType.getPrice());
 		ticketType.setTicketTypeDescription(newType.getTicketTypeDescription());
 		return ResponseEntity.ok(ttr.save(ticketType));

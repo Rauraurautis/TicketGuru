@@ -9,6 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -20,11 +25,16 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@Validated
 public class TicketType {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long ticketTypeId;
+	@NotBlank
 	private String ticketTypeDescription;
+	@PositiveOrZero
+	//@Valid
+	//@NotNull //Ei lähteny toimimaan syystä tai toisesta.
 	private float price;
 	@ManyToOne
 	@JoinColumn(name="eventId")

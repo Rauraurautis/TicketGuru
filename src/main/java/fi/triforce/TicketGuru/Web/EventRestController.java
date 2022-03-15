@@ -104,7 +104,7 @@ public class EventRestController {
 		return ResponseEntity.ok(er.save(event));
 	}
 
-	// Tickettype listaus, heittää resnotfoundexcept
+	// Tickettype listaus
 	@GetMapping("/{id}/tickettypes")
 	public List<TicketType> ticketTypesListRest(@PathVariable(name = "id") Long id)
 			throws ResourceNotFoundException {
@@ -113,14 +113,14 @@ public class EventRestController {
 		return (List<TicketType>) ttr.findByEvent(event);
 	}
 
-	// Tickettype lisäys, heittää resnotfoundexcept ja validationexcept, (String)ticketTypeDescription pakollinen, (float)price ei pakollinen, jolloin -> 0, mutta ei saa olla negatiivinen
+	// Tickettype lisäys, (String)ticketTypeDescription pakollinen, (float)price ei pakollinen, jolloin -> 0, mutta ei saa olla negatiivinen
 	@PostMapping("/{id}/tickettypes")
 	public ResponseEntity<TicketType> ticketTypePostRest(@PathVariable(name = "id") Long eventId,
-			@RequestBody TicketType newType)	//Tästä puuttuu tahallisesti tällä hetkellä @Valid, koska jos se on käytössä, niin erikoissäännöt eivät saa muuta kuin yleisilmoituksen. Atm toimii esim. "luku ei saa olla negatiivinen"
+			@RequestBody TicketType newType)	//Tästä puuttuu tahallisesti tällä hetkellä @Valid, koska jos se on käytössä, niin erikoissäännöt eivät saa muuta kuin yleisilmoituksen 500. Atm toimii esim. "luku ei saa olla negatiivinen"
 			throws ResourceNotFoundException, ValidationException {
 		Event event = er.findById(eventId)
 				.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + eventId));
-		Set<ConstraintViolation<TicketType>> result = validator.validate(newType);
+		Set<ConstraintViolation<TicketType>> result = validator.validate(newType);	// tästä alkavan snippetin vois melkeen muuttaa omaks funktioks, koska yleiskäyttönen
 		if (!result.isEmpty()) {
 			String errorMsg = result.toString();
 			String[] splitMsg = errorMsg.split("=");
@@ -132,7 +132,7 @@ public class EventRestController {
 	
 	}
 
-	// Yksittäinen tickettype, heittää resnotfoundexcept
+	// Yksittäinen tickettype haku
 	@GetMapping("/{id}/tickettypes/{ttid}")
 	public ResponseEntity<TicketType> ticketTypeGetSingleRest(@PathVariable(name = "id") Long eventId,
 			@PathVariable(name = "ttid") Long ttId)
@@ -144,7 +144,7 @@ public class EventRestController {
 		return ResponseEntity.ok(ticketType);
 	}
 
-	// Tickettype poisto, heittää resnotfoundexcept
+	// Tickettype poisto
 	@DeleteMapping("/{id}/tickettypes/{ttid}")
 	public ResponseEntity<?> eventDeleteSingleRest(@PathVariable(name = "id") Long eventId,
 			@PathVariable(name = "ttid") Long ticketTypeId)
@@ -158,7 +158,7 @@ public class EventRestController {
 		return ResponseEntity.ok(new ReturnMsg("Deleted a tickettype with the id " + ticketTypeId).getReturnMsg());
 	}
 
-	// Tickettype muokkaus, heittää resnotfoundexcept ja validationexcept, (String)ticketTypeDescription pakollinen, (float)price PAKOLLINEN tai muuten price muuttuu nollaksi, sekä se ei saa olla negatiivinen luku
+	// Tickettype muokkaus, (String)ticketTypeDescription pakollinen, (float)price PAKOLLINEN tai muuten price muuttuu nollaksi, sekä se ei saa olla negatiivinen luku
 	@PutMapping("/{id}/tickettypes/{ttid}")
 	public ResponseEntity<TicketType> ticketTypeUpdateSingleRest(@PathVariable(name = "id") Long eventId,
 			@PathVariable(name = "ttid") Long ticketTypeId,

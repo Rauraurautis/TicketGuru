@@ -56,7 +56,7 @@ public class SalesController {
 			}
 		}
 		SalesEvent receipt = createTicketsFromSalesObjects(sale);
-		return ResponseEntity.ok(receipt);
+		return ResponseEntity.ok(receipt);	//pitäis olla Created 201
 	}
 
 	// Purkaa rivit lippuentityiksi, liittää saleseventtiin yms. Osan toiminnoista

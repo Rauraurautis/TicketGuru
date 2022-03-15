@@ -316,6 +316,10 @@ Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary k
 **Code** : `404 NOT FOUND`
 **Message** : `Cannot find an event with the id {id}`
 
+**Ehto** : Jos väärä metodi
+**Code** : `405 METHOD NOT ALLOWED`
+**Message** : `You probably used a method on an url that does not support the method`
+
 
 ## Lipputyypin lisäys tapahtumaan
 
@@ -381,6 +385,10 @@ Tietokentät:
 **Code** : `400 BAD REQUEST`
 **Message** : `{price} must be greater than or equal to 0`
 
+**Ehto** : Jos requestbody on rikki, esim. ei json
+**Code** : `400 BAD REQUEST`
+**Message** : `Something went wrong`
+
 ## Lipputyypin poisto
 
 Yksittäisen lipputyypin poisto tietokannasta. Tapahtuman Id/primary key annetaan URL:ssa sekä lipputyypin Id/pk annetaan URL:ssa.
@@ -409,7 +417,7 @@ Yksittäisen lipputyypin poisto tietokannasta. Tapahtuman Id/primary key annetaa
 **Code** : `404 NOT FOUND`
 **Message** : `Cannot find an event with the id {id}`
 
-**Ehto** : Jos url-parametrina annettua lippytyyppiä ei löydy
+**Ehto** : Jos url-parametrina annettua lipputyyppiä ei löydy
 **Code** : `404 NOT FOUND`
 **Message** : `Cannot find a tickettype with the id {id}`
 
@@ -481,6 +489,9 @@ Tietokentät:
 **Code** : `400 BAD REQUEST`
 **Message** : `{price} must be greater than or equal to 0`
 
+**Ehto** : Jos requestbody on rikki, esim. ei json
+**Code** : `400 BAD REQUEST`
+**Message** : `Something went wrong`
 
 ## Tapahtumaan ostettujen lippujen haku
 
@@ -668,15 +679,13 @@ Muuttaa aiemmin ostetun lipun ticketUsed-kentän arvoksi True. Default on False.
 **METHOD** : `PUT`
 
 **REQUEST BODY**
-PAKOLLISENA ostetun lipun uniikki lippukoodi [String]ticketCode, joka on tyyliltään seuraavaa muototyyppiä: "e55e5130-6b72-40cc-93d7-fdfe6f9aed83",
-sekä [boolean]ticketUsed.
+PAKOLLISENA ostetun lipun uniikki lippukoodi [String]ticketCode, joka on tyyliltään seuraavaa muototyyppiä: "e55e5130-6b72-40cc-93d7-fdfe6f9aed83". [boolean]ticketUsed ei tarvita, eikä sitä voi enää muuttaa takaisin falseksi, jos se on true (väärinkäytöksien estämiseksi).
 
 **Esimerkki**
 
 ```json
 {
-	"ticketCode":"e55e5130-6b72-40cc-93d7-fdfe6f9aed83",
-	"ticketUsed":True
+	"ticketCode":"e55e5130-6b72-40cc-93d7-fdfe6f9aed83"
 }
 ```
 
@@ -720,10 +729,16 @@ sekä [boolean]ticketUsed.
 **Message** : `Cannot find an event with the id {id}`
 
 **Ehto** : Jos request-parametrina annettua lippua ei löydy
+**Code** : `400 BAD REQUEST`
 **Message** : `No ticket found with the code {ticketCode}`
 
 **Ehto** : Jos request-parametrina annettu lippu on jo käytetty, eli muutettu muotoon ticketUsed==True
+**Code** : `400 BAD REQUEST`
 **Message** : `The ticket with the ticketcode {ticketCode} has already been used`
+
+**Ehto** : Jos väärä metodi
+**Code** : `405 METHOD NOT ALLOWED`
+**Message** : `You probably used a method on an url that does not support the method`
 
 ## Yksittäisen tapahtuman lipunmyyntitietojen haku
 

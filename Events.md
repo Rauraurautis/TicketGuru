@@ -64,6 +64,7 @@ Listaa kaikki tietokannassa olevat tapahtumat.
 ]
 ```
 
+
 ## Yksittäisen tapahtuman tietojen haku
 
 Näyttää yksittäisen tapahtuman tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
@@ -114,6 +115,16 @@ Näyttää yksittäisen tapahtuman tiedot. Tapahtuman Id/primary key annetaan UR
 **Code** : `404 NOT FOUND`
 **Message** : `Cannot find an event with the id {id}`
 
+**Esimerkki**
+
+```json
+{
+    "timeStamp": "2022-03-15T23:00:59.5869555",
+    "httpStatus": "NOT_FOUND",
+    "message": "Cannot find an event with the id 5"
+}
+```
+
 ## Tapahtuman lisäys
 
 Uuden tapahtuman luonti ja lisäys tietokantaan.
@@ -123,12 +134,12 @@ Uuden tapahtuman luonti ja lisäys tietokantaan.
 **METHOD** : `POST`
 
 **REQUEST BODY**
-Tapahtuman tiedot json-muodossa(poislukien id, joka autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi).
+Tapahtuman tiedot json-muodossa(poislukien id, joka autogeneroidaan). Ainoa pakollinen kenttä on *eventTitle*. *numberOfTickets* täytyy olla 0 tai suurempi.
+Tyhjäksi jätetyt kentät tallentuvat null:na.
 Tapahtuman tapahtumapaikka annetaan sen id:nä(venueId) muodossa:
 
 `"eventVenue":{"venueId": {id}}`
 
-Mikäli id:llä ei löydy tapahtumapaikkaa, eventVenueksi tulee **null**.
 
 **Esimerkki**
 
@@ -144,7 +155,7 @@ Mikäli id:llä ei löydy tapahtumapaikkaa, eventVenueksi tulee **null**.
 
 ### Onnistunut response
 
-**Code** : `200 OK`
+**Code** : `201 CREATED`
 
 **Response body esim** Vastaus palauttaa tallennetun entityn
 
@@ -165,9 +176,25 @@ Mikäli id:llä ei löydy tapahtumapaikkaa, eventVenueksi tulee **null**.
 }
 ```
 
+### Virheellinen response
+
+**Ehto** : Jos json:ssa annettua eventVenue:ta ei löydy
+**Code** : `404 NOT FOUND`
+**Message** : `Cannot find a venue with the id {id}`
+
+**Esimerkki**
+
+```json
+{
+    "timeStamp": "2022-03-15T23:00:59.5869555",
+    "httpStatus": "NOT_FOUND",
+    "message": "Cannot find a venue with the id 5"
+}
+```
+
 ## Tapahtuman poisto
 
-Yksittäisen tapahtuman poisto tietokannasta. Tapahtuman Id/primary key annetaan URL:ssa.
+Yksittäisen tapahtuman poisto tietokannasta. Tapahtuman Id/primary key annetaan URL:ssa. Poistaa samalla kaikki tapahtuman tickettypet.
 
 **URL** : `/api/events/:pk`
 
@@ -187,6 +214,22 @@ Yksittäisen tapahtuman poisto tietokannasta. Tapahtuman Id/primary key annetaan
 }
 ```
 
+### Virheellinen response
+
+**Ehto** : Jos annettua tapahtumaa ei löydy
+**Code** : `404 NOT FOUND`
+**Message** : `Cannot find an event with the id {id}`
+
+**Esimerkki**
+
+```json
+{
+    "timeStamp": "2022-03-15T23:00:59.5869555",
+    "httpStatus": "NOT_FOUND",
+    "message": "Cannot find a venue with the id 5"
+}
+```
+
 ## Tapahtuman muokkaus
 
 Olemassa olevan tapahtuman tietojen muokkaus.
@@ -198,7 +241,7 @@ Olemassa olevan tapahtuman tietojen muokkaus.
 **METHOD** : `PUT`
 
 **REQUEST BODY**
-PAKOLLISENA kaikki perustiedot json-muodossa tai puutteellisiin kenttiin tulee arvoksi **null**. Lipputyyppejä ei tule antaa, ne muokataan muualta.
+PAKOLLISENA kenttänä eventTitle, kuten tapahtuman luonnissakin, MUTTA puuttuvat kentät muuttuvat nulliksi jos tyhjiä. Venuen jäädessä tyhjäksi se ei muutu. Lipputyyppejä ei tule antaa, ne muokataan muualta.
 
 **Esimerkki**
 

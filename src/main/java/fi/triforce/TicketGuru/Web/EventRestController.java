@@ -69,11 +69,20 @@ public class EventRestController {
 
 	// Eventin lisäys
 	@PostMapping
-	public ResponseEntity<Event> eventPostRest(@RequestBody Event event) {
-		Long venueId = event.getEventVenue().getVenueId();
-		Venue venue = vr.findById(venueId).orElse(null);
-		event.setEventVenue(venue);
-		return new ResponseEntity<>(er.save(event), HttpStatus.CREATED);
+	public ResponseEntity<Event> eventPostRest(@RequestBody Event event) throws ValidationException {
+		Set<ConstraintViolation<Event>> result = validator.validate(event);
+		if (!result.isEmpty()) {
+			String errorMsg = result.toString();
+			String[] splitMsg = errorMsg.split("=");
+			String propertyName = splitMsg[2].split(",")[0] + " " + splitMsg[1].split(",")[0].replace("'", "");
+			throw new ValidationException(propertyName);
+		}
+		if(event.getEventVenue() != null) {
+			Long venueId = event.getEventVenue().getVenueId();
+			Venue venue = vr.findById(venueId).orElseThrow(() -> new ResourceNotFoundException("Cannot find a venue with the id " + venueId));
+			event.setEventVenue(venue);
+		}
+		return new ResponseEntity<Event>(er.save(event), HttpStatus.CREATED);
 	}
 
 	// Event poisto
@@ -89,14 +98,22 @@ public class EventRestController {
 	// Event muokkaus
 	@PutMapping("/{id}")
 	public ResponseEntity<Event> eventUpdateSingleRest(@PathVariable(name = "id") Long id,
-			@Valid @RequestBody Event newEvent)
-			throws ResourceNotFoundException {
+			@RequestBody Event newEvent)
+			throws ResourceNotFoundException, ValidationException {
 		Event event = er.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + id));
-		System.out.println(newEvent.getEventVenue());
-		Long venueId = newEvent.getEventVenue().getVenueId();
-		Venue venue = vr.findById(venueId).orElse(null);
-		event.setEventVenue(venue);
+		Set<ConstraintViolation<Event>> result = validator.validate(newEvent);
+		if (!result.isEmpty()) {
+			String errorMsg = result.toString();
+			String[] splitMsg = errorMsg.split("=");
+			String propertyName = splitMsg[2].split(",")[0] + " " + splitMsg[1].split(",")[0].replace("'", "");
+			throw new ValidationException(propertyName);
+		}
+		if(newEvent.getEventVenue() != null) {
+			Long venueId = newEvent.getEventVenue().getVenueId();
+			Venue venue = vr.findById(venueId).orElseThrow(() -> new ResourceNotFoundException("Cannot find a venue with the id " + venueId));
+			event.setEventVenue(venue);
+		}
 		event.setEventTitle(newEvent.getEventTitle());
 		event.setEventDescription(newEvent.getEventDescription());
 		event.setDateOfEvent(newEvent.getDateOfEvent());

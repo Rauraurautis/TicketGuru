@@ -328,8 +328,8 @@ Uuden lipputyypin luonti tapahtumalle ja lisäys tietokantaan.
 **REQUEST BODY**
 Lipputyypin tiedot annetaan json-muodossa(poislukien id, joka autogeneroidaan).
 Tietokentät:
-	[String] ticketTypeDescription
-	[float] price	**Desimaalierottaja annettava pisteenä!**
+	[String] ticketTypeDescription **Pakollinen**
+	[float] price	**Desimaalierottaja annettava pisteenä!** **Arvo ei saa olla negatiivinen luku.** **Vapaaehtoinen kenttä, joka defaulttaa 0.0:ksi.**
 
 **Esimerkki**
 
@@ -342,7 +342,7 @@ Tietokentät:
 
 ### Onnistunut response
 
-**Code** : `200 OK`
+**Code** : `201 Created`
 
 **Response body esim** Vastaus palauttaa tallennetun entityn
 
@@ -372,6 +372,14 @@ Tietokentät:
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
 **Code** : `404 NOT FOUND`
 **Message** : `Cannot find an event with the id {id}`
+
+**Ehto** : Jos requestbodysta puuttuu tietoja
+**Code** : `400 BAD REQUEST`
+**Message** : `{kenttä} must not be blank`
+
+**Ehto** : Jos requestbodyssa price-kenttä on virheellinen
+**Code** : `400 BAD REQUEST`
+**Message** : `{price} must be greater than or equal to 0`
 
 ## Lipputyypin poisto
 
@@ -416,7 +424,9 @@ Tapahtumassa olevan lipputyypin tietojen muokkaus. Tapahtuman Id/primary key ann
 **METHOD** : `PUT`
 
 **REQUEST BODY**
-PAKOLLISENA kaikki perustiedot json-muodossa tai puutteellisiin kenttiin tulee arvoksi **null**. Lipputyyppejä ei tule antaa, ne muokataan muualta.
+Tietokentät:
+	[String] ticketTypeDescription **Pakollinen**
+	[float] price	**Pakollinen kenttä TAI se defaulttaa 0.0:ksi!** **Desimaalierottaja annettava pisteenä!** **Arvo ei saa olla negatiivinen luku.** 
 
 **Esimerkki**
 
@@ -462,6 +472,14 @@ PAKOLLISENA kaikki perustiedot json-muodossa tai puutteellisiin kenttiin tulee a
 **Ehto** : Jos url-parametrina annettua lipputyyppiä ei löydy
 **Code** : `404 NOT FOUND`
 **Message** : `Cannot find a tickettype with the id {id}`
+
+**Ehto** : Jos requestbodysta puuttuu tietoja
+**Code** : `400 BAD REQUEST`
+**Message** : `{kenttä} must not be blank`
+
+**Ehto** : Jos requestbodyssa price-kenttä on virheellinen
+**Code** : `400 BAD REQUEST`
+**Message** : `{price} must be greater than or equal to 0`
 
 
 ## Tapahtumaan ostettujen lippujen haku

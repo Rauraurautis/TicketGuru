@@ -11,7 +11,8 @@ import lombok.*;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-
+import org.springframework.validation.annotation.Validated;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Entity
@@ -19,6 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
+@Validated
 public class Ticket {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

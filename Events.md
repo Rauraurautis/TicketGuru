@@ -64,6 +64,7 @@ Listaa kaikki tietokannassa olevat tapahtumat.
 ]
 ```
 
+
 ## Yksittäisen tapahtuman tietojen haku
 
 Näyttää yksittäisen tapahtuman tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
@@ -114,6 +115,16 @@ Näyttää yksittäisen tapahtuman tiedot. Tapahtuman Id/primary key annetaan UR
 **Code** : `404 NOT FOUND`
 **Message** : `Cannot find an event with the id {id}`
 
+**Esimerkki**
+
+```json
+{
+    "timeStamp": "2022-03-15T23:00:59.5869555",
+    "httpStatus": "NOT_FOUND",
+    "message": "Cannot find an event with the id 5"
+}
+```
+
 ## Tapahtuman lisäys
 
 Uuden tapahtuman luonti ja lisäys tietokantaan.
@@ -123,12 +134,12 @@ Uuden tapahtuman luonti ja lisäys tietokantaan.
 **METHOD** : `POST`
 
 **REQUEST BODY**
-Tapahtuman tiedot json-muodossa(poislukien id, joka autogeneroidaan). Ei pakollisia kenttiä(toistaiseksi).
+Tapahtuman tiedot json-muodossa(poislukien id, joka autogeneroidaan). Ainoa pakollinen kenttä on *eventTitle*. *numberOfTickets* täytyy olla 0 tai suurempi.
+Tyhjäksi jätetyt kentät tallentuvat null:na.
 Tapahtuman tapahtumapaikka annetaan sen id:nä(venueId) muodossa:
 
 `"eventVenue":{"venueId": {id}}`
 
-Mikäli id:llä ei löydy tapahtumapaikkaa, eventVenueksi tulee **null**.
 
 **Esimerkki**
 
@@ -144,7 +155,7 @@ Mikäli id:llä ei löydy tapahtumapaikkaa, eventVenueksi tulee **null**.
 
 ### Onnistunut response
 
-**Code** : `200 OK`
+**Code** : `201 CREATED`
 
 **Response body esim** Vastaus palauttaa tallennetun entityn
 
@@ -165,9 +176,25 @@ Mikäli id:llä ei löydy tapahtumapaikkaa, eventVenueksi tulee **null**.
 }
 ```
 
+### Virheellinen response
+
+**Ehto** : Jos json:ssa annettua eventVenue:ta ei löydy
+**Code** : `404 NOT FOUND`
+**Message** : `Cannot find a venue with the id {id}`
+
+**Esimerkki**
+
+```json
+{
+    "timeStamp": "2022-03-15T23:00:59.5869555",
+    "httpStatus": "NOT_FOUND",
+    "message": "Cannot find a venue with the id 5"
+}
+```
+
 ## Tapahtuman poisto
 
-Yksittäisen tapahtuman poisto tietokannasta. Tapahtuman Id/primary key annetaan URL:ssa.
+Yksittäisen tapahtuman poisto tietokannasta. Tapahtuman Id/primary key annetaan URL:ssa. Poistaa samalla kaikki tapahtuman tickettypet.
 
 **URL** : `/api/events/:pk`
 
@@ -187,6 +214,22 @@ Yksittäisen tapahtuman poisto tietokannasta. Tapahtuman Id/primary key annetaan
 }
 ```
 
+### Virheellinen response
+
+**Ehto** : Jos annettua tapahtumaa ei löydy
+**Code** : `404 NOT FOUND`
+**Message** : `Cannot find an event with the id {id}`
+
+**Esimerkki**
+
+```json
+{
+    "timeStamp": "2022-03-15T23:00:59.5869555",
+    "httpStatus": "NOT_FOUND",
+    "message": "Cannot find a venue with the id 5"
+}
+```
+
 ## Tapahtuman muokkaus
 
 Olemassa olevan tapahtuman tietojen muokkaus.
@@ -198,7 +241,7 @@ Olemassa olevan tapahtuman tietojen muokkaus.
 **METHOD** : `PUT`
 
 **REQUEST BODY**
-PAKOLLISENA kaikki perustiedot json-muodossa tai puutteellisiin kenttiin tulee arvoksi **null**. Lipputyyppejä ei tule antaa, ne muokataan muualta.
+PAKOLLISENA kenttänä eventTitle, kuten tapahtuman luonnissakin, MUTTA puuttuvat kentät muuttuvat nulliksi jos tyhjiä. Venuen jäädessä tyhjäksi se ei muutu. Lipputyyppejä ei tule antaa, ne muokataan muualta.
 
 **Esimerkki**
 
@@ -316,6 +359,10 @@ Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary k
 **Code** : `404 NOT FOUND`
 **Message** : `Cannot find an event with the id {id}`
 
+**Ehto** : Jos väärä metodi
+**Code** : `405 METHOD NOT ALLOWED`
+**Message** : `You probably used a method on an url that does not support the method`
+
 
 ## Lipputyypin lisäys tapahtumaan
 
@@ -328,8 +375,8 @@ Uuden lipputyypin luonti tapahtumalle ja lisäys tietokantaan.
 **REQUEST BODY**
 Lipputyypin tiedot annetaan json-muodossa(poislukien id, joka autogeneroidaan).
 Tietokentät:
-	[String] ticketTypeDescription
-	[float] price	**Desimaalierottaja annettava pisteenä!**
+	[String] ticketTypeDescription **Pakollinen**
+	[float] price	**Desimaalierottaja annettava pisteenä!** **Arvo ei saa olla negatiivinen luku.** **Vapaaehtoinen kenttä, joka defaulttaa 0.0:ksi.**
 
 **Esimerkki**
 
@@ -342,7 +389,7 @@ Tietokentät:
 
 ### Onnistunut response
 
-**Code** : `200 OK`
+**Code** : `201 Created`
 
 **Response body esim** Vastaus palauttaa tallennetun entityn
 
@@ -373,6 +420,18 @@ Tietokentät:
 **Code** : `404 NOT FOUND`
 **Message** : `Cannot find an event with the id {id}`
 
+**Ehto** : Jos requestbodysta puuttuu tietoja
+**Code** : `400 BAD REQUEST`
+**Message** : `{kenttä} must not be blank`
+
+**Ehto** : Jos requestbodyssa price-kenttä on virheellinen
+**Code** : `400 BAD REQUEST`
+**Message** : `{price} must be greater than or equal to 0`
+
+**Ehto** : Jos requestbody on rikki, esim. ei json
+**Code** : `400 BAD REQUEST`
+**Message** : `Something went wrong`
+
 ## Lipputyypin poisto
 
 Yksittäisen lipputyypin poisto tietokannasta. Tapahtuman Id/primary key annetaan URL:ssa sekä lipputyypin Id/pk annetaan URL:ssa.
@@ -401,7 +460,7 @@ Yksittäisen lipputyypin poisto tietokannasta. Tapahtuman Id/primary key annetaa
 **Code** : `404 NOT FOUND`
 **Message** : `Cannot find an event with the id {id}`
 
-**Ehto** : Jos url-parametrina annettua lippytyyppiä ei löydy
+**Ehto** : Jos url-parametrina annettua lipputyyppiä ei löydy
 **Code** : `404 NOT FOUND`
 **Message** : `Cannot find a tickettype with the id {id}`
 
@@ -416,7 +475,9 @@ Tapahtumassa olevan lipputyypin tietojen muokkaus. Tapahtuman Id/primary key ann
 **METHOD** : `PUT`
 
 **REQUEST BODY**
-PAKOLLISENA kaikki perustiedot json-muodossa tai puutteellisiin kenttiin tulee arvoksi **null**. Lipputyyppejä ei tule antaa, ne muokataan muualta.
+Tietokentät:
+	[String] ticketTypeDescription **Pakollinen**
+	[float] price	**Pakollinen kenttä TAI se defaulttaa 0.0:ksi!** **Desimaalierottaja annettava pisteenä!** **Arvo ei saa olla negatiivinen luku.** 
 
 **Esimerkki**
 
@@ -463,6 +524,17 @@ PAKOLLISENA kaikki perustiedot json-muodossa tai puutteellisiin kenttiin tulee a
 **Code** : `404 NOT FOUND`
 **Message** : `Cannot find a tickettype with the id {id}`
 
+**Ehto** : Jos requestbodysta puuttuu tietoja
+**Code** : `400 BAD REQUEST`
+**Message** : `{kenttä} must not be blank`
+
+**Ehto** : Jos requestbodyssa price-kenttä on virheellinen
+**Code** : `400 BAD REQUEST`
+**Message** : `{price} must be greater than or equal to 0`
+
+**Ehto** : Jos requestbody on rikki, esim. ei json
+**Code** : `400 BAD REQUEST`
+**Message** : `Something went wrong`
 
 ## Tapahtumaan ostettujen lippujen haku
 
@@ -650,15 +722,13 @@ Muuttaa aiemmin ostetun lipun ticketUsed-kentän arvoksi True. Default on False.
 **METHOD** : `PUT`
 
 **REQUEST BODY**
-PAKOLLISENA ostetun lipun uniikki lippukoodi [String]ticketCode, joka on tyyliltään seuraavaa muototyyppiä: "e55e5130-6b72-40cc-93d7-fdfe6f9aed83",
-sekä [boolean]ticketUsed.
+PAKOLLISENA ostetun lipun uniikki lippukoodi [String]ticketCode, joka on tyyliltään seuraavaa muototyyppiä: "e55e5130-6b72-40cc-93d7-fdfe6f9aed83". [boolean]ticketUsed ei tarvita, eikä sitä voi enää muuttaa takaisin falseksi, jos se on true (väärinkäytöksien estämiseksi).
 
 **Esimerkki**
 
 ```json
 {
-	"ticketCode":"e55e5130-6b72-40cc-93d7-fdfe6f9aed83",
-	"ticketUsed":True
+	"ticketCode":"e55e5130-6b72-40cc-93d7-fdfe6f9aed83"
 }
 ```
 
@@ -702,10 +772,16 @@ sekä [boolean]ticketUsed.
 **Message** : `Cannot find an event with the id {id}`
 
 **Ehto** : Jos request-parametrina annettua lippua ei löydy
+**Code** : `400 BAD REQUEST`
 **Message** : `No ticket found with the code {ticketCode}`
 
 **Ehto** : Jos request-parametrina annettu lippu on jo käytetty, eli muutettu muotoon ticketUsed==True
+**Code** : `400 BAD REQUEST`
 **Message** : `The ticket with the ticketcode {ticketCode} has already been used`
+
+**Ehto** : Jos väärä metodi
+**Code** : `405 METHOD NOT ALLOWED`
+**Message** : `You probably used a method on an url that does not support the method`
 
 ## Yksittäisen tapahtuman lipunmyyntitietojen haku
 

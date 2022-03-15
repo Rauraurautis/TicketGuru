@@ -11,8 +11,8 @@ Uuden ostetun lipun luonti.
 **REQUEST BODY**
 Lipunmyyntitapahtuman tiedot json-muodossa **listana** (poislukien id, uniikki lippukoodi sekä lipuntarkistuksen OnkoLippuKäytetty-kenttä, jotka autogeneroidaan).
 Käytettävät peruskentät ovat:
-[long]'ticketTypeId', joka kuuluu valmiiksi tiettyyn tapahtumaan.
-[int]'nrOfTickets', eli kyseisten myytyjen lipputyyppien määrä.
+[long]'ticketTypeId', joka kuuluu valmiiksi tiettyyn tapahtumaan. **Pakollinen**
+[int]'nrOfTickets', eli kyseisten myytyjen lipputyyppien määrä. **Pakollinen** **Pienin sallittu numero on 1**
 
 Lisäkenttinä ovat:
 [int]'nrOfDiscounted', kyseessä olevien alennuslipputyyppien määrä kokonaisostomäärästä.
@@ -194,3 +194,6 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
 **Code** : `404 NOT FOUND`
 **Message** : `Cannot find a tickettype with the id {Id}`
 
+**Ehto** : Väärä lippumäärä
+**Code** : `400 BAD REQUEST`
+**Message** : `{nrOfTickets} must be greater than or equal to 1`

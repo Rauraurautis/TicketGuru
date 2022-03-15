@@ -1,5 +1,6 @@
 package fi.triforce.TicketGuru.Domain;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -9,6 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestAttribute;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -20,11 +30,16 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@Validated
 public class TicketType {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long ticketTypeId;
+	@NotBlank
 	private String ticketTypeDescription;
+	@PositiveOrZero
+	//@Valid
+	//@NotNull //Float defaulttaa aina numeroks, joten notnull on turha tässä tai vastaavissa skenaarioissa.
 	private float price;
 	@ManyToOne
 	@JoinColumn(name="eventId")

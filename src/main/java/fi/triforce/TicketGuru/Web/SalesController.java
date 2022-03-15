@@ -9,7 +9,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,7 +56,7 @@ public class SalesController {
 			}
 		}
 		SalesEvent receipt = createTicketsFromSalesObjects(sale);
-		return ResponseEntity.ok(receipt);	//pitäis olla Created 201
+		return new ResponseEntity(receipt, HttpStatus.CREATED); 
 	}
 
 	// Purkaa rivit lippuentityiksi, liittää saleseventtiin yms. Osan toiminnoista

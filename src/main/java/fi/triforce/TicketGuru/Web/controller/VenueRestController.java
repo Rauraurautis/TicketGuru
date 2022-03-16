@@ -1,4 +1,4 @@
-package fi.triforce.TicketGuru.Web;
+package fi.triforce.TicketGuru.Web.controller;
 
 import java.util.List;
 import java.util.Set;

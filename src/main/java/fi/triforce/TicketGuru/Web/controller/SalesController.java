@@ -1,4 +1,4 @@
-package fi.triforce.TicketGuru.Web;
+package fi.triforce.TicketGuru.Web.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -55,7 +55,7 @@ N채m채 kaksi lis채kentt채채 myyntitapahtuman yhteydess채 mahdollistavat kyseess�
 
 ### Onnistunut response
 
-**Code** : `200 OK`
+**Code** : `201 CREATED`
 
 **Response body esim** Vastaus palauttaa tallennetun entityn
 

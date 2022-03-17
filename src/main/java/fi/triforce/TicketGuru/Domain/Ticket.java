@@ -12,7 +12,6 @@ import lombok.*;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Entity

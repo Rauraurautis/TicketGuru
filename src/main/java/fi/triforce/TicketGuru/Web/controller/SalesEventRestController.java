@@ -1,6 +1,4 @@
-package fi.triforce.TicketGuru.Web;
-
-import java.util.List;
+package fi.triforce.TicketGuru.Web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fi.triforce.TicketGuru.Domain.SalesEvent;
-import fi.triforce.TicketGuru.Domain.SalesEventRepository;
+import fi.triforce.TicketGuru.Web.service.SalesService;
 import fi.triforce.TicketGuru.exception.ResourceNotFoundException;
 
 @RestController
@@ -18,19 +16,17 @@ import fi.triforce.TicketGuru.exception.ResourceNotFoundException;
 public class SalesEventRestController {
 
     @Autowired
-    private SalesEventRepository sr;
+    private SalesService ss;
 
     @GetMapping
-    public List<SalesEvent> getAllSalesEvents() {
-        return sr.findAll();
+    public ResponseEntity<?> getAllSalesEvents() {
+        return ResponseEntity.ok(ss.getAllSalesEvents());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SalesEvent> salesEventGetSingleRest(@PathVariable(name = "id") Long id)
             throws ResourceNotFoundException {
-        SalesEvent salesEvent = sr.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cannot find a sales event with the id " + id));
-        return ResponseEntity.ok(salesEvent);
+        return ResponseEntity.ok(ss.getSalesEvent(id));
     }
 
 }

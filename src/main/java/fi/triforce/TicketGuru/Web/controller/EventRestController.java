@@ -1,14 +1,11 @@
 package fi.triforce.TicketGuru.Web.controller;
 
 import java.util.List;
-import java.util.Set;
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,19 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fi.triforce.TicketGuru.Domain.Event;
-import fi.triforce.TicketGuru.Domain.EventRepository;
+
 import fi.triforce.TicketGuru.Domain.SalesEvent;
-import fi.triforce.TicketGuru.Domain.SalesEventRepository;
+
 import fi.triforce.TicketGuru.Domain.TicketType;
-import fi.triforce.TicketGuru.Domain.TicketTypeRepository;
-import fi.triforce.TicketGuru.Domain.Venue;
-import fi.triforce.TicketGuru.Domain.VenueRepository;
-import fi.triforce.TicketGuru.Web.controller.service.EventService;
+
+import fi.triforce.TicketGuru.Web.service.EventService;
 import fi.triforce.TicketGuru.exception.ResourceNotFoundException;
 import fi.triforce.TicketGuru.exception.ValidationException;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import fi.triforce.TicketGuru.utils.ReturnMsg;
+
 
 @RestController
 @RequestMapping("/api/events")

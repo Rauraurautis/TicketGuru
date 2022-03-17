@@ -1,4 +1,4 @@
-package fi.triforce.TicketGuru.Web.controller.service;
+package fi.triforce.TicketGuru.Web.service;
 
 import org.springframework.stereotype.Service;
 

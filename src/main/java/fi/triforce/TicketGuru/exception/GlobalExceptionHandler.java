@@ -40,4 +40,20 @@ public class GlobalExceptionHandler {
                 exception.getMessage());
         return new ResponseEntity<>(errorDetails, httpStatus);
     }
+
+    @ExceptionHandler({ TicketUsedException.class })
+    public ResponseEntity<?> TicketUsedExceptionHandler(TicketUsedException exception) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), httpStatus,
+                exception.getMessage());
+        return new ResponseEntity<>(errorDetails, httpStatus);
+    }
+
+    @ExceptionHandler({ ForbiddenException.class })
+    public ResponseEntity<?> ForbiddenExceptionHandler(ForbiddenException exception) {
+        HttpStatus httpStatus = HttpStatus.FORBIDDEN;
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), httpStatus,
+                exception.getMessage());
+        return new ResponseEntity<>(errorDetails, httpStatus);
+    }
 }

@@ -26,6 +26,8 @@ public class FalseUrlController extends AbstractErrorController {
             throw new NotFoundException("You probably specified a false url");
         } else if (status.equals(HttpStatus.METHOD_NOT_ALLOWED)) {
             throw new MethodNotAllowedException("You probably used a method on an url that does not support the method");
+        } else if (status.equals(HttpStatus.FORBIDDEN)) {
+            throw new ForbiddenException("You have no permissions for that!");
         }
 
         return new ResponseEntity<>(new ReturnMsg(status.toString() +": Something went wrong").getReturnMsg(), status);

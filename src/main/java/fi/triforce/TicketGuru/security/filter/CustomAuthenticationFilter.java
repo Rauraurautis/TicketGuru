@@ -24,6 +24,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -39,14 +40,22 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         @Override
         public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
                         throws AuthenticationException {
-                String username = request.getParameter("username");
-                String password = request.getParameter("password");
-                log.info("Username is: {}", username);
-                log.info("Password is: {}", password);
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                                username,
-                                password);
-                return authenticationManager.authenticate(authenticationToken);
+                try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        LoginDao login = mapper.readValue(request.getInputStream(), LoginDao.class);
+                        String username = login.getUsername();
+                        String password = login.getPassword();
+                        log.info("Username is: {}", username);
+                        log.info("Password is: {}", password);
+                        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                                        username,
+                                        password);
+                        return authenticationManager.authenticate(authenticationToken);
+                } catch (IOException e) {
+                        e.printStackTrace();
+                        return null;
+                }
+
         }
 
         @Override
@@ -84,4 +93,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
         }
 
+}
+
+@Data
+class LoginDao {
+        String username;
+        String password;
 }

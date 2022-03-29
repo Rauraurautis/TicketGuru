@@ -41,13 +41,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //Admin only
         http.authorizeRequests().antMatchers("/api/users/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers("/api/role/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/events/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/events/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/events/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/venues/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/venues/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/venues/**").hasAnyAuthority("ROLE_ADMIN");
         
         //& Ticket sales
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/events/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_SALES");
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/events/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SALES");
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/sales/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SALES");
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/salesevents/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SALES");
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/venues/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SALES");
         
         //& Ticket inspector
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/events/*/tickets").hasAnyAuthority("ROLE_ADMIN", "ROLE_SALES", "ROLE_TICKETINSPECTOR");
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/events/*/tickets/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SALES", "ROLE_TICKETINSPECTOR");
+        http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/events/*/tickets").hasAnyAuthority("ROLE_ADMIN", "ROLE_SALES", "ROLE_TICKETINSPECTOR");
 
 
         http.authorizeRequests().anyRequest().authenticated();

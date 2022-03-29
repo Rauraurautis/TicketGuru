@@ -4,6 +4,8 @@
 
 Listaa kaikki tietokannassa olevat tapahtumapaikat.
 
+**AUTHORIZATION** : ADMIN, SALES
+
 **URL** : `/api/venues`
 
 **METHOD** : `GET`
@@ -79,6 +81,8 @@ Näyttää yksittäisen tapahtumapaikan tiedot. Tapahtumapaikan Id/primary key a
 
 Uuden tapahtumapaikan luonti ja lisäys tietokantaan.
 
+**AUTHORIZATION** : ADMIN
+
 **URL** : `/api/venues/`
 
 **METHOD** : `POST`
@@ -115,6 +119,8 @@ Paikan tiedot json-muodossa (poislukien id, joka on autogeneroidaan). Kentät ve
 
 Yksittäisen tapahtumapaikan poisto tietokannasta. Paikan Id/primary key annetaan URL:ssa.
 
+**AUTHORIZATION** : ADMIN
+
 **URL** : `/api/venues/:pk`
 
 **URL-PARAMETERS** : `pk=[Long]` jossa pk on paikan venueId tietokannassa. 
@@ -136,6 +142,8 @@ Yksittäisen tapahtumapaikan poisto tietokannasta. Paikan Id/primary key annetaa
 ## Tapahtumapaikan muokkaus
 
 Olemassa olevan tapahtumapaikan tietojen muokkaus.
+
+**AUTHORIZATION** : ADMIN
 
 **URL** : `/api/venues/:pk`
 

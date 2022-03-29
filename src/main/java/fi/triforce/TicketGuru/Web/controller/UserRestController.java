@@ -32,6 +32,11 @@ public class UserRestController {
     public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok(us.getUsers());
     }
+    
+    @GetMapping("/users/{username}")
+    public ResponseEntity<User> getUser(@PathVariable(name = "username") String name) throws ResourceNotFoundException {
+    	return ResponseEntity.ok(us.getUser(name));
+    }
 
     @PostMapping("/users")
     public ResponseEntity<User> saveUser(@RequestBody User user) {

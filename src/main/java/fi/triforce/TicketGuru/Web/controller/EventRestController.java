@@ -34,33 +34,33 @@ public class EventRestController {
 	@Autowired
 	private EventService es;
 
-	// Kaikkien eventtien listaus
+	// Kaikkien eventtien listaus, ADMIN, SALES
 	@GetMapping
 	public ResponseEntity<List<Event>> eventListRest() {
 		return ResponseEntity.ok(es.getAllEvents());
 	}
 
-	// Yksittäisen eventin tiedot
+	// Yksittäisen eventin tiedot, ADMIN, SALES
 	@GetMapping("/{id}")
 	public ResponseEntity<Event> eventGetSingleRest(@PathVariable(name = "id") Long id)
 			throws ResourceNotFoundException {
 		return ResponseEntity.ok(es.getSingleEvent(id));
 	}
 
-	// Eventin lisäys
+	// Eventin lisäys, ADMIN
 	@PostMapping
 	public ResponseEntity<Event> eventPostRest(@RequestBody Event event) throws ValidationException {
 		return new ResponseEntity<Event>(es.addEvent(event), HttpStatus.CREATED);
 	}
 
-	// Event poisto
+	// Event poisto, ADMIN
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> eventDeleteSingleRest(@PathVariable(name = "id") Long id)
 			throws ResourceNotFoundException {
 		return ResponseEntity.ok(es.deleteEvent(id));
 	}
 
-	// Event muokkaus
+	// Event muokkaus, ADMIN
 	@PutMapping("/{id}")
 	public ResponseEntity<Event> eventUpdateSingleRest(@PathVariable(name = "id") Long id,
 			@RequestBody Event newEvent)
@@ -68,7 +68,7 @@ public class EventRestController {
 		return ResponseEntity.ok(es.updateEvent(id, newEvent));
 	}
 
-	// Tickettype listaus
+	// Tickettype listaus, ADMIN, SALES
 	@GetMapping("/{id}/tickettypes")
 	public ResponseEntity<List<TicketType>> ticketTypesListRest(@PathVariable(name = "id") Long id)
 			throws ResourceNotFoundException {
@@ -76,7 +76,7 @@ public class EventRestController {
 	}
 
 	// Tickettype lisäys, (String)ticketTypeDescription pakollinen, (float)price ei
-	// pakollinen, jolloin -> 0, mutta ei saa olla negatiivinen
+	// pakollinen, jolloin -> 0, mutta ei saa olla negatiivinen, ADMIN
 	@PostMapping("/{id}/tickettypes")
 	public ResponseEntity<TicketType> ticketTypePostRest(@PathVariable(name = "id") Long eventId,
 			@RequestBody TicketType newType) // Tästä puuttuu tahallisesti tällä hetkellä @Valid, koska jos se on
@@ -88,7 +88,7 @@ public class EventRestController {
 
 	}
 
-	// Yksittäinen tickettype haku
+	// Yksittäinen tickettype haku, ADMIN, SALES
 	@GetMapping("/{id}/tickettypes/{ttid}")
 	public ResponseEntity<TicketType> ticketTypeGetSingleRest(@PathVariable(name = "id") Long eventId,
 			@PathVariable(name = "ttid") Long ttId)
@@ -96,7 +96,7 @@ public class EventRestController {
 		return ResponseEntity.ok(es.getTicketType(eventId, ttId));
 	}
 
-	// Tickettype poisto
+	// Tickettype poisto, ADMIN
 	@DeleteMapping("/{id}/tickettypes/{ttid}")
 	public ResponseEntity<?> eventDeleteSingleRest(@PathVariable(name = "id") Long eventId,
 			@PathVariable(name = "ttid") Long ttId)
@@ -106,7 +106,7 @@ public class EventRestController {
 
 	// Tickettype muokkaus, (String)ticketTypeDescription pakollinen, (float)price
 	// PAKOLLINEN tai muuten price muuttuu nollaksi, sekä se ei saa olla
-	// negatiivinen luku
+	// negatiivinen luku, ADMIN
 	@PutMapping("/{id}/tickettypes/{ttid}")
 	public ResponseEntity<TicketType> ticketTypeUpdateSingleRest(@PathVariable(name = "id") Long eventId,
 			@PathVariable(name = "ttid") Long ttId,
@@ -115,7 +115,7 @@ public class EventRestController {
 		return ResponseEntity.ok(es.updateTicketType(eventId, ttId, newType));
 	}
 
-	// Yksittäisen tapahtuman kuittien listaus
+	// Yksittäisen tapahtuman kuittien listaus, ADMIN, SALES
 	@GetMapping("/{id}/salesevents")
 	public ResponseEntity<List<SalesEvent>> getSalesEventsByEvent(@PathVariable(name = "id") Long eventId) {
 		return ResponseEntity.ok(es.getSalesEvents(eventId));

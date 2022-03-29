@@ -48,4 +48,12 @@ public class GlobalExceptionHandler {
                 exception.getMessage());
         return new ResponseEntity<>(errorDetails, httpStatus);
     }
+
+    @ExceptionHandler({ ForbiddenException.class })
+    public ResponseEntity<?> ForbiddenExceptionHandler(ForbiddenException exception) {
+        HttpStatus httpStatus = HttpStatus.FORBIDDEN;
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), httpStatus,
+                exception.getMessage());
+        return new ResponseEntity<>(errorDetails, httpStatus);
+    }
 }

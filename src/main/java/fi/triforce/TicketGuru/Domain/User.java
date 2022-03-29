@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.*;
 
 @Entity
@@ -26,6 +28,7 @@ public class User {
     private Long id;
     private String name;
     private String username;
+    @JsonIgnore
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();

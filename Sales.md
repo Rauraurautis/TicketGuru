@@ -4,6 +4,8 @@
 
 Uuden ostetun lipun luonti.
 
+**AUTHORIZATION** : ADMIN, SALES
+
 **URL** : `/api/sales/`
 
 **METHOD** : `POST`

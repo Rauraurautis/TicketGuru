@@ -4,6 +4,8 @@
 
 Listaa kaikki tietokannassa olevat tapahtumat.
 
+**AUTHORIZATION** : ADMIN, SALES
+
 **URL** : `/api/events`
 
 **METHOD** : `GET`
@@ -69,6 +71,8 @@ Listaa kaikki tietokannassa olevat tapahtumat.
 
 Näyttää yksittäisen tapahtuman tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
 
+**AUTHORIZATION** : ADMIN, SALES
+
 **URL** : `/api/events/:pk`
 
 **URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtuman eventId tietokannassa. 
@@ -128,6 +132,8 @@ Näyttää yksittäisen tapahtuman tiedot. Tapahtuman Id/primary key annetaan UR
 ## Tapahtuman lisäys
 
 Uuden tapahtuman luonti ja lisäys tietokantaan.
+
+**AUTHORIZATION** : ADMIN
 
 **URL** : `/api/events/`
 
@@ -196,6 +202,8 @@ Tapahtuman tapahtumapaikka annetaan sen id:nä(venueId) muodossa:
 
 Yksittäisen tapahtuman poisto tietokannasta. Tapahtuman Id/primary key annetaan URL:ssa. Poistaa samalla kaikki tapahtuman tickettypet.
 
+**AUTHORIZATION** : ADMIN
+
 **URL** : `/api/events/:pk`
 
 **URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtuman eventId tietokannassa. 
@@ -233,6 +241,8 @@ Yksittäisen tapahtuman poisto tietokannasta. Tapahtuman Id/primary key annetaan
 ## Tapahtuman muokkaus
 
 Olemassa olevan tapahtuman tietojen muokkaus.
+
+**AUTHORIZATION** : ADMIN
 
 **URL** : `/api/events/:pk`
 
@@ -299,6 +309,8 @@ PAKOLLISENA kenttänä eventTitle, kuten tapahtuman luonnissakin, MUTTA puuttuva
 ## Tapahtuman lipputyyppien tietojen haku
 
 Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
+
+**AUTHORIZATION** : ADMIN, SALES
 
 **URL** : `/api/events/:pk/tickettypes`
 
@@ -368,6 +380,8 @@ Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary k
 
 Uuden lipputyypin luonti tapahtumalle ja lisäys tietokantaan.
 
+**AUTHORIZATION** : ADMIN
+
 **URL** : `/api/events/{id}/tickettypes`
 
 **METHOD** : `POST`
@@ -436,6 +450,8 @@ Tietokentät:
 
 Yksittäisen lipputyypin poisto tietokannasta. Tapahtuman Id/primary key annetaan URL:ssa sekä lipputyypin Id/pk annetaan URL:ssa.
 
+**AUTHORIZATION** : ADMIN
+
 **URL** : `/api/events/:pk/tickettypes/:pk`
 
 **URL-PARAMETERS** : `pk=[Long]` jossa ensimmäinen pk on tapahtuman eventId tietokannassa ja toinen lipputyypin ticketTypeId.
@@ -467,6 +483,8 @@ Yksittäisen lipputyypin poisto tietokannasta. Tapahtuman Id/primary key annetaa
 ## Lipputyypin muokkaus
 
 Tapahtumassa olevan lipputyypin tietojen muokkaus. Tapahtuman Id/primary key annetaan URL:ssa sekä lipputyypin Id/pk annetaan URL:ssa.
+
+**AUTHORIZATION** : ADMIN
 
 **URL** : `/api/events/:pk/tickettypes/:pk`
 
@@ -539,6 +557,8 @@ Tietokentät:
 ## Tapahtumaan ostettujen lippujen haku
 
 Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
+
+**AUTHORIZATION** : ADMIN, SALES
 
 **URL** : `/api/events/:pk/tickettypes`
 
@@ -661,6 +681,8 @@ Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary k
 
 Näyttää yksittäisen tapahtuman yhden lipun tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
 
+**AUTHORIZATION** : ADMIN, SALES
+
 **URL** : `/api/events/:pk/tickets/:pk`
 
 **URL-PARAMETERS** : `pk=[Long]` jossa ensimmäinen pk on tapahtuman eventId tietokannassa ja toinen lipputyypin ticketId. 
@@ -714,6 +736,8 @@ Näyttää yksittäisen tapahtuman yhden lipun tiedot. Tapahtuman Id/primary key
 ## Tapahtumaan ostetun lipun muuttaminen käytetyksi
 
 Muuttaa aiemmin ostetun lipun ticketUsed-kentän arvoksi True. Default on False.
+
+**AUTHORIZATION** : ADMIN, SALES, TICKETINSPECTOR
 
 **URL** : `/api/events/:pk/tickets`
 

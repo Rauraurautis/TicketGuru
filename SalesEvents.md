@@ -4,6 +4,8 @@
 
 Listaa kaikki tietokannassa olevat myyntitapahtumat.
 
+**AUTHORIZATION** : ADMIN, SALES
+
 **URL** : `/api/salesevents`
 
 **METHOD** : `GET`
@@ -107,6 +109,8 @@ Listaa kaikki tietokannassa olevat myyntitapahtumat.
 ## Yksittäisen myyntitapahtuman haku
 
 Näyttää yksittäisen myyntitapahtuman tiedot. Myyntitapahtuman Id/primary key annetaan URL:ssa.
+
+**AUTHORIZATION** : ADMIN, SALES
 
 **URL** : `/api/salesevents/:pk`
 

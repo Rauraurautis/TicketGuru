@@ -73,6 +73,13 @@ public class UserRestController {
     public ResponseEntity<?> deleteuser(@PathVariable(name = "id") Long id) throws ResourceNotFoundException {
         return ResponseEntity.ok(us.deleteUser(id));
     }
+    
+    @PostMapping("/role")
+    public ResponseEntity<Role> saveRole(@RequestBody Role role) {
+    	URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/save").toUriString());
+        System.out.println(uri);
+        return ResponseEntity.created(uri).body(us.saveRole(role));
+    }
 
     @PostMapping("/role/addtouser")
     public ResponseEntity<Role> addRoleToUser(@RequestBody RoleToUserForm form) {

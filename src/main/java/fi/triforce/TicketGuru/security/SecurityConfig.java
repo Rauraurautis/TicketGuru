@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import fi.triforce.TicketGuru.security.filter.CustomAuthenticationFilter;
@@ -22,13 +23,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-   
-
     private final UserDetailsService userDetailsService;
 
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/login/**", "/api/token/refresh/**").permitAll();
-        //Admin only
+        // Admin only
         http.authorizeRequests().antMatchers("/api/users/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers("/api/role/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/events/**").hasAnyAuthority("ROLE_ADMIN");
@@ -50,33 +50,40 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/venues/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/venues/**").hasAnyAuthority("ROLE_ADMIN");
 
-         //& Ticket inspector
+        // & Ticket inspector
 
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/events/*/tickets/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_TICKETINSPECTOR", "ROLE_SALES");
-        http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/events/*/tickets").hasAnyAuthority("ROLE_ADMIN", "ROLE_SALES", "ROLE_TICKETINSPECTOR");
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/events/*/tickets/**").hasAnyAuthority("ROLE_ADMIN",
+                "ROLE_TICKETINSPECTOR", "ROLE_SALES");
+        http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/events/*/tickets").hasAnyAuthority("ROLE_ADMIN",
+                "ROLE_SALES", "ROLE_TICKETINSPECTOR");
 
-        //& Ticket sales
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/events/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SALES");
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/sales/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SALES");
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/salesevents/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SALES");
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/venues/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SALES");
-        
-        
-       
-        
-
+        // & Ticket sales
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/events/**").hasAnyAuthority("ROLE_ADMIN",
+                "ROLE_SALES");
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/sales/**").hasAnyAuthority("ROLE_ADMIN",
+                "ROLE_SALES");
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/salesevents/**").hasAnyAuthority("ROLE_ADMIN",
+                "ROLE_SALES");
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/venues/**").hasAnyAuthority("ROLE_ADMIN",
+                "ROLE_SALES");
 
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint);
-        
+        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+
     }
 
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new RestAccessDeniedHandler();
     }
 
 }

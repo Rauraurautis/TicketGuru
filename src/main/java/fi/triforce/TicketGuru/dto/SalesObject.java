@@ -29,7 +29,7 @@ public class SalesObject {
 	private int nrOfDiscounted;
 	@Min(0)
 	@Max(1)
-	private BigDecimal discountPercentage;	//muuta bigdec
+	private BigDecimal discountPercentage;
 	
 	private int discountTicketsLeft;
 	

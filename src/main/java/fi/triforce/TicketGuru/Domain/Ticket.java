@@ -12,6 +12,8 @@ import lombok.*;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import org.springframework.validation.annotation.Validated;
+
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -34,7 +36,7 @@ public class Ticket {
 	@JoinColumn(name = "ticketType_id")
 	//@JsonIgnoreProperties("event")
 	private TicketType ticketType;
-	private float finalPrice;
+	private BigDecimal finalPrice;
 
 	@Override
 	public String toString() {

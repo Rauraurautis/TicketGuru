@@ -38,7 +38,7 @@ public class TicketType {
 	@PositiveOrZero
 	//@Valid
 	//@NotNull //Float defaulttaa aina numeroks, joten notnull on turha tässä tai vastaavissa skenaarioissa.
-	private float price;
+	private BigDecimal price;
 	@ManyToOne
 	@JoinColumn(name="eventId")
 	@JsonIgnoreProperties({"ticketTypes", "eventVenue"})//Pysäyttää infinite loopin jsonissa 

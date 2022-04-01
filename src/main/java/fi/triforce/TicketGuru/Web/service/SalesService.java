@@ -21,6 +21,7 @@ import fi.triforce.TicketGuru.dto.SalesObject;
 import fi.triforce.TicketGuru.exception.ResourceNotFoundException;
 import fi.triforce.TicketGuru.exception.ValidationException;
 import fi.triforce.TicketGuru.Domain.SalesEvent;
+import java.math.BigDecimal;
 
 @Service
 public class SalesService {
@@ -70,7 +71,7 @@ public class SalesService {
                 ticket.setTicketUsed(false);
                 if (discountTicketsLeft > 0) {
                     discountTicketsLeft--;
-                    ticket.setFinalPrice(tt.getPrice() * (1 - salesObject.getDiscountPercentage()));
+                    ticket.setFinalPrice(tt.getPrice().multiply(BigDecimal.valueOf(1).subtract(salesObject.getDiscountPercentage())));  //bigDecimal tarvitsee oman laskutoimitussyntaksin. +,-,*,/ eivät käy.
                 } else {
                     ticket.setFinalPrice(tt.getPrice());
                 }

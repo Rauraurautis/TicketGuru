@@ -18,7 +18,7 @@ Käytettävät peruskentät ovat:
 
 Lisäkenttinä ovat:
 [int]'nrOfDiscounted', kyseessä olevien alennuslipputyyppien määrä kokonaisostomäärästä.
-[float]'discountPercentage', joka on alennusprosentti desimaalina. 0.1 vastaa 10 prosentin hinnanalennusta lipputyypin normaalihinnasta. **Desimaalierottaja annettava pisteenä!**
+[bigDecimal]'discountPercentage', joka on alennusprosentti desimaalina. 0.1 vastaa 10 prosentin hinnanalennusta lipputyypin normaalihinnasta. **Desimaalierottaja annettava pisteenä!**
 Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseessä olevien lipputyyppien hinnanalennukset halutuille määrille ostettuja lippuja.
 
 **Esimerkki** ilman hinnanalennuskenttiä:

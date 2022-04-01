@@ -1,6 +1,8 @@
 package fi.triforce.TicketGuru.dto;
 
 
+import java.math.BigDecimal;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -27,11 +29,11 @@ public class SalesObject {
 	private int nrOfDiscounted;
 	@Min(0)
 	@Max(1)
-	private float discountPercentage;
+	private BigDecimal discountPercentage;	//muuta bigdec
 	
 	private int discountTicketsLeft;
 	
-	public SalesObject(Long ticketTypeId, int nrOfTickets, int nrOfDiscounted, float discountPercentage) {
+	public SalesObject(Long ticketTypeId, int nrOfTickets, int nrOfDiscounted, BigDecimal discountPercentage) {
 		super();
 		this.ticketTypeId = ticketTypeId;
 		this.nrOfTickets = nrOfTickets;

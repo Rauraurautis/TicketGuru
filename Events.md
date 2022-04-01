@@ -390,7 +390,7 @@ Uuden lipputyypin luonti tapahtumalle ja lisäys tietokantaan.
 Lipputyypin tiedot annetaan json-muodossa(poislukien id, joka autogeneroidaan).
 Tietokentät:
 	[String] ticketTypeDescription **Pakollinen**
-	[float] price	**Desimaalierottaja annettava pisteenä!** **Arvo ei saa olla negatiivinen luku.** **Vapaaehtoinen kenttä, joka defaulttaa 0.0:ksi.**
+	[bigDecimal] price	**Desimaalierottaja annettava pisteenä!** **Arvo ei saa olla negatiivinen luku.** **Vapaaehtoinen kenttä, joka defaulttaa 0.0:ksi.**
 
 **Esimerkki**
 
@@ -495,7 +495,7 @@ Tapahtumassa olevan lipputyypin tietojen muokkaus. Tapahtuman Id/primary key ann
 **REQUEST BODY**
 Tietokentät:
 	[String] ticketTypeDescription **Pakollinen**
-	[float] price	**Pakollinen kenttä TAI se defaulttaa 0.0:ksi!** **Desimaalierottaja annettava pisteenä!** **Arvo ei saa olla negatiivinen luku.** 
+	[bigDecimal] price	**Pakollinen kenttä TAI se defaulttaa 0.0:ksi!** **Desimaalierottaja annettava pisteenä!** **Arvo ei saa olla negatiivinen luku.** 
 
 **Esimerkki**
 

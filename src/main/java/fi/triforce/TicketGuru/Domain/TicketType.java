@@ -1,63 +1,55 @@
 package fi.triforce.TicketGuru.Domain;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.PositiveOrZero;
+
+import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.*;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Validated
 public class TicketType {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long ticketTypeID;
-	private long eventId;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private long ticketTypeId;
+	@NotBlank
 	private String ticketTypeDescription;
-	private float price;
+	@PositiveOrZero
+	//@Valid
+	//@NotNull //Float defaulttaa aina numeroks, joten notnull on turha tässä tai vastaavissa skenaarioissa.
+	private BigDecimal price;
+	@ManyToOne
+	@JoinColumn(name="eventId")
+	@JsonIgnoreProperties({"ticketTypes", "eventVenue"})//Pysäyttää infinite loopin jsonissa 
+	private Event event;
+	@OneToMany(mappedBy="ticketType")
+	@JsonIgnore
+	private List<Ticket> tickets;
 	
-	public TicketType(long ticketTypeID, long eventId, String ticketTypeDescription, float price) {
-		super();
-		this.ticketTypeID = ticketTypeID;
-		this.eventId = eventId;
-		this.ticketTypeDescription = ticketTypeDescription;
-		this.price = price;
-	}
-
-	public long getTicketTypeID() {
-		return ticketTypeID;
-	}
-
-	public void setTicketTypeID(long ticketTypeID) {
-		this.ticketTypeID = ticketTypeID;
-	}
-
-	public long getEventId() {
-		return eventId;
-	}
-
-	public void setEventId(long eventId) {
-		this.eventId = eventId;
-	}
-
-	public String getTicketTypeDescription() {
-		return ticketTypeDescription;
-	}
-
-	public void setTicketTypeDescription(String ticketTypeDescription) {
-		this.ticketTypeDescription = ticketTypeDescription;
-	}
-
-	public float getPrice() {
-		return price;
-	}
-
-	public void setPrice(float price) {
-		this.price = price;
-	}
-
 	@Override
 	public String toString() {
-		return "TicketType [ticketTypeID=" + ticketTypeID + ", eventId=" + eventId + ", ticketTypeDescription="
+		return "TicketType [ticketTypeID=" + ticketTypeId + ", eventId=" + ", ticketTypeDescription="
 				+ ticketTypeDescription + ", price=" + price + "]";
 	}
 	

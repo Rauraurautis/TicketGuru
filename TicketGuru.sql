@@ -1,11 +1,11 @@
-CREATE TABLE "Venues" (
+CREATE TABLE "Venue" (
   "venueId" SERIAL PRIMARY KEY,
   "venueName" varchar,
   "venueAddress" timestamp,
   "venueCity" varchar
 );
 
-CREATE TABLE "Events" (
+CREATE TABLE "Event" (
   "eventId" SERIAL PRIMARY KEY,
   "eventDescription" varchar,
   "venueId" integer,
@@ -13,37 +13,31 @@ CREATE TABLE "Events" (
   "date" datetime
 );
 
-CREATE TABLE "TicketTypes" (
+CREATE TABLE "TicketType" (
   "ticketTypeId" SERIAL PRIMARY KEY,
   "eventId" integer,
   "ticketTypeDescription" varchar,
   "price" float
 );
 
-CREATE TABLE "Tickets" (
+CREATE TABLE "Ticket" (
   "ticketId" SERIAL PRIMARY KEY,
   "ticketTypeId" integer,
   "ticketCode" int,
-  "ticketUsed" boolean
-);
-
-CREATE TABLE "TicketSales" (
-  "ticketSaleId" SERIAL PRIMARY KEY,
+  "ticketUsed" boolean,
   "salesEventId" integer,
-  "ticketId" integer
+  "finalPrice" float
 );
 
-CREATE TABLE "SalesEvents" (
+CREATE TABLE "SalesEvent" (
   "salesEventId" SERIAL PRIMARY KEY,
   "dateOfSale" datetime
 );
 
-ALTER TABLE "Events" ADD FOREIGN KEY ("venueId") REFERENCES "Venues" ("venueId");
+ALTER TABLE "Event" ADD FOREIGN KEY ("venueId") REFERENCES "Venue" ("venueId");
 
-ALTER TABLE "TicketTypes" ADD FOREIGN KEY ("eventId") REFERENCES "Events" ("eventId");
+ALTER TABLE "TicketType" ADD FOREIGN KEY ("eventId") REFERENCES "Event" ("eventId");
 
-ALTER TABLE "Tickets" ADD FOREIGN KEY ("ticketTypeId") REFERENCES "TicketTypes" ("ticketTypeId");
+ALTER TABLE "Ticket" ADD FOREIGN KEY ("ticketTypeId") REFERENCES "TicketType" ("ticketTypeId");
 
-ALTER TABLE "Tickets" ADD FOREIGN KEY ("ticketId") REFERENCES "TicketSales" ("ticketId");
-
-ALTER TABLE "TicketSales" ADD FOREIGN KEY ("salesEventId") REFERENCES "SalesEvents" ("salesEventId");
+ALTER TABLE "Ticket" ADD FOREIGN KEY ("salesEventId") REFERENCES "SalesEvent" ("salesEventId");

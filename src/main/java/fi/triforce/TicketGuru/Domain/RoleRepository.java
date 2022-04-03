@@ -2,6 +2,6 @@ package fi.triforce.TicketGuru.Domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TicketSaleRepository extends JpaRepository<Long, TicketSale>{
-    
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    Role findByName(String name);
 }

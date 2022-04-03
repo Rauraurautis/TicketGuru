@@ -1,70 +1,46 @@
 package fi.triforce.TicketGuru.Domain;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+
+import org.springframework.validation.annotation.Validated;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.*;
 
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Validated
 public class Venue {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long venueId;
+    //@Column()
+    @NotBlank
     private String venueName;
+    //@Column()
+    @NotBlank
     private String venueAddress;
+    //@Column()
+    @NotBlank
     private String venueCity;
-    
-
-    public Venue() {
-    }
-
-    public Venue(long venueId, String venueName) {
-        this.venueId = venueId;
-        this.setVenueName(venueName);
-    }
-
-    public Venue(long venueId, String venueName, String venueCity) {
-        this.venueId = venueId;
-        this.setVenueName(venueName);
-        this.setVenueCity(venueCity);
-    }
-
-    public Venue(long venueId, String venueName, String venueAddress, String venueCity) {
-        this.venueId = venueId;
-        this.setVenueName(venueName);
-        this.setVenueAddress(venueAddress);
-        this.setVenueCity(venueCity);
-    }
-
-    public String getVenueCity() {
-        return venueCity;
-    }
-
-    public void setVenueCity(String venueCity) {
-        this.venueCity = venueCity;
-    }
-
-    public String getVenueAddress() {
-        return venueAddress;
-    }
-
-    public void setVenueAddress(String venueAddress) {
-        this.venueAddress = venueAddress;
-    }
-
-    public String getVenueName() {
-        return venueName;
-    }
-
-    public void setVenueName(String venueName) {
-        this.venueName = venueName;
-    }
-
+    @OneToMany(mappedBy="eventVenue")
+    @JsonIgnore
+	private List<Event> events;
     @Override
     public String toString() {
         return "Venue [venueAddress=" + venueAddress + ", venueCity=" + venueCity + ", venueId=" + venueId
                 + ", venueName=" + venueName + "]";
     }
-
 }

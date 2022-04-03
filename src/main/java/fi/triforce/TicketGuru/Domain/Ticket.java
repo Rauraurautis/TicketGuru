@@ -4,62 +4,50 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.*;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import org.springframework.validation.annotation.Validated;
+
+import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Validated
 public class Ticket {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long ticketID;
-	private long ticketTypeID;
-	private int ticketCode;
-	private boolean ticketUsed;
+	private long ticketId;
+	private String ticketCode;
+	private Boolean ticketUsed;
 	@ManyToOne
-	@JoinColumn(name = "ticketsale_id", nullable=false)
-	private TicketSale ticketSale;
-
-	
-	
-	public Ticket() {}	
-
-	public Ticket(long ticketTypeID, int ticketCode, boolean ticketUsed) {
-		super();
-		this.ticketTypeID = ticketTypeID;
-		this.ticketCode = ticketCode;
-		this.ticketUsed = ticketUsed;
-	}
-
-	public long getTicketTypeID() {
-		return ticketTypeID;
-	}
-
-	public void setTicketTypeID(long ticketTypeID) {
-		this.ticketTypeID = ticketTypeID;
-	}
-
-	public int getTicketCode() {
-		return ticketCode;
-	}
-
-	public void setTicketCode(int ticketCode) {
-		this.ticketCode = ticketCode;
-	}
-
-	public boolean isTicketUsed() {
-		return ticketUsed;
-	}
-
-	public void setTicketUsed(boolean ticketUsed) {
-		this.ticketUsed = ticketUsed;
-	}
+	@JoinColumn(name = "salesEvent_id")
+	@JsonIgnore
+	private SalesEvent ticketSale;
+	@ManyToOne
+	@JoinColumn(name = "ticketType_id")
+	//@JsonIgnoreProperties("event")
+	private TicketType ticketType;
+	private BigDecimal finalPrice;
 
 	@Override
 	public String toString() {
-		return "Ticket [ticketID=" + ticketID + ", ticketTypeID=" + ticketTypeID + ", ticketCode=" + ticketCode
+		return "Ticket [ticketID=" + ticketId + ", ticketCode=" + ticketCode
 				+ ", ticketUsed=" + ticketUsed + "]";
 	}
 	
+	public void generateTicketCode() {
+		this.ticketCode = String.valueOf(UUID.randomUUID());
+	}	
+
 	
 
 }

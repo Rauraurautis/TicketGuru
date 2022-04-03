@@ -1,79 +1,64 @@
 package fi.triforce.TicketGuru.Domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+
+import org.springframework.validation.annotation.Validated;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.*;
-
+import java.util.List;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Validated
 public class Event {
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long eventID;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long eventId;
+	// @Column()
+	@NotBlank
+	private String eventTitle;
 	private String eventDescription;
-	private long venueId;
-	private long numberOfTickets;
-	private LocalDate date;
-	
-	public Event(String eventDescription, long venueId, long numberOfTickets, LocalDate date) {
-		super();
-		this.eventDescription = eventDescription;
-		this.venueId = venueId;
-		this.numberOfTickets = numberOfTickets;
-		this.date = date;
-	}
-
-	public long getEventID() {
-		return eventID;
-	}
-
-	public void setEventID(long eventID) {
-		this.eventID = eventID;
-	}
-
-	public String getEventDescription() {
-		return eventDescription;
-	}
-
-	public void setEventDescription(String eventDescription) {
-		this.eventDescription = eventDescription;
-	}
-
-	public long getVenueId() {
-		return venueId;
-	}
-
-	public void setVenueId(long venueId) {
-		this.venueId = venueId;
-	}
-
-	public long getNumberOfTickets() {
-		return numberOfTickets;
-	}
-
-	public void setNumberOfTickets(long numberOfTickets) {
-		this.numberOfTickets = numberOfTickets;
-	}
-
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
+	// @Column()
+	@PositiveOrZero
+	private Long numberOfTickets;
+	// @Column()
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm", shape = JsonFormat.Shape.STRING)
+	private LocalDateTime dateOfEvent;
+	@ManyToOne
+	@JoinColumn(name = "venueId")
+	private Venue eventVenue;
+	@OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties("event") // Pysäyttää infinite loopin jsonissa
+	private List<TicketType> ticketTypes;
 
 	@Override
 	public String toString() {
-		return "Event [eventID=" + eventID + ", eventDescription=" + eventDescription + ", venueId=" + venueId
-				+ ", numberOfTickets=" + numberOfTickets + ", date=" + date + "]";
+		return "Event [eventID=" + eventId + ", eventTitle=" + eventTitle + ", eventDescription=" + eventDescription
+				+ ", venueId="
+				+ ", numberOfTickets=" + numberOfTickets + ", date=" + dateOfEvent + "]";
 	}
-	
-	
-	
 
 }

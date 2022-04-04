@@ -1,5 +1,6 @@
 package fi.triforce.TicketGuru.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -29,9 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Value("${token.secret}")
+        private String tokenSecret;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            System.out.println(tokenSecret + " over here");
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 
@@ -68,8 +72,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "ROLE_SALES");
 
         http.authorizeRequests().anyRequest().authenticated();
-        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
-        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), tokenSecret));
+        http.addFilterBefore(new CustomAuthorizationFilter(tokenSecret), UsernamePasswordAuthenticationFilter.class);
         http.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint);
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
 

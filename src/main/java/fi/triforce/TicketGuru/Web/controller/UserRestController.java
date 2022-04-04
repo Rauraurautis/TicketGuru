@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -51,6 +52,9 @@ import lombok.extern.slf4j.Slf4j;
 public class UserRestController {
 
     private final UserService us;
+
+    @Value("${token.secret}")
+    private String tokenSecret;
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getUsers() {
@@ -92,8 +96,9 @@ public class UserRestController {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
+                System.out.println(tokenSecret);
                 String refreshToken = authorizationHeader.substring("Bearer ".length());
-                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                Algorithm algorithm = Algorithm.HMAC256(tokenSecret.getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refreshToken);
                 String username = decodedJWT.getSubject();

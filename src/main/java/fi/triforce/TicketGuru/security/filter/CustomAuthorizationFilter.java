@@ -31,17 +31,24 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
+    private String tokenSecret;
+
+    public CustomAuthorizationFilter(String tokenSecret) {
+        this.tokenSecret = tokenSecret;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         if (request.getServletPath().equals("/login") || request.getServletPath().equals("/api/token/refresh")) {
             filterChain.doFilter(request, response);
         } else {
+            System.out.println(tokenSecret);
             String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
                     String token = authorizationHeader.substring("Bearer ".length());
-                    Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                    Algorithm algorithm = Algorithm.HMAC256(tokenSecret.getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(token);
                     String username = decodedJWT.getSubject();

@@ -32,10 +32,15 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         private final AuthenticationManager authenticationManager;
+        private String tokenSecret;
 
-        public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+        public CustomAuthenticationFilter(AuthenticationManager authenticationManager, String secret) {
                 this.authenticationManager = authenticationManager;
+                this.tokenSecret = secret;
         }
+
+
+
 
         @Override
         public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
@@ -63,7 +68,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                         FilterChain chain,
                         Authentication authentication) throws IOException, ServletException {
                 User user = (User) authentication.getPrincipal();
-                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                Algorithm algorithm = Algorithm.HMAC256(tokenSecret.getBytes());
                 String access_token = JWT.create()
                                 .withSubject(user.getUsername())
                                 .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))

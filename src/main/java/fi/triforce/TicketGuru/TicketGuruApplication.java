@@ -27,17 +27,7 @@ public class TicketGuruApplication {
 	@Bean
 	CommandLineRunner run (UserService us) {
 		return args -> {
-			us.saveRole(new Role(null, "ROLE_ADMIN"));
-			us.saveRole(new Role(null, "ROLE_SALES"));
-			us.saveRole(new Role(null, "ROLE_TICKETINSPECTOR"));
-
-			us.saveUser(new User(null, "John Travolta", "John", "1234", new ArrayList<>()));
-			us.saveUser(new User(null, "Matt Thomson", "matt", "1234", new ArrayList<>()));
-			us.saveUser(new User(null, "Mary Smith", "m_smith", "1234", new ArrayList<>()));
-
-			us.addRoleToUser("John", "ROLE_ADMIN");
-			us.addRoleToUser("matt", "ROLE_SALES");
-			us.addRoleToUser("m_smith", "ROLE_TICKETINSPECTOR");
+			
 	
 		};
 	}

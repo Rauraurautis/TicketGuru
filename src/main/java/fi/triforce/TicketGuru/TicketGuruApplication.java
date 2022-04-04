@@ -23,18 +23,5 @@ public class TicketGuruApplication {
 	BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-
-	@Bean
-	CommandLineRunner run (UserService us) {
-		return args -> {
-
-
-			us.saveUser(new User(null, "Kalle Erkkilä", "Kalle", "1234", new ArrayList<>()));
-
-			us.addRoleToUser("Kalle", "ROLE_ADMIN");
-	
-		};
-	}
-
 	
 }

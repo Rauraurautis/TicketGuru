@@ -12,3 +12,12 @@ INSERT INTO ticket_type (event_id, ticket_type_description, price) VALUES (2, 'L
 INSERT INTO ticket_type (event_id, ticket_type_description, price) VALUES (2, 'Huoltajalippu', 15.5);
 INSERT INTO ticket_type (event_id, ticket_type_description, price) VALUES (3, 'Opiskelijalippu', 65);
 INSERT INTO ticket_type (event_id, ticket_type_description, price) VALUES (4, 'OdottaaHintaa', 0);
+INSERT INTO role (name) VALUES ('ROLE_ADMIN');
+INSERT INTO role (name) VALUES ('ROLE_SALES');
+INSERT INTO role (name) VALUES ('ROLE_TICKETINSPECTOR');
+INSERT INTO sys_user (name, username, password) VALUES ('John Travolta', 'John', '$2y$10$uA2VXfgdKJVh7iZQxUQH8.mJ3PdP937usyKz0Zv6pSt9WFyxpFDKy');
+INSERT INTO sys_user (name, username, password) VALUES ('Matt Thomson', 'matt', '$2y$10$uA2VXfgdKJVh7iZQxUQH8.mJ3PdP937usyKz0Zv6pSt9WFyxpFDKy');
+INSERT INTO sys_user (name, username, password) VALUES ('Mary Smith', 'm_smith', '$2y$10$uA2VXfgdKJVh7iZQxUQH8.mJ3PdP937usyKz0Zv6pSt9WFyxpFDKy');
+INSERT INTO sys_user_roles (user_id, roles_id) VALUES (1, 1);
+INSERT INTO sys_user_roles (user_id, roles_id) VALUES (2, 2);
+INSERT INTO sys_user_roles (user_id, roles_id) VALUES (3, 3); 

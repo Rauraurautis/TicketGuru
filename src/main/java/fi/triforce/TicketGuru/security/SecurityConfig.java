@@ -72,7 +72,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "ROLE_SALES");
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/venues/**").hasAnyAuthority("ROLE_ADMIN",
                 "ROLE_SALES");
-
+        
+        http.cors();
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), tokenSecret));
         http.addFilterBefore(new CustomAuthorizationFilter(tokenSecret), UsernamePasswordAuthenticationFilter.class);

@@ -38,11 +38,11 @@ public class TicketService {
         return tickets;
     }
 
-    public Ticket singleTicketByEvent(Long eventId, Long ticketId) {
-        er.findById(eventId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + eventId));
-        Ticket ticket = tr.findById(ticketId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cannot find a ticket with the id " + ticketId));
+    public Ticket singleTicketByTicketCode(String ticketCode) {
+        Ticket ticket = tr.findByTicketCode(ticketCode);
+        if (ticket == null) {
+            throw new NotFoundException("No ticket found with the code " + ticketCode);
+        }
         return ticket;
     }
 

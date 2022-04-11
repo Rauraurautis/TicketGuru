@@ -679,15 +679,15 @@ Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary k
 
 ## Tapahtumaan ostetun yksittäisen lipun haku
 
-Näyttää yksittäisen tapahtuman yhden lipun tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
+Näyttää yksittäisen tapahtuman yhden lipun tiedot. Lipun ticketcode annetaan url-parametrina. Parametri pakollinen.
 
-**AUTHORIZATION** : ADMIN, SALES
+**AUTHORIZATION** : ADMIN, SALES, TICKET INSPECTOR
 
-**URL** : `/api/events/:pk/tickets/:pk`
+**URL** : `/api/events/singleticket?ticketcode={ticketcode}`
 
-**URL-PARAMETERS** : `pk=[Long]` jossa ensimmäinen pk on tapahtuman eventId tietokannassa ja toinen lipputyypin ticketId. 
+**URL-PARAMETERS** : `ticketcode=[String]` lipun yksilöllinen ticketcode 
 
-**METHOD** : `GET`
+**METHOD** : `GET``
 
 ### Onnistunut response
 
@@ -695,7 +695,7 @@ Näyttää yksittäisen tapahtuman yhden lipun tiedot. Tapahtuman Id/primary key
 
 **Esimerkki**
 
-```json
+```jsonn
 {
     "ticketId": 2,
     "ticketCode": "e55e5130-6b72-40cc-93d7-fdfe6f9aed83",
@@ -724,10 +724,6 @@ Näyttää yksittäisen tapahtuman yhden lipun tiedot. Tapahtuman Id/primary key
 
 ### Virheellinen response
 
-**Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
-**Code** : `404 NOT FOUND`
-**Message** : `Cannot find an event with the id {id}`
-
 **Ehto** : Jos url-parametrina annettua lippua ei löydy
 **Code** : `404 NOT FOUND`
 **Message** : `Cannot find a ticket with the id {id}`
@@ -739,9 +735,7 @@ Muuttaa aiemmin ostetun lipun ticketUsed-kentän arvoksi True. Default on False.
 
 **AUTHORIZATION** : ADMIN, SALES, TICKETINSPECTOR
 
-**URL** : `/api/events/:pk/tickets`
-
-**URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtuman eventId tietokannassa. 
+**URL** : `/api/events/tickets`
 
 **METHOD** : `PUT`
 

@@ -58,7 +58,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/events/*/tickets/**").hasAnyAuthority("ROLE_ADMIN",
                 "ROLE_TICKETINSPECTOR", "ROLE_SALES");
-        http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/events/*/tickets").hasAnyAuthority("ROLE_ADMIN",
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/events/singleticket/**").hasAnyAuthority("ROLE_ADMIN",
+                "ROLE_TICKETINSPECTOR", "ROLE_SALES");
+        http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/events/tickets").hasAnyAuthority("ROLE_ADMIN",
                 "ROLE_SALES", "ROLE_TICKETINSPECTOR");
 
         // & Ticket sales
@@ -70,7 +72,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "ROLE_SALES");
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/venues/**").hasAnyAuthority("ROLE_ADMIN",
                 "ROLE_SALES");
-
+        
+        http.cors();
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), tokenSecret));
         http.addFilterBefore(new CustomAuthorizationFilter(tokenSecret), UsernamePasswordAuthenticationFilter.class);

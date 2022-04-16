@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Secure from './pages/Secure'
+import Sales from './pages/Sales';
 
 const RoutesComponent = () => {
   return (
@@ -16,6 +17,10 @@ const RoutesComponent = () => {
             <Secure />
           </RequireAuth>
         }/>
+        <Route path={'/sales'} element={
+          <RequireAuth loginPath={'/login'}>
+            <Sales/>
+          </RequireAuth>}/>
       </Routes>
     </BrowserRouter>
   )

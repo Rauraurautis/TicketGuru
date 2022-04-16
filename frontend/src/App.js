@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
   return (
     <AuthProvider
-      authName={"_auth"} authType={"cookie"}
+      authName={"_auth"} authType={"localstorage"}
       //refresh={refreshApi}
     >
       <RoutesComponent />

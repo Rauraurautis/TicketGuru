@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { useIsAuthenticated, useSignIn } from 'react-auth-kit';
+import { useAuthUser, useIsAuthenticated, useSignIn } from 'react-auth-kit';
 import { toast } from 'react-toastify';
 
 const Login = () => {
@@ -23,10 +23,11 @@ const Login = () => {
                 if (res.status === 200) {
                     if (signIn({
                         token: res.data.access_token,
-                        tokenType: 'Bearer',
+                        //tokenType: 'Bearer',
                         expiresIn: 10, //raukeamisaika vedetty hatusta, refreshtoken pitää implementoida kunnolla myöhemmin
                         authState: {name: userDetails.username}
                     })) {
+                        localStorage.setItem('atoken', res.data.access_token);//purkkaratkaisu kun en muuta keksinyt
                         navigate('/secure');
                     } else {
                         toast.warn("There was some problem with logging in");

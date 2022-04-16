@@ -36,25 +36,16 @@ public class TicketRepositoryTest {
     @Autowired
     private EventRepository er;
 
-    private Ticket ticket;
-
-    @BeforeAll
-    void generateTickets() {
-        TicketType ticketType = ttr.findById((long) 1).get();
-        Ticket newTicket = new Ticket(Long.valueOf(1), "asd", false, null, ticketType, BigDecimal.valueOf(10));
-        ticket = tr.save(newTicket);
-    }
-
     @Test
     void itShouldReturnListWhenFoundByTicketType() {
         TicketType ticketType = ttr.findById((long) 1).get();
-        List<Ticket> tickets = tr.findByTicketType(ticketType);
-        List<Ticket> testing = List.of(ticket);
+        Ticket newTicket = new Ticket(Long.valueOf(1), "asd", false, null, ticketType, BigDecimal.valueOf(10));
+        newTicket = tr.save(newTicket);
 
-        // assertThat(tickets).hasSameElementsAs(testing);
-        assertThat(tickets.size() == testing.size());
-       
-        
+        List<Ticket> tickets = tr.findByTicketType(ticketType);
+        List<Ticket> testing = List.of(newTicket);
+
+        assertThat(tickets).hasSameElementsAs(testing);
     }
 
     @Test
@@ -82,7 +73,7 @@ public class TicketRepositoryTest {
     }
 
     @Test
-    void findTicketTypeByEvent() {
+    void itShouldReturnTicketTypesWhenSearchedWithEvent() {
         Event event = er.findById(Long.valueOf(1)).get();
 
         List<TicketType> searchedTicketTypes = ttr.findByEvent(event);

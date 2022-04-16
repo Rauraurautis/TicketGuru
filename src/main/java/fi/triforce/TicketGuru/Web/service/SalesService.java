@@ -1,11 +1,13 @@
 package fi.triforce.TicketGuru.Web.service;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
 
 import javax.validation.Validator;
@@ -20,10 +22,16 @@ import fi.triforce.TicketGuru.Domain.TicketTypeRepository;
 import fi.triforce.TicketGuru.dto.SalesObject;
 import fi.triforce.TicketGuru.exception.ResourceNotFoundException;
 import fi.triforce.TicketGuru.exception.ValidationException;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import fi.triforce.TicketGuru.Domain.SalesEvent;
 import java.math.BigDecimal;
 
 @Service
+@Transactional
+@AllArgsConstructor
+@NoArgsConstructor
+@Component
 public class SalesService {
 
     @Autowired

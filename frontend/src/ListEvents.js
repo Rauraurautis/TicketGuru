@@ -5,12 +5,12 @@ import { toast } from 'react-toastify';
 import Sales from './pages/Sales'
 
 
-const ListEvents = ({setId}) => {
+const ListEvents = ({setEvent}) => {
     
     const token = localStorage.getItem('atoken');
     const config = { headers: { Authorization : `Bearer ${token}`} };
     const [events, setEvents] = useState([]);
-    //const [id, setId] = useState('');
+
 
     const hook = () => {
         axios.get('http://localhost:8080/api/events', config)
@@ -40,7 +40,7 @@ const ListEvents = ({setId}) => {
                         <td>{event.eventTitle}</td>
                         <td>{event.dateOfEvent}</td>
                         <td>{event.eventVenue.venueName}</td>
-                        <td><button onClick = {() => {setId(event.eventId)}}>Select</button></td>
+                        <td><button onClick = {() => {setEvent(event)}}>Select</button></td>
                     </tr>
                     ))}
                 </tbody>

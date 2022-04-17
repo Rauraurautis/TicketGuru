@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import ListEvent from '../ListEvents'
+import ListEvents from '../ListEvents'
+import TicketSale from '../TicketSale'
 
 const Sales = () => {
-    const [id, setId] = useState('');
+    const [event, setEvent] = useState('');
 
     return (
         <div>
-            <ListEvent setId={setId}/>
-            <p>{id}</p>
+            {event == '' ? <ListEvents setEvent={setEvent}/> : <TicketSale event={event}/>}
         </div>
     )
 }

@@ -68,7 +68,7 @@ public class SalesEventRepositoryTest {
         
         ss.createSale(list);
         ss.createSale(list);
-
+        
         List<SalesEvent> salesEvents = ser.getAllSalesEventsByEvent(Long.valueOf(1));
 
         assertThat(salesEvents).hasSize(2);

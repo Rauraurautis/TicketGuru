@@ -8,7 +8,7 @@ const Sales = () => {
 
     return (
         <div>
-            {event == '' ? <ListEvents setEvent={setEvent}/> : <TicketSale event={event}/>}
+            {event == '' ? <ListEvents setEvent={setEvent}/> : <TicketSale event={event} setEvent={setEvent}/>}
         </div>
     )
 }

@@ -6,12 +6,13 @@ import Sales from './pages/Sales'
 
 
 const ListEvents = ({setEvent}) => {
-    
+    //Access-token
     const token = localStorage.getItem('atoken');
     const config = { headers: { Authorization : `Bearer ${token}`} };
+    //Event-lista
     const [events, setEvents] = useState([]);
 
-
+    //Eventtien haku bäkkäriltä
     const hook = () => {
         axios.get('http://localhost:8080/api/events', config)
         .then(res => {

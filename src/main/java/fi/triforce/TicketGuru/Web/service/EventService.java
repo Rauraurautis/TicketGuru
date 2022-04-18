@@ -42,6 +42,15 @@ public class EventService {
 
     // Event services
 
+    public EventService(EventRepository er, VenueRepository vr, TicketTypeRepository ttr, SalesEventRepository sr,
+            Validator validator) {
+        this.er = er;
+        this.vr = vr;
+        this.ttr = ttr;
+        this.sr = sr;
+        this.validator = validator;
+    }
+
     public List<Event> getAllEvents() {
         return (List<Event>) er.findAll();
     }

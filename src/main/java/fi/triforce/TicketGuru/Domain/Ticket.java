@@ -50,11 +50,41 @@ public class Ticket {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		return false;
-
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ticket other = (Ticket) obj;
+		if (finalPrice == null) {
+			if (other.finalPrice != null)
+				return false;
+		} else if (!finalPrice.equals(other.finalPrice))
+			return false;
+		if (ticketCode == null) {
+			if (other.ticketCode != null)
+				return false;
+		} else if (!ticketCode.equals(other.ticketCode))
+			return false;
+		if (ticketId != other.ticketId)
+			return false;
+		if (ticketSale == null) {
+			if (other.ticketSale != null)
+				return false;
+		} else if (!ticketSale.equals(other.ticketSale))
+			return false;
+		if (ticketType == null) {
+			if (other.ticketType != null)
+				return false;
+		} else if (!ticketType.equals(other.ticketType))
+			return false;
+		if (ticketUsed == null) {
+			if (other.ticketUsed != null)
+				return false;
+		} else if (!ticketUsed.equals(other.ticketUsed))
+			return false;
+		return true;
 	}
 
 }

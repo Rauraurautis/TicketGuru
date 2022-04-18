@@ -7,8 +7,10 @@ import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
   return (
     <AuthProvider
-      authName={"_auth"} authType={"localstorage"}
+      authName={"_auth"} authType={"cookie"}
       //refresh={refreshApi}
+      cookieDomain={window.location.hostname}
+      cookieSecure={window.location.protocol === "https:"}
     >
       <RoutesComponent />
       <ToastContainer />

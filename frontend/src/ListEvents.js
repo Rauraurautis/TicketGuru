@@ -7,8 +7,13 @@ import Sales from './pages/Sales'
 
 const ListEvents = ({setEvent}) => {
     //Access-token
-    const token = localStorage.getItem('atoken');
-    const config = { headers: { Authorization : `Bearer ${token}`} };
+    //const token = localStorage.getItem('atoken');
+    //const config = { headers: { Authorization : `Bearer ${token}`} };
+
+    const config = {
+        withCredentials: true
+    }
+
     //Event-lista
     const [events, setEvents] = useState([]);
 

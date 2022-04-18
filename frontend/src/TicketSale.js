@@ -5,8 +5,12 @@ import { useNavigate } from 'react-router-dom';
 
 const TicketSale = (props) => {
     //Access-token
-    const token = localStorage.getItem('atoken');
-    const config = { headers: { Authorization : `Bearer ${token}`} };
+    //const token = localStorage.getItem('atoken');
+    //const config = { headers: { Authorization : `Bearer ${token}`} };
+
+    const config = {
+        withCredentials: true
+    }
 
     const goBack = useNavigate('./secure');
     

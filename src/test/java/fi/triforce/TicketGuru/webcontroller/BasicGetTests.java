@@ -14,7 +14,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @TestPropertySource(properties = {"spring.main.allow-bean-definition-overriding=true", "server.servlet.context-path=/"})
-public class LoginTest {
+public class BasicGetTests {
 
     /*
         !!!READ BEFORE TESTING!!!   !!!LUE ENNEN TESTAUSTA!!!
@@ -29,6 +29,8 @@ public class LoginTest {
     */
     private String authNameRequired = "insert_user";    //REQUIRED, TARVITAAN
     private String authPassRequired = "insert_psw";    //REQUIRED, TARVITAAN
+    private String authToken;
+    //private String authRefToken;
 
     @LocalServerPort
     private int port;
@@ -36,27 +38,7 @@ public class LoginTest {
     @BeforeEach
     public void setUp() {
         RestAssured.port = port;
-    }
-
-    @Test
-    public void givenLoginURIAndSendingWrongCredPostReq_thenVerifyStatusAndEMessage() {
-        Response response = given()
-                .header("Content-type", "application/json")
-                .and()
-                .body("{\n" +
-                "   \"username\": \"wrongname\",\n" +
-                "   \"password\": \"3059dwrongpass68sdig\" \n}")
-                .post("/login")
-                .then()
-                .extract().response();
-
-        Assertions.assertEquals(400, response.statusCode());
-        Assertions.assertEquals("Missing token or the password / username was false", response.jsonPath().getString("Error"));
-    }
-
-    @Test
-    public void givenLoginURIAndSendingRightAnyTypeCredPostReq_thenVerifyStatus() {
-        Response response = given()
+        Response authResponse = given()
                 .header("Content-type", "application/json")
                 .and()
                 .body("{\n" +
@@ -65,9 +47,25 @@ public class LoginTest {
                 .post("/login")
                 .then()
                 .extract().response();
+        authToken = authResponse.jsonPath().getString("access_token");
+        //authRefToken = authResponse.jsonPath().getString("refresh_token");
+    }
+
+    @Test
+    public void givenBTokenToApiVenuesGetReq_thenVerifyStatus() {
+        Response response = given()
+                .headers(
+                    "Authorization",
+                    "Bearer " + authToken,
+                    "Content-Type", "application/json",
+                    "Accept",
+                    "application/json")
+                .get("/api/venues")
+                .then()
+                .extract().response();
 
         Assertions.assertEquals(200, response.statusCode());
-        Assertions.assertNotNull(response.jsonPath().getString("access_token"));
-        Assertions.assertNotNull(response.jsonPath().getString("refresh_token"));
+        Assertions.assertNotNull(response.jsonPath().getString("venueName"));
     }
+
 }

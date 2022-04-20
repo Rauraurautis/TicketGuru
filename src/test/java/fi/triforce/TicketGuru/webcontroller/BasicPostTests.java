@@ -84,4 +84,34 @@ public class BasicPostTests {
         Assertions.assertEquals("Canada", response.jsonPath().getString("venueCity"));
         
     }
+
+    @Test
+    public void givenNewSale2ParamsJsonListBodyToApiSalesWithAdminTypeCredPostReg_thenVerifyStatusAndJsonResp() {
+
+        Response response = given()
+        .headers(
+            "Authorization",
+            "Bearer " + authToken,
+            "Content-Type", "application/json",
+            "Accept",
+            "application/json")
+        .contentType(ContentType.JSON)
+        .body("[\n" +
+        "   {\n" +
+        "      \"ticketTypeId\": \"" + 2 + "\",\n" +
+        "      \"nrOfTickets\": \"" + 1 + "\" \n" +
+        "   }\n" +
+        "]")
+        .when()
+        .post("/api/sales")
+        .then()
+        .extract().response();
+
+        Assertions.assertEquals(201, response.statusCode());
+        Assertions.assertNotNull(response.jsonPath().getString("salesEventId"));
+        
+    }
 }
+
+
+

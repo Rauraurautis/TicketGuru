@@ -3,6 +3,7 @@ import { useAuthHeader } from 'react-auth-kit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Sales from './pages/Sales'
+import { Table, Button } from 'react-bootstrap'
 
 
 const ListEvents = ({setEvent}) => {
@@ -31,8 +32,8 @@ const ListEvents = ({setEvent}) => {
 
     return (
         <div>
-            <table>
-                <caption>Select event:</caption>
+            <h3>Select event:</h3>
+            <Table striped bordered hover>
                 <thead>
                     <tr>
                     <th>Name</th>
@@ -46,11 +47,11 @@ const ListEvents = ({setEvent}) => {
                         <td>{event.eventTitle}</td>
                         <td>{event.dateOfEvent}</td>
                         <td>{event.eventVenue.venueName}</td>
-                        <td><button onClick = {() => {setEvent(event)}}>Select</button></td>
+                        <td><Button onClick = {() => {setEvent(event)}}>Select</Button></td>
                     </tr>
                     ))}
                 </tbody>
-            </table>
+            </Table>
         </div>
     );
     

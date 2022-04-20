@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuthUser, useIsAuthenticated, useSignIn } from 'react-auth-kit';
 import { toast } from 'react-toastify';
+import { Form, Button } from 'react-bootstrap'
+
 
 const Login = () => {
 
@@ -24,7 +26,7 @@ const Login = () => {
                     if (signIn({
                         token: res.data.access_token,
                         //tokenType: 'Bearer',
-                        expiresIn: 10, //raukeamisaika vedetty hatusta, refreshtoken pitää implementoida kunnolla myöhemmin
+                        expiresIn: 20, //raukeamisaika vedetty hatusta, refreshtoken pitää implementoida kunnolla myöhemmin
                         authState: {name: userDetails.username}
                     })) {
                         localStorage.setItem('atoken', res.data.access_token);//purkkaratkaisu kun en muuta keksinyt
@@ -46,17 +48,21 @@ const Login = () => {
     } else {
         return (
             <div>
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        Username:
-                        <input type="text" value={userDetails.username} name="username" onChange={handleChange} />
-                    </label>
-                    <label>
-                        Password:
-                        <input type="text" value={userDetails.password} name="password" onChange={handleChange} />
-                    </label>
-                    <input type="submit" value="Submit" />
-                </form>
+                <h2></h2>
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group>
+                        <Form.Label>Username:</Form.Label>
+                        <Form.Control type="text" placeholder="Type your username" value={userDetails.username} name="username" onChange={handleChange}/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Password:</Form.Label>
+                        <Form.Control type="text" placeholder="Type your password" value={userDetails.password} name="password" onChange={handleChange}/>
+                    </Form.Group>
+                    <p></p>
+                    <Button variant="primary" type="submit">
+                        Submit
+                    </Button>
+                </Form>
             </div>
         );
     }

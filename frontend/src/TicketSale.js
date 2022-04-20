@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Sales from './pages/Sales'
 import { useNavigate } from 'react-router-dom';
+import { Form, Button } from 'react-bootstrap'
+import { toast } from 'react-toastify';
 
 const TicketSale = (props) => {
     //Access-token
@@ -41,6 +43,9 @@ const TicketSale = (props) => {
 
     //Laskee kokonaishinnan ruudulle
     const countTotalPrice = () => {
+        if(salesObject.ticketTypeId == 'Open to select' || salesObject.ticketTypeId == '') {
+            toast.warn('You must choose a tickettype first')
+        }
         const index = listOfTT.findIndex(tt => {
             return tt.ticketTypeId == salesObject.ticketTypeId;
         });
@@ -72,46 +77,46 @@ const TicketSale = (props) => {
     return (
         <div>
             <h2>{props.event.eventTitle}, {props.event.dateOfEvent}</h2>
-            <form onSubmit={handleSubmit}>
-                <label>
-                Select a tickettype:
-                <select value={salesObject.ticketTypeId} name="ticketTypeId" onChange={handleChange}>
-                    <option>Empty</option>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group>
+                <Form.Label>Select a tickettype:</Form.Label>
+                <Form.Select value={salesObject.ticketTypeId} name="ticketTypeId" onChange={handleChange}>
+                    <option>Open to select</option>
                     {listOfTT.map(tt =>(
                         <option value={tt.ticketTypeId}>{tt.ticketTypeDescription}, {tt.price}€</option>
                     ))}
-                </select>
-                </label>
+                </Form.Select>
+                </Form.Group>
                 <p></p>
-                <label>
-                Number of tickets:
-                <input type="text" value={salesObject.nrOfTickets} name="nrOfTickets" onChange={handleChange}></input>
-                </label>
+                <Form.Group>
+                    <Form.Label>Number of tickets:</Form.Label>
+                    <Form.Control type="number" value={salesObject.nrOfTickets} name="nrOfTickets" onChange={handleChange}/>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Number of discounted tickets:</Form.Label>
+                    <Form.Control type="text" value={salesObject.nrOfDiscounted} name="nrOfDiscounted" onChange={handleChange}/>
+                </Form.Group>
                 <p></p>
-                <label>
-                Number of discounted tickets:
-                <input type="text" value={salesObject.nrOfDiscounted} name="nrOfDiscounted" onChange={handleChange}></input>
-                </label>
+                <Form.Group>
+                    <Form.Label>Discount percentage as decimal(i.e. 0.5 for 50%):</Form.Label>
+                    <Form.Control type="text" value={salesObject.discountPercentage} name="discountPercentage" onChange={handleChange}/>
+                </Form.Group>
                 <p></p>
-                <label>
-                Discount percentage as decimal(i.e. 0.5 for 50%):
-                <input type="text" value={salesObject.discountPercentage} name="discountPercentage" onChange={handleChange}></input>
-                </label>
                 {totalPrice !== '' &&
                     <div>Total price:{totalPrice}€</div>
                 }
                 <p></p>
-                <button type="button" onClick={() => countTotalPrice()}>Check sum total</button>
+                <Button type="button" onClick={() => countTotalPrice()}>Check sum total</Button>
                 <p></p>
                 {totalPrice !== '' &&
-                    <input type="submit" value="Confirm purchase"/>
+                    <Button type="submit">Confirm purchase</Button>
                 }
                 
                 
                 
-            </form>
-            
-            <button onClick = { () => props.setEvent('')}>Cancel</button>
+            </Form>
+            <p></p>
+            <Button onClick = { () => props.setEvent('')}>Cancel</Button>
         </div>
     )
 

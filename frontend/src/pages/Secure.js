@@ -4,6 +4,7 @@
 import React from 'react'
 import { useAuthUser, useSignOut } from 'react-auth-kit';
 import { useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap'
 
 const Secure = () => {
     const signOut = useSignOut();
@@ -12,9 +13,10 @@ const Secure = () => {
 
     return (
         <div>
-            <p>Hello {authUser().name}! Welcome to TicketGuru!</p>
-            <button onClick={() => navigate('/sales')}>Sell tickets</button>
-            <button onClick={() => signOut()}>Sign Out!</button>
+            <h2>Hello {authUser().name}! Welcome to TicketGuru!</h2>
+            <Button size="lg" onClick={() => navigate('/sales')}>Sell tickets</Button>
+            {' '}
+            <Button size="lg" onClick={() => signOut()}>Sign Out!</Button>
         </div>
     )
 };

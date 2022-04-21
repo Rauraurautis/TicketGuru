@@ -11,9 +11,12 @@ import fi.triforce.TicketGuru.Domain.TicketTypeRepository;
 import fi.triforce.TicketGuru.exception.NotFoundException;
 import fi.triforce.TicketGuru.exception.ResourceNotFoundException;
 import fi.triforce.TicketGuru.exception.TicketUsedException;
+import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class TicketService {
     @Autowired
     private EventRepository er;

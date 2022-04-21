@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -44,10 +45,25 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } else {
             System.out.println(tokenSecret);
-            String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            //alustetaan merkkijono tokenia varten
+            String token = "";            
+            // yritetään ottaa tokeni cookiesta
+            Cookie[] cookies = request.getCookies();
+            Map<String, Cookie> cookieMap = new HashMap<>();
+            if (cookies != null) {
+            	for (Cookie cookie: cookies) {
+            		cookieMap.put(cookie.getName(), cookie);
+            	}
+            }
+            if (cookieMap.containsKey("_auth")) {
+            	token = cookieMap.get("_auth").getValue();
+            } else {
+            	// jos ei löydy cookiesta, otetaan headeristä
+            	token = request.getHeader(HttpHeaders.AUTHORIZATION);
+            	token = token.substring("Bearer ".length());
+            }
+            if (token != "") {
                 try {
-                    String token = authorizationHeader.substring("Bearer ".length());
                     Algorithm algorithm = Algorithm.HMAC256(tokenSecret.getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(token);

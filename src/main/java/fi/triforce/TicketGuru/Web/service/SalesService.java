@@ -21,9 +21,11 @@ import fi.triforce.TicketGuru.Domain.TicketType;
 import fi.triforce.TicketGuru.Domain.TicketTypeRepository;
 import fi.triforce.TicketGuru.dto.SalesObject;
 import fi.triforce.TicketGuru.exception.ResourceNotFoundException;
+import fi.triforce.TicketGuru.exception.TooManyTicketsException;
 import fi.triforce.TicketGuru.exception.ValidationException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import fi.triforce.TicketGuru.Domain.Event;
 import fi.triforce.TicketGuru.Domain.SalesEvent;
 import java.math.BigDecimal;
 
@@ -49,6 +51,7 @@ public class SalesService {
     private int discountTicketsLeft;
 
     public SalesEvent createSale(List<SalesObject> sale) {
+
         for (SalesObject s : sale) {
             Set<ConstraintViolation<SalesObject>> result = validator.validate(s);
             if (!result.isEmpty()) {
@@ -63,13 +66,15 @@ public class SalesService {
     }
 
     private SalesEvent createTicketsFromSalesObjects(List<SalesObject> sale) throws ResourceNotFoundException {
-        SalesEvent newSale = sr.save(new SalesEvent());
+        SalesEvent newSale = new SalesEvent();
+        int totalNumberOfTicketsSold = 0;
         for (int i = 0; i < sale.size(); i++) {
             SalesObject salesObject = sale.get(i);
             TicketType tt = ttr.findById(salesObject.getTicketTypeId())
                     .orElseThrow(() -> new ResourceNotFoundException(
                             "Cannot find a tickettype with the id " + salesObject.getTicketTypeId()));
-
+            List<Ticket> ticketsSoldWithTicketType = tr.findByTicketType(tt);
+            totalNumberOfTicketsSold += ticketsSoldWithTicketType.size();
             discountTicketsLeft = salesObject.getNrOfDiscounted();
 
             for (int o = 0; o < salesObject.getNrOfTickets(); o++) {
@@ -83,6 +88,12 @@ public class SalesService {
                 } else {
                     ticket.setFinalPrice(tt.getPrice());
                 }
+                Event event = tt.getEvent();
+                Long eventMaxTickets = event.getNumberOfTickets();
+                if (totalNumberOfTicketsSold > eventMaxTickets) {
+                    throw new TooManyTicketsException("This sale exceeds the max amount of tickets allowed for the event (" + eventMaxTickets + ")");
+                }
+                sr.save(newSale);
                 ticket.generateTicketCode();
                 newSale.addTicket(ticket);
                 tr.save(ticket);

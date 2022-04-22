@@ -29,15 +29,14 @@ import fi.triforce.TicketGuru.Domain.TicketType;
 import fi.triforce.TicketGuru.Domain.TicketTypeRepository;
 import fi.triforce.TicketGuru.Web.service.SalesService;
 import fi.triforce.TicketGuru.dto.SalesObject;
+import fi.triforce.TicketGuru.exception.TooManyTicketsException;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
-
-@ExtendWith(MockitoExtension.class)
-@DataJpaTest
-public class SalesEventRepositoryTest {
-
+@SpringBootTest
+public class SalesServiceTest {
     @Autowired
     private TicketTypeRepository ttr;
     @Autowired
@@ -56,19 +55,22 @@ public class SalesEventRepositoryTest {
     }
 
     @Test
-    void itShouldReturnSalesEventsWhenSearchedByEvent() {
-        TicketType ticketType = new TicketType("Aikuinen", BigDecimal.valueOf(10));
-        ticketType = ttr.save(ticketType);
-
-        SalesObject salesObject = new SalesObject((long) 1, 5, 0, BigDecimal.valueOf(10));
-        SalesObject salesObjectTwo = new SalesObject((long) 1, 3, 0, BigDecimal.valueOf(10));
+    void creatingSaleCreatesSale() {
+        TicketType tt = ttr.findById((long) 1).get();
+        SalesObject salesObject = new SalesObject(tt.getTicketTypeId(), 5, 0, BigDecimal.valueOf(10));
+        SalesObject salesObjectTwo = new SalesObject(tt.getTicketTypeId(), 3, 0, BigDecimal.valueOf(10));
         List<SalesObject> list = List.of(salesObject, salesObjectTwo);
-        
-        ss.createSale(list);
-        ss.createSale(list);
-        
-        List<SalesEvent> salesEvents = ser.getAllSalesEventsByEvent(Long.valueOf(1));
 
-        assertThat(salesEvents).hasSize(2);
+        assertThat(ss.createSale(list).getClass()).isEqualTo(SalesEvent.class);
+    }
+
+    @Test
+    void creatingSaleWithTooManyTicketsFailsToCreateSale() {
+        TicketType tt = ttr.findById((long) 1).get();
+        SalesObject salesObject = new SalesObject(tt.getTicketTypeId(), 5, 0, BigDecimal.valueOf(10));
+        SalesObject salesObjectTwo = new SalesObject(tt.getTicketTypeId(), 4000, 0, BigDecimal.valueOf(10));
+        List<SalesObject> list = List.of(salesObject, salesObjectTwo);
+
+        assertThatThrownBy(() -> { ss.createSale(list);}).isInstanceOf(TooManyTicketsException.class);
     }
 }

@@ -12,32 +12,35 @@ import org.springframework.test.context.TestPropertySource;
 import static io.restassured.RestAssured.given;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
+import java.util.Scanner;
+
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @TestPropertySource(properties = {"spring.main.allow-bean-definition-overriding=true", "server.servlet.context-path=/"})
 public class BasicGetTests {
 
     /*
-        !!!READ BEFORE TESTING!!!   !!!LUE ENNEN TESTAUSTA!!!
-        
-        Some of the tests here are not fully automated and require functioning credentials in the test environment to PASS. Get the required credentials from management.
-        Some tests require specific user privileges. Read the test name/description.
-        Kaikki testit eivät ole täysin automatisoituja ja tarvitsevat toimivan käyttäjä/salasanayhdistelmän, jotta testeistä saadaan PASS. Tarkasta tarvittavat kredentiaalit.
-        Jotkut testit vaativat tiettyjä käyttäjäoikeuksia. Lue testin nimi/kuvaus.
-
-        ALWAYS REMOVE REAL AUTHNAME AND AUTHPASS AFTER TESTING IF UPLOADING TO A REPO!
-        HÄVITÄ AINA KAIKKI AIDOT AUTENTIKOINTI-KÄYTTÄJÄNIMET JA -SALASANAT JOS PUSHAAT YLÄVIRTAAN!
+    TESTI KYSYY AJOSSA KONSOLISSA KÄYTTÄJÄTUNNUKSIA. ÄLÄ KIRJOITA NIITÄ KOODIIN. TESTAUSYMPÄRISTÖNÄ TOIMII ECLIPSE IDE. KAIKKI IDE:T EIVÄT VÄLTTÄMÄTTÄ SALLI TESTISSÄ KONSOLIIN KIRJOITTAMISTA.
     */
-    private String authNameRequired = "insert_user";    //REQUIRED, TARVITAAN
-    private String authPassRequired = "insert_psw";    //REQUIRED, TARVITAAN
+	
+    private String authNameRequired;
+    private String authPassRequired;
     private String authToken;
     //private String authRefToken;
 
     @LocalServerPort
     private int port;
-
+    public void GetCredentialsInConsole() {
+    	Scanner inputScanner = new Scanner(System.in);
+    	System.out.println("anna auth nimi");
+    	authNameRequired = inputScanner.nextLine();
+    	System.out.println("anna auth salasana");
+    	authPassRequired = inputScanner.nextLine();
+    	inputScanner.close();
+    }
     @BeforeEach
     public void setUp() {
         RestAssured.port = port;
+    	GetCredentialsInConsole();
         Response authResponse = given()
                 .header("Content-type", "application/json")
                 .and()

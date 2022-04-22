@@ -24,7 +24,6 @@ import fi.triforce.TicketGuru.Domain.TicketTypeRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TicketRepositoryTest {
 
     @Autowired

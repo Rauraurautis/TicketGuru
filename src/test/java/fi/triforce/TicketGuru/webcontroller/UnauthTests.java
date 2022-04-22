@@ -15,6 +15,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @TestPropertySource(properties = {"server.servlet.context-path=/"})
@@ -25,24 +26,24 @@ public class UnauthTests {
         These tests are here so we can be sure that users with bad credentials or bad intent are stopped from doing what they're trying to do.
         Nämä testit ovat sitä varten, jotta voidaan olla varmoja, että kun väärä käyttäjä pyrkii pääsemään häneltä kiellettyyn resurssiin tavalla tai toisella, niin hänet estetään.
     */
+	
     /*
-    !!!READ BEFORE TESTING!!!   !!!LUE ENNEN TESTAUSTA!!!
-        
-        Some of the tests here are not fully automated and require functioning credentials in the test environment to PASS. Get the required credentials from management.
-        Some tests require specific user privileges. Read the test name/description.
-        Kaikki testit eivät ole täysin automatisoituja ja tarvitsevat toimivan käyttäjä/salasanayhdistelmän, jotta testeistä saadaan PASS. Tarkasta tarvittavat kredentiaalit.
-        Jotkut testit vaativat tiettyjä käyttäjäoikeuksia. Lue testin nimi/kuvaus.
-
-        ALWAYS REMOVE REAL AUTHNAME AND AUTHPASS AFTER TESTING IF UPLOADING TO A REPO!
-        HÄVITÄ AINA KAIKKI AIDOT AUTENTIKOINTI-KÄYTTÄJÄNIMET JA -SALASANAT JOS PUSHAAT YLÄVIRTAAN!
+    TESTI KYSYY AJOSSA KONSOLISSA KÄYTTÄJÄTUNNUKSIA. ÄLÄ KIRJOITA NIITÄ KOODIIN. TESTAUSYMPÄRISTÖNÄ TOIMII ECLIPSE IDE. KAIKKI IDE:T EIVÄT VÄLTTÄMÄTTÄ SALLI TESTISSÄ KONSOLIIN KIRJOITTAMISTA.
     */
 
-    private String ticketInspectorAuthNameRequired = "insert_ticketinspectoruser";    //REQUIRED, TARVITAAN
-    private String ticketInspectorAuthPassRequired = "insert_ticketinspectorpsw";    //REQUIRED, TARVITAAN
+    private String ticketInspectorAuthNameRequired = "insert_ticketinspectoruser";
+    private String ticketInspectorAuthPassRequired = "insert_ticketinspectorpsw";
     private String authToken;
 
     @LocalServerPort
     private int port;
+    public void GetCredentialsInConsole() {
+    	Scanner inputScanner = new Scanner(System.in);
+    	System.out.println("anna auth nimi TicketInspector roolilla");
+    	ticketInspectorAuthNameRequired = inputScanner.nextLine();
+    	System.out.println("anna auth salasana TicketInscpector roolilla");
+    	ticketInspectorAuthPassRequired = inputScanner.nextLine();	
+    }
 
     @BeforeEach
     public void setUp() {
@@ -95,6 +96,7 @@ public class UnauthTests {
 
     @Test
     public void givenApiEventsIdWithWrongCredTypeDeleteReg_thenVerifyStatusAndJsonResp() {  //TEST NEEDS TICKETINSPECTOR-TYPE CREDENTIALS TO BE OF ANY USE; TESTI TARVITSEE LIPUNMYYJÄN KREDENTIAALIT OLLAKSEEN HYÖDYLLINEN
+    	GetCredentialsInConsole();
         Response authResponse = given()
                 .header("Content-type", "application/json")
                 .and()

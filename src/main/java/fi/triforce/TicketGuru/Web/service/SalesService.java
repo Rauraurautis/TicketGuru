@@ -4,7 +4,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -67,14 +69,28 @@ public class SalesService {
 
     private SalesEvent createTicketsFromSalesObjects(List<SalesObject> sale) throws ResourceNotFoundException {
         SalesEvent newSale = new SalesEvent();
-        int totalNumberOfTicketsSold = 0;
+        Map<String, Integer> eventTicketsSold = new HashMap();
         for (int i = 0; i < sale.size(); i++) {
             SalesObject salesObject = sale.get(i);
             TicketType tt = ttr.findById(salesObject.getTicketTypeId())
                     .orElseThrow(() -> new ResourceNotFoundException(
                             "Cannot find a tickettype with the id " + salesObject.getTicketTypeId()));
+            // Ticketin määrän tarkistus, heittää errorin jos menee pieleen
+            Event event = tt.getEvent();
+            Long eventMaxTickets = event.getNumberOfTickets();
+            String eventTitle = event.getEventTitle();
+            eventTicketsSold.putIfAbsent(eventTitle, 0);
             List<Ticket> ticketsSoldWithTicketType = tr.findByTicketType(tt);
-            totalNumberOfTicketsSold += ticketsSoldWithTicketType.size();
+            eventTicketsSold.put(eventTitle, eventTicketsSold.get(eventTitle)
+                    + (salesObject.getNrOfTickets() + ticketsSoldWithTicketType.size()));
+            if (eventTicketsSold.get(eventTitle) > eventMaxTickets) {
+                throw new TooManyTicketsException(
+                        "This sale exceeds the max amount of tickets allowed for the event + " + eventTitle + " ("
+                                + eventMaxTickets + " tickets max, exceeding by " + (eventTicketsSold.get(eventTitle) - eventMaxTickets) + " tickets)");
+      
+            }
+            // Tarkistus päättyy
+            discountTicketsLeft = salesObject.getNrOfDiscounted();
             discountTicketsLeft = salesObject.getNrOfDiscounted();
 
             for (int o = 0; o < salesObject.getNrOfTickets(); o++) {
@@ -87,11 +103,6 @@ public class SalesService {
                     ticket.setFinalPrice(tt.getPrice().multiply(BigDecimal.valueOf(1).subtract(salesObject.getDiscountPercentage())));  //bigDecimal tarvitsee oman laskutoimitussyntaksin. +,-,*,/ eivät käy.
                 } else {
                     ticket.setFinalPrice(tt.getPrice());
-                }
-                Event event = tt.getEvent();
-                Long eventMaxTickets = event.getNumberOfTickets();
-                if (totalNumberOfTicketsSold > eventMaxTickets) {
-                    throw new TooManyTicketsException("This sale exceeds the max amount of tickets allowed for the event (" + eventMaxTickets + ")");
                 }
                 sr.save(newSale);
                 ticket.generateTicketCode();

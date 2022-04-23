@@ -7,10 +7,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.transaction.Transactional;
-import javax.validation.ConstraintViolation;
 
 import javax.validation.Validator;
 
@@ -24,7 +22,7 @@ import fi.triforce.TicketGuru.Domain.TicketTypeRepository;
 import fi.triforce.TicketGuru.dto.SalesObject;
 import fi.triforce.TicketGuru.exception.ResourceNotFoundException;
 import fi.triforce.TicketGuru.exception.TooManyTicketsException;
-import fi.triforce.TicketGuru.exception.ValidationException;
+import fi.triforce.TicketGuru.utils.EntityValidation;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import fi.triforce.TicketGuru.Domain.Event;
@@ -55,13 +53,7 @@ public class SalesService {
     public SalesEvent createSale(List<SalesObject> sale) {
 
         for (SalesObject s : sale) {
-            Set<ConstraintViolation<SalesObject>> result = validator.validate(s);
-            if (!result.isEmpty()) {
-                String errorMsg = result.toString();
-                String[] splitMsg = errorMsg.split("=");
-                String propertyName = splitMsg[2].split(",")[0] + " " + splitMsg[1].split(",")[0].replace("'", "");
-                throw new ValidationException(propertyName);
-            }
+            EntityValidation.validateEntity(validator, s);
         }
         SalesEvent receipt = createTicketsFromSalesObjects(sale);
         return receipt;
@@ -86,8 +78,9 @@ public class SalesService {
             if (eventTicketsSold.get(eventTitle) > eventMaxTickets) {
                 throw new TooManyTicketsException(
                         "This sale exceeds the max amount of tickets allowed for the event + " + eventTitle + " ("
-                                + eventMaxTickets + " tickets max, exceeding by " + (eventTicketsSold.get(eventTitle) - eventMaxTickets) + " tickets)");
-      
+                                + eventMaxTickets + " tickets max, exceeding by "
+                                + (eventTicketsSold.get(eventTitle) - eventMaxTickets) + " tickets)");
+
             }
             // Tarkistus päättyy
             discountTicketsLeft = salesObject.getNrOfDiscounted();
@@ -100,7 +93,14 @@ public class SalesService {
                 ticket.setTicketUsed(false);
                 if (discountTicketsLeft > 0) {
                     discountTicketsLeft--;
-                    ticket.setFinalPrice(tt.getPrice().multiply(BigDecimal.valueOf(1).subtract(salesObject.getDiscountPercentage())));  //bigDecimal tarvitsee oman laskutoimitussyntaksin. +,-,*,/ eivät käy.
+                    ticket.setFinalPrice(tt.getPrice()
+                            .multiply(BigDecimal.valueOf(1).subtract(salesObject.getDiscountPercentage()))); // bigDecimal
+                                                                                                             // tarvitsee
+                                                                                                             // oman
+                                                                                                             // laskutoimitussyntaksin.
+                                                                                                             // +,-,*,/
+                                                                                                             // eivät
+                                                                                                             // käy.
                 } else {
                     ticket.setFinalPrice(tt.getPrice());
                 }

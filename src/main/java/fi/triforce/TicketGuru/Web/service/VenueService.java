@@ -4,15 +4,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import fi.triforce.TicketGuru.Domain.Venue;
 import fi.triforce.TicketGuru.Domain.VenueRepository;
 import fi.triforce.TicketGuru.exception.ResourceNotFoundException;
-import fi.triforce.TicketGuru.exception.ValidationException;
+import fi.triforce.TicketGuru.utils.EntityValidation;
 import fi.triforce.TicketGuru.utils.ReturnMsg;
 
 @Service
@@ -35,13 +33,7 @@ public class VenueService {
     }
 
     public Venue postVenue(Venue venue) {
-        Set<ConstraintViolation<Venue>> result = validator.validate(venue);
-        if (!result.isEmpty()) {
-            String errorMsg = result.toString();
-            String[] splitMsg = errorMsg.split("=");
-            String propertyName = splitMsg[2].split(",")[0] + " " + splitMsg[1].split(",")[0].replace("'", "");
-            throw new ValidationException(propertyName);
-        }
+        EntityValidation.validateEntity(validator, venue);
         return vr.save(venue);
     }
 
@@ -55,13 +47,7 @@ public class VenueService {
     public Venue updateVenue(Long venueId, Venue editedVenue) {
         Venue venue = vr.findById(venueId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cannot find a venue with the id " + venueId));
-        Set<ConstraintViolation<Venue>> result = validator.validate(editedVenue);
-        if (!result.isEmpty()) {
-            String errorMsg = result.toString();
-            String[] splitMsg = errorMsg.split("=");
-            String propertyName = splitMsg[2].split(",")[0] + " " + splitMsg[1].split(",")[0].replace("'", "");
-            throw new ValidationException(propertyName);
-        }
+        EntityValidation.validateEntity(validator, editedVenue);
         venue.setVenueName(editedVenue.getVenueName());
         venue.setVenueAddress(editedVenue.getVenueAddress());
         venue.setVenueCity(editedVenue.getVenueCity());

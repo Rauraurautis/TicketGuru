@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.management.relation.RoleNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,7 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -89,6 +90,11 @@ public class UserRestController {
     public ResponseEntity<Role> addRoleToUser(@RequestBody RoleToUserForm form) {
         us.addRoleToUser(form.getUsername(), form.getRoleName());
         return ResponseEntity.ok().build();
+    }
+    
+    @DeleteMapping("/role/removefromuser")
+    public ResponseEntity<?> removeRoleFromUser(@RequestBody RoleToUserForm form) {
+    	return ResponseEntity.ok(us.removeRoleFromUser(form.getUsername(), form.getRoleName()));
     }
 
     @GetMapping("/token/refresh")

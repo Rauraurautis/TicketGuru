@@ -88,5 +88,21 @@ public class UserService implements UserDetailsService {
         log.info("Fetching users");
         return ur.findAll();
     }
+    
+    public HashMap<String, String> removeRoleFromUser(String username, String roleName) {
+    	User user = ur.findByUsername(username);
+    	if (user == null) {
+            log.error("User not found in the database");
+            throw new ResourceNotFoundException("User not found in the database");
+        }
+    	Role role = rr.findByName(roleName);
+    	if(role == null) {
+    		log.error("Role not found in the database");
+    		throw new ResourceNotFoundException("Role not found in the database");
+    	}
+    	user.getRoles().remove(role);
+    	ur.save(user);
+    	return new ReturnMsg("Deleted role " + roleName + " from user " + username).getReturnMsg();
+    }
 
 }

@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,9 +16,10 @@ import fi.triforce.TicketGuru.Domain.TicketTypeRepository;
 import fi.triforce.TicketGuru.Domain.Venue;
 import fi.triforce.TicketGuru.Domain.VenueRepository;
 import fi.triforce.TicketGuru.exception.ResourceNotFoundException;
-import fi.triforce.TicketGuru.exception.ValidationException;
-import javax.validation.ConstraintViolation;
+
 import javax.validation.Validator;
+
+import fi.triforce.TicketGuru.utils.EntityValidation;
 import fi.triforce.TicketGuru.utils.ReturnMsg;
 
 @Service
@@ -42,6 +42,15 @@ public class EventService {
 
     // Event services
 
+    public EventService(EventRepository er, VenueRepository vr, TicketTypeRepository ttr, SalesEventRepository sr,
+            Validator validator) {
+        this.er = er;
+        this.vr = vr;
+        this.ttr = ttr;
+        this.sr = sr;
+        this.validator = validator;
+    }
+
     public List<Event> getAllEvents() {
         return (List<Event>) er.findAll();
     }
@@ -53,13 +62,7 @@ public class EventService {
     }
 
     public Event addEvent(Event event) {
-        Set<ConstraintViolation<Event>> result = validator.validate(event);
-        if (!result.isEmpty()) {
-            String errorMsg = result.toString();
-            String[] splitMsg = errorMsg.split("=");
-            String propertyName = splitMsg[2].split(",")[0] + " " + splitMsg[1].split(",")[0].replace("'", "");
-            throw new ValidationException(propertyName);
-        }
+        EntityValidation.validateEntity(validator, event);
         if (event.getEventVenue() != null) {
             Long venueId = event.getEventVenue().getVenueId();
             Venue venue = vr.findById(venueId)
@@ -79,13 +82,7 @@ public class EventService {
     public Event updateEvent(Long id, Event newEvent) {
         Event event = er.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + id));
-        Set<ConstraintViolation<Event>> result = validator.validate(newEvent);
-        if (!result.isEmpty()) {
-            String errorMsg = result.toString();
-            String[] splitMsg = errorMsg.split("=");
-            String propertyName = splitMsg[2].split(",")[0] + " " + splitMsg[1].split(",")[0].replace("'", "");
-            throw new ValidationException(propertyName);
-        }
+        EntityValidation.validateEntity(validator, newEvent);
         if (newEvent.getEventVenue() != null) {
             Long venueId = newEvent.getEventVenue().getVenueId();
             Venue venue = vr.findById(venueId)
@@ -118,19 +115,10 @@ public class EventService {
     public TicketType addTicketType(Long eventId, TicketType newType) {
         Event event = er.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cannot find an event with the id " + eventId));
-        Set<ConstraintViolation<TicketType>> result = validator.validate(newType); // tästä alkavan snippetin vois
-                                                                                   // melkeen muuttaa omaks funktioks,
-                                                                                   // koska yleiskäyttönen
-        if (!result.isEmpty()) {
-            String errorMsg = result.toString();
-            String[] splitMsg = errorMsg.split("=");
-            String propertyName = splitMsg[2].split(",")[0] + " " + splitMsg[1].split(",")[0].replace("'", "");
-            throw new ValidationException(propertyName);
-        }
+        EntityValidation.validateEntity(validator, newType);
         newType.setEvent(event);
         return ttr.save(newType);
     }
-
 
     public HashMap<String, String> deleteTicketType(Long eventId, Long ttId) {
         er.findById(eventId)
@@ -148,13 +136,7 @@ public class EventService {
         TicketType ticketType = ttr.findById(ttId)
                 .orElseThrow(
                         () -> new ResourceNotFoundException("Cannot find a tickettype with the id " + ttId));
-        Set<ConstraintViolation<TicketType>> result = validator.validate(newType);
-        if (!result.isEmpty()) {
-            String errorMsg = result.toString();
-            String[] splitMsg = errorMsg.split("=");
-            String propertyName = splitMsg[2].split(",")[0] + " " + splitMsg[1].split(",")[0].replace("'", "");
-            throw new ValidationException(propertyName);
-        }
+        EntityValidation.validateEntity(validator, newType);
         ticketType.setPrice(newType.getPrice());
         ticketType.setTicketTypeDescription(newType.getTicketTypeDescription());
         return ttr.save(ticketType);

@@ -54,6 +54,11 @@ public class Event {
 	@JsonIgnoreProperties("event") // Pysäyttää infinite loopin jsonissa
 	private List<TicketType> ticketTypes;
 
+	public Event(@NotBlank String eventTitle, @PositiveOrZero Long numberOfTickets) {
+		this.eventTitle = eventTitle;
+		this.numberOfTickets = numberOfTickets;
+	}
+
 	@Override
 	public String toString() {
 		return "Event [eventID=" + eventId + ", eventTitle=" + eventTitle + ", eventDescription=" + eventDescription

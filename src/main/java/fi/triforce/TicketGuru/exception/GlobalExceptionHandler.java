@@ -56,4 +56,12 @@ public class GlobalExceptionHandler {
                 exception.getMessage());
         return new ResponseEntity<>(errorDetails, httpStatus);
     }
+
+    @ExceptionHandler({ TooManyTicketsException.class })
+    public ResponseEntity<?> TooManyTicketsExceptionHandler(TooManyTicketsException exception) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), httpStatus,
+                exception.getMessage());
+        return new ResponseEntity<>(errorDetails, httpStatus);
+    }
 }

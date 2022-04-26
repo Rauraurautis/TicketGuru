@@ -1,12 +1,14 @@
 package fi.triforce.TicketGuru.Web.service;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
-import javax.validation.ConstraintViolation;
+import javax.transaction.Transactional;
 
 import javax.validation.Validator;
 
@@ -19,11 +21,19 @@ import fi.triforce.TicketGuru.Domain.TicketType;
 import fi.triforce.TicketGuru.Domain.TicketTypeRepository;
 import fi.triforce.TicketGuru.dto.SalesObject;
 import fi.triforce.TicketGuru.exception.ResourceNotFoundException;
-import fi.triforce.TicketGuru.exception.ValidationException;
+import fi.triforce.TicketGuru.exception.TooManyTicketsException;
+import fi.triforce.TicketGuru.utils.EntityValidation;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import fi.triforce.TicketGuru.Domain.Event;
 import fi.triforce.TicketGuru.Domain.SalesEvent;
 import java.math.BigDecimal;
 
 @Service
+@Transactional
+@AllArgsConstructor
+@NoArgsConstructor
+@Component
 public class SalesService {
 
     @Autowired
@@ -41,27 +51,39 @@ public class SalesService {
     private int discountTicketsLeft;
 
     public SalesEvent createSale(List<SalesObject> sale) {
+
         for (SalesObject s : sale) {
-            Set<ConstraintViolation<SalesObject>> result = validator.validate(s);
-            if (!result.isEmpty()) {
-                String errorMsg = result.toString();
-                String[] splitMsg = errorMsg.split("=");
-                String propertyName = splitMsg[2].split(",")[0] + " " + splitMsg[1].split(",")[0].replace("'", "");
-                throw new ValidationException(propertyName);
-            }
+            EntityValidation.validateEntity(validator, s);
         }
         SalesEvent receipt = createTicketsFromSalesObjects(sale);
         return receipt;
     }
 
     private SalesEvent createTicketsFromSalesObjects(List<SalesObject> sale) throws ResourceNotFoundException {
-        SalesEvent newSale = sr.save(new SalesEvent());
+        SalesEvent newSale = new SalesEvent();
+        Map<String, Integer> eventTicketsSold = new HashMap();
         for (int i = 0; i < sale.size(); i++) {
             SalesObject salesObject = sale.get(i);
             TicketType tt = ttr.findById(salesObject.getTicketTypeId())
                     .orElseThrow(() -> new ResourceNotFoundException(
                             "Cannot find a tickettype with the id " + salesObject.getTicketTypeId()));
+            // Ticketin määrän tarkistus, heittää errorin jos menee pieleen
+            Event event = tt.getEvent();
+            Long eventMaxTickets = event.getNumberOfTickets();
+            String eventTitle = event.getEventTitle();
+            eventTicketsSold.putIfAbsent(eventTitle, 0);
+            List<Ticket> ticketsSoldWithTicketType = tr.findByTicketType(tt);
+            eventTicketsSold.put(eventTitle, eventTicketsSold.get(eventTitle)
+                    + (salesObject.getNrOfTickets() + ticketsSoldWithTicketType.size()));
+            if (eventTicketsSold.get(eventTitle) > eventMaxTickets) {
+                throw new TooManyTicketsException(
+                        "This sale exceeds the max amount of tickets allowed for the event + " + eventTitle + " ("
+                                + eventMaxTickets + " tickets max, exceeding by "
+                                + (eventTicketsSold.get(eventTitle) - eventMaxTickets) + " tickets)");
 
+            }
+            // Tarkistus päättyy
+            discountTicketsLeft = salesObject.getNrOfDiscounted();
             discountTicketsLeft = salesObject.getNrOfDiscounted();
 
             for (int o = 0; o < salesObject.getNrOfTickets(); o++) {
@@ -71,10 +93,18 @@ public class SalesService {
                 ticket.setTicketUsed(false);
                 if (discountTicketsLeft > 0) {
                     discountTicketsLeft--;
-                    ticket.setFinalPrice(tt.getPrice().multiply(BigDecimal.valueOf(1).subtract(salesObject.getDiscountPercentage())));  //bigDecimal tarvitsee oman laskutoimitussyntaksin. +,-,*,/ eivät käy.
+                    ticket.setFinalPrice(tt.getPrice()
+                            .multiply(BigDecimal.valueOf(1).subtract(salesObject.getDiscountPercentage()))); // bigDecimal
+                                                                                                             // tarvitsee
+                                                                                                             // oman
+                                                                                                             // laskutoimitussyntaksin.
+                                                                                                             // +,-,*,/
+                                                                                                             // eivät
+                                                                                                             // käy.
                 } else {
                     ticket.setFinalPrice(tt.getPrice());
                 }
+                sr.save(newSale);
                 ticket.generateTicketCode();
                 newSale.addTicket(ticket);
                 tr.save(ticket);

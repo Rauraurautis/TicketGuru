@@ -47,6 +47,15 @@ public class TicketType {
 	@JsonIgnore
 	private List<Ticket> tickets;
 	
+	
+
+	public TicketType(@NotBlank String ticketTypeDescription, @PositiveOrZero BigDecimal price) {
+		this.ticketTypeDescription = ticketTypeDescription;
+		this.price = price;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "TicketType [ticketTypeID=" + ticketTypeId + ", eventId=" + ", ticketTypeDescription="

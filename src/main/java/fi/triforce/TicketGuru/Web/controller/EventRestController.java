@@ -39,6 +39,16 @@ public class EventRestController {
 	public ResponseEntity<List<Event>> eventListRest() {
 		return ResponseEntity.ok(es.getAllEvents());
 	}
+	
+	@GetMapping("/upcoming")
+	public ResponseEntity<List<Event>> upcomingEvents() {
+		return ResponseEntity.ok(es.getUpcomingEvents());
+	}
+	
+	@GetMapping("/past")
+	public ResponseEntity<List<Event>> pastEvents() {
+		return ResponseEntity.ok(es.getPastEvents());
+	}
 
 	// Yksittäisen eventin tiedot, ADMIN, SALES
 	@GetMapping("/{id}")

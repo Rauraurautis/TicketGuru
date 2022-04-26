@@ -54,6 +54,16 @@ public class EventService {
     public List<Event> getAllEvents() {
         return (List<Event>) er.findAll();
     }
+    
+    public List<Event> getUpcomingEvents() {
+    	List<Event> upcoming = (List<Event>) er.getUpcomingEvents();	
+    	return upcoming; 
+    }
+    
+    public List<Event> getPastEvents() {
+    	List<Event> past = (List<Event>) er.getPastEvents();	
+    	return past; 
+    }
 
     public Event getSingleEvent(Long id) {
         Event event = er.findById(id)

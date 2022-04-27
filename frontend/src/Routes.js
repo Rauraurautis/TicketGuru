@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Secure from './pages/Secure'
 import Sales from './pages/Sales';
+import Receipts from './pages/Receipts';
 
 const RoutesComponent = () => {
   return (
@@ -20,7 +21,13 @@ const RoutesComponent = () => {
         <Route path={'/sales'} element={
           <RequireAuth loginPath={'/login'}>
             <Sales/>
-          </RequireAuth>}/>
+          </RequireAuth>
+        } />
+        <Route path={'/receipts'} element={
+          <RequireAuth loginPath={'/login'}>
+            <Receipts />
+            </RequireAuth>
+        }/>
       </Routes>
     </BrowserRouter>
   )

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Sales from './pages/Sales'
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap'
 import { toast } from 'react-toastify';
 
@@ -13,7 +13,7 @@ const TicketSale = (props) => {
     const config = {
         withCredentials: true
     }
-
+    const navigate = useNavigate();
     const goBack = useNavigate('./secure');
     
     //Tickettype-lista
@@ -67,10 +67,11 @@ const TicketSale = (props) => {
         axios.post('http://localhost:8080/api/sales', [salesObject], config)
         .then(res => {
             console.log(res.status);
+            navigate('/receipts', { state: res.data })  //siirtyy pagelle Receipts.js ja vie sinne, hölmösti, stateen salespostista saadun isokokoisen jsonin
         })
         .catch(console.log)
-        alert(`Sold ${salesObject.nrOfTickets} tickets for ${props.event.eventTitle}, total sum: ${totalPrice}€`)
-        goBack('../secure')
+        //alert(`Sold ${salesObject.nrOfTickets} tickets for ${props.event.eventTitle}, total sum: ${totalPrice}€`)
+        //goBack('../secure')
     }
 
 
@@ -116,7 +117,7 @@ const TicketSale = (props) => {
                 
             </Form>
             <p></p>
-            <Button onClick = { () => props.setEvent('')}>Cancel</Button>
+            <Button onClick={() => props.setEvent('')}>Cancel</Button>
         </div>
     )
 

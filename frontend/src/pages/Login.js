@@ -23,7 +23,7 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true)
-        axios.post('http://localhost:8080/login', userDetails)
+        axios.post('https://triforceticketguru.herokuapp.com/login', userDetails)
             .then(res => {
                 if (res.status === 200) {
                     setLoading(false)

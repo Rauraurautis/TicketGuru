@@ -3,12 +3,14 @@ import React, { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuthUser, useIsAuthenticated, useSignIn } from 'react-auth-kit';
 import { toast } from 'react-toastify';
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Container } from 'react-bootstrap'
+import Spinner from 'react-bootstrap/Spinner'
 
 
 const Login = () => {
 
     const [userDetails, setUserDetails] = useState({ username: "", password: "" });
+    const [loading, setLoading] = useState(false)
 
     const isAuthenticated = useIsAuthenticated();
     const signIn = useSignIn();
@@ -20,9 +22,11 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setLoading(true)
         axios.post('http://localhost:8080/login', userDetails)
             .then(res => {
                 if (res.status === 200) {
+                    setLoading(false)
                     if (signIn({
                         token: res.data.access_token,
                         //tokenType: 'Bearer',
@@ -37,8 +41,10 @@ const Login = () => {
                 } else {
                     toast.warn("There was some problem with logging in");
                 }
+                
             })
             .catch(e => {
+                setLoading(false)
                 toast.warn("Wrong username or password!");
             });
     };
@@ -47,23 +53,23 @@ const Login = () => {
         return (<Navigate to={'/secure'} replace/>);
     } else {
         return (
-            <div>
-                <h2></h2>
-                <Form onSubmit={handleSubmit}>
+            <Container className="d-flex justify-content-center mt-5">
+                {loading ?  <div style={{width: "100%", display: "flex", justifyContent: "center"}}><Spinner animation="border"  /></div> : <Form onSubmit={handleSubmit}>
+               
                     <Form.Group>
                         <Form.Label>Username:</Form.Label>
                         <Form.Control type="text" placeholder="Type your username" value={userDetails.username} name="username" onChange={handleChange}/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Password:</Form.Label>
-                        <Form.Control type="text" placeholder="Type your password" value={userDetails.password} name="password" onChange={handleChange}/>
+                        <Form.Control type="password" placeholder="Type your password" value={userDetails.password} name="password" onChange={handleChange}/>
                     </Form.Group>
                     <p></p>
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
-                </Form>
-            </div>
+                </Form>}
+            </Container>
         );
     }
 

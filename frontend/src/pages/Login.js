@@ -54,8 +54,8 @@ const Login = () => {
     } else {
         return (
             <Container className="d-flex justify-content-center mt-5">
-                {loading ?  <div style={{width: "100%", display: "flex", justifyContent: "center"}}><Spinner animation="border"  /></div> : <Form onSubmit={handleSubmit}>
-               
+                {loading ?  <div style={{width: "100%", display: "flex", justifyContent: "center"}}><Spinner animation="border"  /></div> : 
+                    <Form onSubmit={handleSubmit} className="d-flex flex-column">
                     <Form.Group>
                         <Form.Label>Username:</Form.Label>
                         <Form.Control type="text" placeholder="Type your username" value={userDetails.username} name="username" onChange={handleChange}/>
@@ -65,7 +65,7 @@ const Login = () => {
                         <Form.Control type="password" placeholder="Type your password" value={userDetails.password} name="password" onChange={handleChange}/>
                     </Form.Group>
                     <p></p>
-                    <Button variant="primary" type="submit">
+                    <Button variant="primary" type="submit" className="w-50 mt-2 align-self-center">
                         Submit
                     </Button>
                 </Form>}

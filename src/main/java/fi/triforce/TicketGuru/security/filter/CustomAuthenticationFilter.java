@@ -82,10 +82,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                         .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 60 * 1000 * 24))
                         .withIssuer(request.getRequestURL().toString())
                         .sign(algorithm);
- 
+                //Roolin vienti tokenin mukana
+                String role = user.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()).get(0);
                 Map<String, String> tokens = new HashMap<>();
                 tokens.put("access_token", access_token);
                 tokens.put("refresh_token", refresh_token);
+                tokens.put("role", role);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
         }

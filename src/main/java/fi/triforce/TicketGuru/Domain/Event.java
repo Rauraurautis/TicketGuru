@@ -49,6 +49,7 @@ public class Event {
 	private LocalDateTime dateOfEvent;
 	@ManyToOne
 	@JoinColumn(name = "venueId")
+	@JsonIgnoreProperties({"venueId", "events"})
 	private Venue eventVenue;
 	@OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("event") // Pysäyttää infinite loopin jsonissa

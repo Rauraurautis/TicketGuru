@@ -75,6 +75,7 @@ public class EventService {
         EntityValidation.validateEntity(validator, event);
         if (event.getEventVenue() != null) {
             Long venueId = event.getEventVenue().getVenueId();
+            System.out.println(event);
             Venue venue = vr.findById(venueId)
                     .orElseThrow(() -> new ResourceNotFoundException("Cannot find a venue with the id " + venueId));
             event.setEventVenue(venue);

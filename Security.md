@@ -6,11 +6,11 @@ API hyödyntää **JWT** (JSON Web Token)-teknologiaa käyttäjien autentikoimis
 
 ## Järjestelmään kirjautuminen
 
-**URL:** `/login`
-**METHOD:** `POST`
-**REQUEST BODY:** Järjestelmään kirjautuminen tapahtuu lähettämällä request bodyssä **JSON-muotoinen** pyyntö jossa on käyttäjän tunnus (**username**) sekä käyttäjän salasana (**password**).
+**URL** : `/login`
+**METHOD** : `POST`
+**REQUEST BODY** : Järjestelmään kirjautuminen tapahtuu lähettämällä request bodyssä **JSON-muotoinen** pyyntö jossa on käyttäjän tunnus (**username**) sekä käyttäjän salasana (**password**).
 
-**Esimerkki**:
+**Esimerkki** :
 
 ```json
 {
@@ -19,13 +19,13 @@ API hyödyntää **JWT** (JSON Web Token)-teknologiaa käyttäjien autentikoimis
 }
 ```
 
-## Onnistunut response
+### Onnistunut response
 
 **Code** : `200 OK`
 
 Kirjautumisen onnistuttua käyttäjä saa takaisin **access_tokenin** sekä **refresh_tokenin**. API käyttää access_tokenia käyttäjän tunnistamisessa jokaisessa käyttäjän tekemässä pyynnössä ja refresh_tokenia uuden access_tokenin saamisessa.
 
-**Esimerkki**:
+**Response** :
 
 ```json
 {
@@ -52,8 +52,8 @@ Access tokenin vanhennuttua käyttäjän yrittäessä tehdä pyyntöä resurssii
 
 ## Access_tokenin päivittäminen
 
-**URL:** `/api/token/refresh`
-**METHOD:** `GET`
+**URL** : `/api/token/refresh`
+**METHOD** : `GET`
 
 Jotta käyttäjä saa uuden tokenin käyttöön ilman uudelleenkirjautumista järjestelmään pitää aiemmin saatu **refresh_token** liittää edellämainittuun tapaan Authentication-headeriin ja tehdä GET-pyyntö yllämainittuun urliin. Vastauksena tulee uusi access token, joka liitetään uudelleen headeriin Bearer-tyyppisenä.
 
@@ -64,11 +64,11 @@ Jotta käyttäjä saa uuden tokenin käyttöön ilman uudelleenkirjautumista jä
 }
 ```
 
-## Epäonnistunut response
+### Epäonnistunut response
 
+**Ehto** : Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen tai salasanan vuoksi saa käyttäjä seuraavan virheilmoituksen
 **Code** : `400 Bad Request`
-
-Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen tai salasanan vuoksi saa käyttäjä seuraavan virheilmoituksen
+**Response** :
 
 ```json
 {
@@ -78,13 +78,14 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 ## Käyttäjien hakeminen
 
-**URL:** `/api/users`
-**METHOD:** `GET`
-**RESURSSIN SALLIMAT KÄYTTÄJÄROOLIT:** `ROLE_ADMIN`
+**URL** : `/api/users`
+**METHOD** : `GET`
+**AUTHORIZATION** : `ROLE_ADMIN`
 
-## Onnistunut response
+### Onnistunut response
 
 **Code** : `200 OK`
+**Response** :
 
 ```json
 [
@@ -117,13 +118,14 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 ## Yksittäisen käyttäjän hakeminen
 
-**URL:** `/api/users/{username}`
-**METHOD:** `POST`
-**RESURSSIN SALLIMAT KÄYTTÄJÄROOLIT:** `ROLE_ADMIN`
+**URL** : `/api/users/{username}`
+**METHOD** : `POST`
+**AUTHORIZATION** : `ROLE_ADMIN`
 
-## Onnistunut response
+### Onnistunut response
 
 **Code** : `200 OK`
+**Response** :
 
 ```json
 {
@@ -142,12 +144,12 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 ## Käyttäjän lisääminen
 
-**URL:** `/api/users`
+**URL** : `/api/users`
 **METHOD:** `POST`
-**RESURSSIN SALLIMAT KÄYTTÄJÄROOLIT:** `ROLE_ADMIN`
-**REQUEST BODY:** Järjestelmään lisätään käyttäjä ja tälle roolit lähettämällä request bodyssä **JSON-muotoinen** pyyntö jossa on pakollisina kenttinä käyttäjän nimi (**name**), käyttäjän salasana (**password**) sekä tunnus (**username**).
+**AUTHORIZATION** : `ROLE_ADMIN`
+**REQUEST BODY** : Järjestelmään lisätään käyttäjä ja tälle roolit lähettämällä request bodyssä **JSON-muotoinen** pyyntö jossa on pakollisina kenttinä käyttäjän nimi (**name**), käyttäjän salasana (**password**) sekä tunnus (**username**).
 
-**Esimerkki**:
+**Esimerkki** :
 
 ```json
 {
@@ -157,9 +159,10 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 }
 ```
 
-## Onnistunut response
+### Onnistunut response
 
 **Code** : `201 OK`
+**Response** :
 
 ```json
 {
@@ -171,11 +174,11 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 }
 ```
 
-## Epäonnistunut response
+### Epäonnistunut response
 
 **Ehto** : Jos salasana puuttuu
-
 **Code** : `403 Bad Request`
+**Response** :
 
 ```json
 {
@@ -185,13 +188,14 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 ## Yksittäisen käyttäjän poistaminen
 
-**URL:** `/api/users/{id}`
-**METHOD:** `DELETE`
-**RESURSSIN SALLIMAT KÄYTTÄJÄROOLIT:** `ROLE_ADMIN`
+**URL** : `/api/users/{id}`
+**METHOD** : `DELETE`
+**AUTHORIZATION** : `ROLE_ADMIN`
 
-## Onnistunut response
+### Onnistunut response
 
 **Code** : `200 OK`
+**Response** :
 
 ```json
 {
@@ -199,10 +203,11 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 }
 ```
 
-## Epäonnistunut response
+### Epäonnistunut response
 
 **Ehto** : Jos käyttäjäid:tä {id} ei ole olemassa
 **Code** : `404 NOT FOUND`
+**Response** :
 
 ```json
 {
@@ -214,12 +219,12 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 ## Käyttäjäroolin lisääminen järjestelmään
 
-**URL:** `/api/role/`
-**METHOD:** `POST`
-**RESURSSIN SALLIMAT KÄYTTÄJÄROOLIT:** `ROLE_ADMIN`
-**REQUEST BODY:** Järjestelmään lisätään rooli tekemällä **JSON-muotoinen** pyyntö jossa on pakollisena kenttänä roolin nimi (**name**). Alkuperäiset käyttäjäroolit ovat järjestelmässä muodossa ROLE_ADMIN, ROLE_SALES JA ROLE_TICKETINSPECTOR, mutta nimeämistapa ei ole pakottava.
+**URL** : `/api/role/`
+**METHOD** : `POST`
+**AUTHORIZATION** : `ROLE_ADMIN`
+**REQUEST BODY** : Järjestelmään lisätään rooli tekemällä **JSON-muotoinen** pyyntö jossa on pakollisena kenttänä roolin nimi (**name**). Alkuperäiset käyttäjäroolit ovat järjestelmässä muodossa ROLE_ADMIN, ROLE_SALES JA ROLE_TICKETINSPECTOR, mutta nimeämistapa ei ole pakottava.
 
-**Esimerkki**:
+**Esimerkki** :
 
 ```json
 {
@@ -227,9 +232,10 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 }
 ```
 
-## Onnistunut response
+### Onnistunut response
 
 **Code** : `201 CREATED`
+**Response** :
 
 ```json
 {
@@ -240,12 +246,12 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 ## Käyttäjäroolin lisääminen käyttäjälle {USER}
 
-**URL:** `/api/role/addtouser`
-**METHOD:** `POST`
-**RESURSSIN SALLIMAT KÄYTTÄJÄROOLIT:** `ROLE_ADMIN`
-**REQUEST BODY:** Käyttäjälle lisätään rooli tekemällä **JSON-muotoinen** pyyntö jossa on pakollisena kenttänä käyttäjätunnus (**username**) sekä käyttäjäroolin nimi (**rolename**).
+**URL** : `/api/role/addtouser`
+**METHOD** : `POST`
+**AUTHORIZATION** : `ROLE_ADMIN`
+**REQUEST BODY** : Käyttäjälle lisätään rooli tekemällä **JSON-muotoinen** pyyntö jossa on pakollisena kenttänä käyttäjätunnus (**username**) sekä käyttäjäroolin nimi (**rolename**).
 
-**Esimerkki**:
+**Esimerkki** :
 
 ```json
 {
@@ -254,9 +260,10 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 }
 ```
 
-## Onnistunut response
+### Onnistunut response
 
 **Code** : `200 OK`
+**Response** :
 
 ```json
 
@@ -264,12 +271,12 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 ## Käyttäjäroolin poistaminen käyttäjältä {USER}
 
-**URL:** `/api/role/removefromuser`
-**METHOD:** `DELETE`
-**RESURSSIN SALLIMAT KÄYTTÄJÄROOLIT:** `ROLE_ADMIN`
-**REQUEST BODY:** Käyttäjältä poistetaan rooli tekemällä **JSON-muotoinen** delete-pyyntö jossa on pakollisena kenttänä käyttäjätunnus (**username**) sekä käyttäjäroolin nimi (**rolename**).
+**URL** : `/api/role/removefromuser`
+**METHOD** : `DELETE`
+**AUTHORIZATION** : `ROLE_ADMIN`
+**REQUEST BODY** : Käyttäjältä poistetaan rooli tekemällä **JSON-muotoinen** delete-pyyntö jossa on pakollisena kenttänä käyttäjätunnus (**username**) sekä käyttäjäroolin nimi (**rolename**).
 
-**Esimerkki**:
+**Esimerkki** :
 
 ```json
 {
@@ -278,9 +285,10 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 }
 ```
 
-## Onnistunut response
+### Onnistunut response
 
 **Code** : `200 OK`
+**Response** :
 
 ```json
 {
@@ -288,10 +296,11 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 }
 ```
 
-## Epäonnistunut response
+### Epäonnistunut response
 
 **Ehto** : Jos käyttäjää {username} ei ole olemassa
 **Code** : `404 NOT FOUND`
+**Response** :
 
 ```json
 {
@@ -303,6 +312,7 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 **Ehto** : Jos roolia {rolename} ei ole olemassa
 **Code** : `404 NOT FOUND`
+**Response** :
 
 ```json
 {

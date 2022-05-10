@@ -4,17 +4,14 @@
 
 Listaa kaikki tietokannassa olevat tapahtumat.
 
-**AUTHORIZATION** : ADMIN, SALES
-
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
 **URL** : `/api/events`
-
 **METHOD** : `GET`
 
 ### Onnistunut response
 
 **Code** : `200 OK`
-
-**Esimerkki**
+**Response** :
 
 ```json
 [
@@ -23,7 +20,7 @@ Listaa kaikki tietokannassa olevat tapahtumat.
         "eventTitle": "Lady Gaga Live",
         "eventDescription": "Lady Gaga, Monster Tour 2022",
         "numberOfTickets": 3400,
-        "dateOfEvent": null,
+        "dateOfEvent": "17-04-2022 21:00",
         "eventVenue": {
             "venueId": 2,
             "venueName": "Tampere-talo",
@@ -48,7 +45,7 @@ Listaa kaikki tietokannassa olevat tapahtumat.
         "eventTitle": "FrÃ¶belin Palikat Live",
         "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
         "numberOfTickets": 250,
-        "dateOfEvent": null,
+        "dateOfEvent": "19-06-2022 12:00",
         "eventVenue": {
             "venueId": 4,
             "venueName": "Tavastia",
@@ -66,24 +63,45 @@ Listaa kaikki tietokannassa olevat tapahtumat.
 ]
 ```
 
+## Tulevien tapahtumien listaus
+
+Listaa kaikki tulevat tapahtumat tietokannasta.
+
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
+**URL** : `/api/events/upcoming`
+**METHOD** : `GET`
+
+### Onnistunut response
+
+**Code** : `200 OK`
+**Response** : Sama kuin kaikkien tapahtumien listaus, mutta näyttää vain tulevat tapahtumat
+
+## Tulevien tapahtumien listaus
+
+Listaa kaikki menneet tapahtumat tietokannasta.
+
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
+**URL** : `/api/events/past`
+**METHOD** : `GET`
+
+### Onnistunut response
+
+**Code** : `200 OK`
+**Response** : Sama kuin kaikkien tapahtumien listaus, mutta näyttää vain menneet tapahtumat
 
 ## Yksittäisen tapahtuman tietojen haku
 
 Näyttää yksittäisen tapahtuman tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
 
 **AUTHORIZATION** : ADMIN, SALES
-
-**URL** : `/api/events/:pk`
-
-**URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtuman eventId tietokannassa. 
-
+**URL** : `/api/events/{id}`
+**URL-PARAMETERS** : `{id}=[Long]` jossa {id} on tapahtuman eventId tietokannassa. 
 **METHOD** : `GET`
 
 ### Onnistunut response
 
 **Code** : `200 OK`
-
-**Esimerkki**
+**Response** :
 
 ```json
 {
@@ -91,7 +109,7 @@ Näyttää yksittäisen tapahtuman tiedot. Tapahtuman Id/primary key annetaan UR
     "eventTitle": "Lady Gaga Live",
     "eventDescription": "Lady Gaga, Monster Tour 2022",
     "numberOfTickets": 3400,
-    "dateOfEvent": null,
+    "dateOfEvent": "17-04-2022 21:00",
     "eventVenue": {
         "venueId": 2,
         "venueName": "Tampere-talo",
@@ -113,19 +131,17 @@ Näyttää yksittäisen tapahtuman tiedot. Tapahtuman Id/primary key annetaan UR
 }
 ```
 
-### Virheellinen response
+### Epäonnistunut response
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
 **Code** : `404 NOT FOUND`
-**Message** : `Cannot find an event with the id {id}`
-
-**Esimerkki**
+**Response** :
 
 ```json
 {
     "timeStamp": "2022-03-15T23:00:59.5869555",
     "httpStatus": "NOT_FOUND",
-    "message": "Cannot find an event with the id 5"
+    "message": "Cannot find an event with the id {id}"
 }
 ```
 
@@ -133,21 +149,15 @@ Näyttää yksittäisen tapahtuman tiedot. Tapahtuman Id/primary key annetaan UR
 
 Uuden tapahtuman luonti ja lisäys tietokantaan.
 
-**AUTHORIZATION** : ADMIN
-
+**AUTHORIZATION** : `ROLE_ADMIN`
 **URL** : `/api/events/`
-
 **METHOD** : `POST`
+**REQUEST BODY** :
+Tapahtuman tiedot **JSON-muotoinen** Ainoa pakollinen kenttä on **eventTitle**. Kenttä **numberOfTickets** täytyy olla 0 tai suurempi. Tyhjäksi jätetyt kentät tallentuvat null-arvoina odottamaan päivitystä.
+Tapahtuman tapahtumapaikka annetaan sen id:nä(venueId) muodossa: `"eventVenue":{"venueId": {id}}`
+Tapahtuman päivämäärä tulee antaa muodossa: `"dateOfEvent":"päivä-kuukausi-vuosi tunti:minuutti"`
 
-**REQUEST BODY**
-Tapahtuman tiedot json-muodossa(poislukien id, joka autogeneroidaan). Ainoa pakollinen kenttä on *eventTitle*. *numberOfTickets* täytyy olla 0 tai suurempi.
-Tyhjäksi jätetyt kentät tallentuvat null:na.
-Tapahtuman tapahtumapaikka annetaan sen id:nä(venueId) muodossa:
-
-`"eventVenue":{"venueId": {id}}`
-
-
-**Esimerkki**
+**Esimerkki** :
 
 ```json
 {
@@ -163,7 +173,7 @@ Tapahtuman tapahtumapaikka annetaan sen id:nä(venueId) muodossa:
 
 **Code** : `201 CREATED`
 
-**Response body esim** Vastaus palauttaa tallennetun entityn
+**Response** :
 
 ```json
 {
@@ -182,59 +192,61 @@ Tapahtuman tapahtumapaikka annetaan sen id:nä(venueId) muodossa:
 }
 ```
 
-### Virheellinen response
+### Epäonnistunut response
 
 **Ehto** : Jos json:ssa annettua eventVenue:ta ei löydy
 **Code** : `404 NOT FOUND`
-**Message** : `Cannot find a venue with the id {id}`
-
-**Esimerkki**
+**Response** :
 
 ```json
 {
     "timeStamp": "2022-03-15T23:00:59.5869555",
     "httpStatus": "NOT_FOUND",
-    "message": "Cannot find a venue with the id 5"
+    "message": "Cannot find a venue with the id {id}"
 }
 ```
 
 ## Tapahtuman poisto
 
-Yksittäisen tapahtuman poisto tietokannasta. Tapahtuman Id/primary key annetaan URL:ssa. Poistaa samalla kaikki tapahtuman tickettypet.
+Yksittäisen tapahtuman poisto tietokannasta. Mikäli tapahtumaan on jo myyty lippuja, sitä ei voi enää poistaa järjestelmästä, jotta kirjanpito ei kärsi. Tapahtuman Id/primary key annetaan URL:ssa. Poistaa samalla tapahtuman lipputyypit.
 
-**AUTHORIZATION** : ADMIN
-
-**URL** : `/api/events/:pk`
-
-**URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtuman eventId tietokannassa. 
-
+**AUTHORIZATION** : `ROLE_ADMIN`
+**URL** : `/api/events/{id}`
+**URL-PARAMETERS** : `{id}=[Long]` jossa {id} on tapahtuman eventId tietokannassa. 
 **METHOD** : `DELETE`
 
 ### Onnistunut response
 
 **Code** : `200 OK`
-
-**Response body esim**
+**Response** :
 
 ```json
 {
-    "message": "Deleted an event with the id {Id}"
+    "message": "Deleted an event with the id {id}"
 }
 ```
 
-### Virheellinen response
+### Epäonnistunut response
 
 **Ehto** : Jos annettua tapahtumaa ei löydy
 **Code** : `404 NOT FOUND`
-**Message** : `Cannot find an event with the id {id}`
-
-**Esimerkki**
+**Response** :
 
 ```json
 {
     "timeStamp": "2022-03-15T23:00:59.5869555",
     "httpStatus": "NOT_FOUND",
-    "message": "Cannot find a venue with the id 5"
+    "message": "Cannot find a venue with the id {id}"
+}
+```
+
+**Ehto** : Jos tapahtumaan on jo myyty lippuja
+**Code** : `500 INTERNAL SERVER ERROR`
+**Response** : Geneerinen virheviesti
+
+```json
+{
+    "message": "500 INTERNAL_SERVER_ERROR: Something went wrong"
 }
 ```
 
@@ -242,18 +254,15 @@ Yksittäisen tapahtuman poisto tietokannasta. Tapahtuman Id/primary key annetaan
 
 Olemassa olevan tapahtuman tietojen muokkaus.
 
-**AUTHORIZATION** : ADMIN
-
-**URL** : `/api/events/:pk`
-
-**URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtuman eventId tietokannassa. 
-
+**AUTHORIZATION** : `ROLE_ADMIN`
+**URL** : `/api/events/{id}`
+**URL-PARAMETERS** : `{id}=[Long]` jossa {id} on tapahtuman eventId tietokannassa. 
 **METHOD** : `PUT`
+**REQUEST BODY** :
+PAKOLLISENA kenttänä eventTitle, kuten tapahtuman luonnissakin, MUTTA puuttuvat kentät muuttuvat nulliksi jos ovat tyhjiä. Venuen jäädessä tyhjäksi se ei muutu. Lipputyyppejä ei tule antaa, ne muokataan muualta.
+Tapahtuman päivämäärä tulee antaa muodossa: `"dateOfEvent":"päivä-kuukausi-vuosi tunti:minuutti"`
 
-**REQUEST BODY**
-PAKOLLISENA kenttänä eventTitle, kuten tapahtuman luonnissakin, MUTTA puuttuvat kentät muuttuvat nulliksi jos tyhjiä. Venuen jäädessä tyhjäksi se ei muutu. Lipputyyppejä ei tule antaa, ne muokataan muualta.
-
-**Esimerkki**
+**Esimerkki** :
 
 ```json
 {
@@ -269,7 +278,7 @@ PAKOLLISENA kenttänä eventTitle, kuten tapahtuman luonnissakin, MUTTA puuttuva
 
 **Code** : `200 OK`
 
-**Response body esim** Vastaus palauttaa tallennetun entityn
+**Response** :
 
 ```json
 {
@@ -299,7 +308,7 @@ PAKOLLISENA kenttänä eventTitle, kuten tapahtuman luonnissakin, MUTTA puuttuva
 }
 ```
 
-### Virheellinen response
+### Epäonnistunut response
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
 **Code** : `404 NOT FOUND`
@@ -310,19 +319,15 @@ PAKOLLISENA kenttänä eventTitle, kuten tapahtuman luonnissakin, MUTTA puuttuva
 
 Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
 
-**AUTHORIZATION** : ADMIN, SALES
-
-**URL** : `/api/events/:pk/tickettypes`
-
-**URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtuman eventId tietokannassa. 
-
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
+**URL** : `/api/events/{id}/tickettypes`
+**URL-PARAMETERS** : `{id}=[Long]` jossa {id} on tapahtuman eventId tietokannassa. 
 **METHOD** : `GET`
 
 ### Onnistunut response
 
 **Code** : `200 OK`
-
-**Esimerkki**
+**Response** :
 
 ```json
 [
@@ -335,7 +340,7 @@ Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary k
             "eventTitle": "Lady Gaga Live",
             "eventDescription": "Lady Gaga, Monster Tour 2022",
             "numberOfTickets": 3400,
-            "dateOfEvent": null,
+            "dateOfEvent": "17-04-2022 21:00",
             "eventVenue": {
                 "venueId": 2,
                 "venueName": "Tampere-talo",
@@ -353,7 +358,7 @@ Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary k
             "eventTitle": "Lady Gaga Live",
             "eventDescription": "Lady Gaga, Monster Tour 2022",
             "numberOfTickets": 3400,
-            "dateOfEvent": null,
+            "dateOfEvent": "17-04-2022 21:00",
             "eventVenue": {
                 "venueId": 2,
                 "venueName": "Tampere-talo",
@@ -365,7 +370,7 @@ Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary k
 ]
 ```
 
-### Virheellinen response
+### Epäonnistunut response
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
 **Code** : `404 NOT FOUND`
@@ -428,7 +433,7 @@ Tietokentät:
 }
 ```
 
-### Virheellinen response
+### Epäonnistunut response
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
 **Code** : `404 NOT FOUND`
@@ -470,7 +475,7 @@ Yksittäisen lipputyypin poisto tietokannasta. Tapahtuman Id/primary key annetaa
 }
 ```
 
-### Virheellinen response
+### Epäonnistunut response
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
 **Code** : `404 NOT FOUND`
@@ -671,7 +676,7 @@ Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary k
     }
 ]
 ```
-### Virheellinen response
+### Epäonnistunut response
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
 **Code** : `404 NOT FOUND`
@@ -722,7 +727,7 @@ Näyttää yksittäisen tapahtuman yhden lipun tiedot. Lipun ticketcode annetaan
 }
 ```
 
-### Virheellinen response
+### Epäonnistunut response
 
 **Ehto** : Jos url-parametrina annettua lippua ei löydy
 **Code** : `404 NOT FOUND`
@@ -783,7 +788,7 @@ PAKOLLISENA ostetun lipun uniikki lippukoodi [String]ticketCode, joka on tyylilt
 }
 ```
 
-### Virheellinen response
+### Epäonnistunut response
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
 **Code** : `404 NOT FOUND`
@@ -929,7 +934,7 @@ Näyttää yksittäisen tapahtuman kaikkien ostettujen lippujen tiedot. Tapahtum
     }
 ]
 ```
-### Virheellinen response
+### Epäonnistunut response
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
 **Code** : `404 NOT FOUND`

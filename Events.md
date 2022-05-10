@@ -4,13 +4,16 @@
 
 Listaa kaikki tietokannassa olevat tapahtumat.
 
-**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
 **URL** : `/api/events`
+
 **METHOD** : `GET`
+
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
 
 ### Onnistunut response
 
 **Code** : `200 OK`
+
 **Response** :
 
 ```json
@@ -67,9 +70,11 @@ Listaa kaikki tietokannassa olevat tapahtumat.
 
 Listaa kaikki tulevat tapahtumat tietokannasta.
 
-**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
 **URL** : `/api/events/upcoming`
+
 **METHOD** : `GET`
+
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
 
 ### Onnistunut response
 
@@ -80,9 +85,9 @@ Listaa kaikki tulevat tapahtumat tietokannasta.
 
 Listaa kaikki menneet tapahtumat tietokannasta.
 
-**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
 **URL** : `/api/events/past`
 **METHOD** : `GET`
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
 
 ### Onnistunut response
 
@@ -93,10 +98,11 @@ Listaa kaikki menneet tapahtumat tietokannasta.
 
 Näyttää yksittäisen tapahtuman tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
 
-**AUTHORIZATION** : ADMIN, SALES
+
 **URL** : `/api/events/{id}`
 **URL-PARAMETERS** : `{id}=[Long]` jossa {id} on tapahtuman eventId tietokannassa. 
 **METHOD** : `GET`
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
 
 ### Onnistunut response
 
@@ -149,9 +155,9 @@ Näyttää yksittäisen tapahtuman tiedot. Tapahtuman Id/primary key annetaan UR
 
 Uuden tapahtuman luonti ja lisäys tietokantaan.
 
-**AUTHORIZATION** : `ROLE_ADMIN`
 **URL** : `/api/events/`
 **METHOD** : `POST`
+**AUTHORIZATION** : `ROLE_ADMIN`
 **REQUEST BODY** :
 Tapahtuman tiedot **JSON-muotoinen** Ainoa pakollinen kenttä on **eventTitle**. Kenttä **numberOfTickets** täytyy olla 0 tai suurempi. Tyhjäksi jätetyt kentät tallentuvat null-arvoina odottamaan päivitystä.
 Tapahtuman tapahtumapaikka annetaan sen id:nä(venueId) muodossa: `"eventVenue":{"venueId": {id}}`
@@ -210,10 +216,10 @@ Tapahtuman päivämäärä tulee antaa muodossa: `"dateOfEvent":"päivä-kuukaus
 
 Yksittäisen tapahtuman poisto tietokannasta. Mikäli tapahtumaan on jo myyty lippuja, sitä ei voi enää poistaa järjestelmästä, jotta kirjanpito ei kärsi. Tapahtuman Id/primary key annetaan URL:ssa. Poistaa samalla tapahtuman lipputyypit.
 
-**AUTHORIZATION** : `ROLE_ADMIN`
 **URL** : `/api/events/{id}`
 **URL-PARAMETERS** : `{id}=[Long]` jossa {id} on tapahtuman eventId tietokannassa. 
 **METHOD** : `DELETE`
+**AUTHORIZATION** : `ROLE_ADMIN`
 
 ### Onnistunut response
 
@@ -254,10 +260,10 @@ Yksittäisen tapahtuman poisto tietokannasta. Mikäli tapahtumaan on jo myyty li
 
 Olemassa olevan tapahtuman tietojen muokkaus.
 
-**AUTHORIZATION** : `ROLE_ADMIN`
 **URL** : `/api/events/{id}`
 **URL-PARAMETERS** : `{id}=[Long]` jossa {id} on tapahtuman eventId tietokannassa. 
 **METHOD** : `PUT`
+**AUTHORIZATION** : `ROLE_ADMIN`
 **REQUEST BODY** :
 PAKOLLISENA kenttänä eventTitle, kuten tapahtuman luonnissakin, MUTTA puuttuvat kentät muuttuvat nulliksi jos ovat tyhjiä. Venuen jäädessä tyhjäksi se ei muutu. Lipputyyppejä ei tule antaa, ne muokataan muualta.
 Tapahtuman päivämäärä tulee antaa muodossa: `"dateOfEvent":"päivä-kuukausi-vuosi tunti:minuutti"`
@@ -277,7 +283,6 @@ Tapahtuman päivämäärä tulee antaa muodossa: `"dateOfEvent":"päivä-kuukaus
 ### Onnistunut response
 
 **Code** : `200 OK`
-
 **Response** :
 
 ```json
@@ -319,11 +324,10 @@ Tapahtuman päivämäärä tulee antaa muodossa: `"dateOfEvent":"päivä-kuukaus
 
 Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
 
-**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
 **URL** : `/api/events/{id}/tickettypes`
 **URL-PARAMETERS** : `{id}=[Long]` jossa {id} on tapahtuman eventId tietokannassa. 
 **METHOD** : `GET`
-
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
 ### Onnistunut response
 
 **Code** : `200 OK`
@@ -380,24 +384,20 @@ Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary k
 **Code** : `405 METHOD NOT ALLOWED`
 **Message** : `You probably used a method on an url that does not support the method`
 
-
 ## Lipputyypin lisäys tapahtumaan
 
 Uuden lipputyypin luonti tapahtumalle ja lisäys tietokantaan.
 
-**AUTHORIZATION** : ADMIN
-
 **URL** : `/api/events/{id}/tickettypes`
-
 **METHOD** : `POST`
-
-**REQUEST BODY**
+**AUTHORIZATION** : `ROLE_ADMIN`
+**REQUEST BODY** :
 Lipputyypin tiedot annetaan json-muodossa(poislukien id, joka autogeneroidaan).
 Tietokentät:
 	[String] ticketTypeDescription **Pakollinen**
 	[BigDecimal] price	**Desimaalierottaja annettava pisteenä!** **Arvo ei saa olla negatiivinen luku.** **Vapaaehtoinen kenttä, joka defaulttaa 0.0:ksi.**
 
-**Esimerkki**
+**Esimerkki** :
 
 ```json
 {
@@ -409,8 +409,7 @@ Tietokentät:
 ### Onnistunut response
 
 **Code** : `201 Created`
-
-**Response body esim** Vastaus palauttaa tallennetun entityn
+**Response** :
 
 ```json
 {
@@ -455,19 +454,15 @@ Tietokentät:
 
 Yksittäisen lipputyypin poisto tietokannasta. Tapahtuman Id/primary key annetaan URL:ssa sekä lipputyypin Id/pk annetaan URL:ssa.
 
-**AUTHORIZATION** : ADMIN
-
-**URL** : `/api/events/:pk/tickettypes/:pk`
-
-**URL-PARAMETERS** : `pk=[Long]` jossa ensimmäinen pk on tapahtuman eventId tietokannassa ja toinen lipputyypin ticketTypeId.
-
+**URL** : `/api/events/:pk/tickettypes/{id}`
+**URL-PARAMETERS** : `{id}=[Long]` jossa ensimmäinen {id} on tapahtuman eventId tietokannassa ja toinen lipputyypin ticketTypeId.
 **METHOD** : `DELETE`
+**AUTHORIZATION** : `ROLE_ADMIN`
 
 ### Onnistunut response
 
 **Code** : `200 OK`
-
-**Response body esim**
+**Response** :
 
 ```json
 {
@@ -489,20 +484,16 @@ Yksittäisen lipputyypin poisto tietokannasta. Tapahtuman Id/primary key annetaa
 
 Tapahtumassa olevan lipputyypin tietojen muokkaus. Tapahtuman Id/primary key annetaan URL:ssa sekä lipputyypin Id/pk annetaan URL:ssa.
 
-**AUTHORIZATION** : ADMIN
-
 **URL** : `/api/events/:pk/tickettypes/:pk`
-
 **URL-PARAMETERS** : `pk=[Long]` jossa ensimmäinen pk on tapahtuman eventId tietokannassa ja toinen lipputyypin ticketTypeId.
-
 **METHOD** : `PUT`
-
-**REQUEST BODY**
+**AUTHORIZATION** : `ROLE_ADMIN`
+**REQUEST BODY** :
 Tietokentät:
 	[String] ticketTypeDescription **Pakollinen**
 	[BigDecimal] price	**Pakollinen kenttä TAI se defaulttaa 0.0:ksi!** **Desimaalierottaja annettava pisteenä!** **Arvo ei saa olla negatiivinen luku.** 
 
-**Esimerkki**
+**Esimerkki** :
 
 ```json
 {
@@ -514,8 +505,7 @@ Tietokentät:
 ### Onnistunut response
 
 **Code** : `200 OK`
-
-**Response body esim** Vastaus palauttaa tallennetun entityn
+**Response** :
 
 ```json
 {
@@ -537,7 +527,7 @@ Tietokentät:
     }
 }
 ```
-### Virheellinen response
+### Epäonnistunut response
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
 **Code** : `404 NOT FOUND`
@@ -563,19 +553,16 @@ Tietokentät:
 
 Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
 
-**AUTHORIZATION** : ADMIN, SALES
-
-**URL** : `/api/events/:pk/tickettypes`
-
-**URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtuman eventId tietokannassa. 
-
+**URL** : `/api/events/{id}/tickettypes`
+**URL-PARAMETERS** : `{id}=[Long]` jossa {id} on tapahtuman eventId tietokannassa. 
 **METHOD** : `GET`
+**AUTHORIZATION** : `ROLE_ADMIN`
 
 ### Onnistunut response
 
 **Code** : `200 OK`
+**Esimerkki** :
 
-**Esimerkki**
 ```json
 [
     {
@@ -687,18 +674,15 @@ Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary k
 Näyttää yksittäisen tapahtuman yhden lipun tiedot. Lipun ticketcode annetaan url-parametrina. Parametri pakollinen.
 
 **AUTHORIZATION** : ADMIN, SALES, TICKET INSPECTOR
-
 **URL** : `/api/events/singleticket?ticketcode={ticketcode}`
-
 **URL-PARAMETERS** : `ticketcode=[String]` lipun yksilöllinen ticketcode 
-
 **METHOD** : `GET``
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`, `ROLE_TICKETINSPECTOR`
 
 ### Onnistunut response
 
 **Code** : `200 OK`
-
-**Esimerkki**
+**Response** :
 
 ```jsonn
 {
@@ -733,21 +717,17 @@ Näyttää yksittäisen tapahtuman yhden lipun tiedot. Lipun ticketcode annetaan
 **Code** : `404 NOT FOUND`
 **Message** : `Cannot find a ticket with the id {id}`
 
-
 ## Tapahtumaan ostetun lipun muuttaminen käytetyksi
 
 Muuttaa aiemmin ostetun lipun ticketUsed-kentän arvoksi True. Default on False.
 
-**AUTHORIZATION** : ADMIN, SALES, TICKETINSPECTOR
-
 **URL** : `/api/events/tickets`
-
 **METHOD** : `PUT`
-
-**REQUEST BODY**
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`, `ROLE_TICKETINSPECTOR`
+**REQUEST BODY** :
 PAKOLLISENA ostetun lipun uniikki lippukoodi [String]ticketCode, joka on tyyliltään seuraavaa muototyyppiä: "e55e5130-6b72-40cc-93d7-fdfe6f9aed83". [boolean]ticketUsed ei tarvita, eikä sitä voi enää muuttaa takaisin falseksi, jos se on true (väärinkäytöksien estämiseksi).
 
-**Esimerkki**
+**Esimerkki** :
 
 ```json
 {
@@ -758,8 +738,7 @@ PAKOLLISENA ostetun lipun uniikki lippukoodi [String]ticketCode, joka on tyylilt
 ### Onnistunut response
 
 **Code** : `200 OK`
-
-**Esimerkki**
+**Response** :
 
 ```json
 {
@@ -810,17 +789,14 @@ PAKOLLISENA ostetun lipun uniikki lippukoodi [String]ticketCode, joka on tyylilt
 
 Näyttää yksittäisen tapahtuman kaikkien ostettujen lippujen tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
 
-**URL** : `/api/events/:pk/salesevents`
-
-**URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtuman eventId tietokannassa. 
-
+**URL** : `/api/events/{id}/salesevents`
+**URL-PARAMETERS** : `{id}=[Long]` jossa {id} on tapahtuman eventId tietokannassa. 
 **METHOD** : `GET`
 
 ### Onnistunut response
 
 **Code** : `200 OK`
-
-**Esimerkki**
+**Response** :
 
 ```json
 [

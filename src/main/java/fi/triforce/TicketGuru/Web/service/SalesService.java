@@ -94,7 +94,7 @@ public class SalesService {
                 if (discountTicketsLeft > 0) {
                     discountTicketsLeft--;
                     ticket.setFinalPrice(tt.getPrice()
-                            .multiply(BigDecimal.valueOf(1).subtract(salesObject.getDiscountPercentage()))); // bigDecimal
+                            .multiply(BigDecimal.valueOf(1).subtract(salesObject.getDiscountPercentage()))); // BigDecimal
                                                                                                              // tarvitsee
                                                                                                              // oman
                                                                                                              // laskutoimitussyntaksin.

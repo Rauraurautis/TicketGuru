@@ -36,8 +36,6 @@ public class TicketType {
 	@NotBlank
 	private String ticketTypeDescription;
 	@PositiveOrZero
-	//@Valid
-	//@NotNull //Float defaulttaa aina numeroks, joten notnull on turha tässä tai vastaavissa skenaarioissa.
 	private BigDecimal price;
 	@ManyToOne
 	@JoinColumn(name="eventId")

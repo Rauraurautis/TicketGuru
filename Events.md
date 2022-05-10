@@ -810,7 +810,6 @@ Näyttää yksittäisen tapahtuman kaikkien ostettujen lippujen tiedot. Tapahtum
             {
                 "ticketId": 2,
                 "ticketCode": "e55e5130-6b72-40cc-93d7-fdfe6f9aed83",
-                "ticketUsed": false,
                 "ticketType": {
                     "ticketTypeId": 2,
                     "ticketTypeDescription": "Lastenlippu",
@@ -834,7 +833,6 @@ Näyttää yksittäisen tapahtuman kaikkien ostettujen lippujen tiedot. Tapahtum
             {
                 "ticketId": 3,
                 "ticketCode": "98b0b9ea-4531-44dc-96a0-6d1d46e8edaa",
-                "ticketUsed": true,
                 "ticketType": {
                     "ticketTypeId": 3,
                     "ticketTypeDescription": "Lastenlippu",
@@ -864,7 +862,6 @@ Näyttää yksittäisen tapahtuman kaikkien ostettujen lippujen tiedot. Tapahtum
             {
                 "ticketId": 7,
                 "ticketCode": "63c9767f-e471-4cef-bf47-bf0786bd1c69",
-                "ticketUsed": false,
                 "ticketType": {
                     "ticketTypeId": 2,
                     "ticketTypeDescription": "Lastenlippu",
@@ -888,7 +885,6 @@ Näyttää yksittäisen tapahtuman kaikkien ostettujen lippujen tiedot. Tapahtum
             {
                 "ticketId": 8,
                 "ticketCode": "44dd1683-d479-4241-817f-ef23c4f4541a",
-                "ticketUsed": false,
                 "ticketType": {
                     "ticketTypeId": 2,
                     "ticketTypeDescription": "Lastenlippu",

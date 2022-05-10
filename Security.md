@@ -80,6 +80,7 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 **URL:** `/api/users`
 **METHOD:** `GET`
+**RESURSSIN SALLIMAT KÄYTTÄJÄROOLIT:** `ROLE_ADMIN`
 
 ## Onnistunut response
 
@@ -118,6 +119,7 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 **URL:** `/api/users/{username}`
 **METHOD:** `POST`
+**RESURSSIN SALLIMAT KÄYTTÄJÄROOLIT:** `ROLE_ADMIN`
 
 ## Onnistunut response
 
@@ -142,6 +144,7 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 **URL:** `/api/users`
 **METHOD:** `POST`
+**RESURSSIN SALLIMAT KÄYTTÄJÄROOLIT:** `ROLE_ADMIN`
 **REQUEST BODY:** Järjestelmään lisätään käyttäjä ja tälle roolit lähettämällä request bodyssä **JSON-muotoinen** pyyntö jossa on pakollisina kenttinä käyttäjän nimi (**name**), käyttäjän salasana (**password**) sekä tunnus (**username**).
 
 **Esimerkki**:
@@ -184,6 +187,7 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 **URL:** `/api/users/{id}`
 **METHOD:** `DELETE`
+**RESURSSIN SALLIMAT KÄYTTÄJÄROOLIT:** `ROLE_ADMIN`
 
 ## Onnistunut response
 
@@ -212,6 +216,7 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 **URL:** `/api/role/`
 **METHOD:** `POST`
+**RESURSSIN SALLIMAT KÄYTTÄJÄROOLIT:** `ROLE_ADMIN`
 **REQUEST BODY:** Järjestelmään lisätään rooli tekemällä **JSON-muotoinen** pyyntö jossa on pakollisena kenttänä roolin nimi (**name**). Alkuperäiset käyttäjäroolit ovat järjestelmässä muodossa ROLE_ADMIN, ROLE_SALES JA ROLE_TICKETINSPECTOR, mutta nimeämistapa ei ole pakottava.
 
 **Esimerkki**:
@@ -237,6 +242,7 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 **URL:** `/api/role/addtouser`
 **METHOD:** `POST`
+**RESURSSIN SALLIMAT KÄYTTÄJÄROOLIT:** `ROLE_ADMIN`
 **REQUEST BODY:** Käyttäjälle lisätään rooli tekemällä **JSON-muotoinen** pyyntö jossa on pakollisena kenttänä käyttäjätunnus (**username**) sekä käyttäjäroolin nimi (**rolename**).
 
 **Esimerkki**:
@@ -260,6 +266,7 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 **URL:** `/api/role/removefromuser`
 **METHOD:** `DELETE`
+**RESURSSIN SALLIMAT KÄYTTÄJÄROOLIT:** `ROLE_ADMIN`
 **REQUEST BODY:** Käyttäjältä poistetaan rooli tekemällä **JSON-muotoinen** delete-pyyntö jossa on pakollisena kenttänä käyttäjätunnus (**username**) sekä käyttäjäroolin nimi (**rolename**).
 
 **Esimerkki**:
@@ -301,6 +308,6 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 {
     "timeStamp": "2022-03-10T02:15:30...",
     "httpStatus": "NOT_FOUND",
-    "message": Role not found in the database"
+    "message": "Role not found in the database"
 }
 ```

@@ -4,11 +4,11 @@
 
 Listaa kaikki tietokannassa olevat myyntitapahtumat.
 
-**AUTHORIZATION** : ADMIN, SALES
-
 **URL** : `/api/salesevents`
 
 **METHOD** : `GET`
+
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
 
 ### Onnistunut response
 
@@ -105,18 +105,17 @@ Listaa kaikki tietokannassa olevat myyntitapahtumat.
 ]
 ```
 
-
 ## Yksittäisen myyntitapahtuman haku
 
 Näyttää yksittäisen myyntitapahtuman tiedot. Myyntitapahtuman Id/primary key annetaan URL:ssa.
 
-**AUTHORIZATION** : ADMIN, SALES
+**URL** : `/api/salesevents/{id}`
 
-**URL** : `/api/salesevents/:pk`
-
-**URL-PARAMETERS** : `pk=[Long]` jossa pk on myyntitapahtuman eventId tietokannassa. 
+**URL-PARAMETERS** : `{id}=[Long]` jossa {id} on myyntitapahtuman eventId tietokannassa. 
 
 **METHOD** : `GET`
+
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
 
 ### Onnistunut response
 
@@ -131,7 +130,7 @@ Näyttää yksittäisen myyntitapahtuman tiedot. Myyntitapahtuman Id/primary key
     "tickets": [
         {
             "ticketId": 1,
-            "ticketCode": "a564cf34-2e0b-4863-b2d0-81b99f4cfb90",
+            "ticketCode": "a564cf34-2e0b-4863-b7d0-81b99f4cfb90",
             "ticketUsed": false,
             "ticketType": {
                 "ticketTypeId": 2,
@@ -157,8 +156,10 @@ Näyttää yksittäisen myyntitapahtuman tiedot. Myyntitapahtuman Id/primary key
 }
 ```
 
-### Virheellinen response
+### Epäonnistunut response
 
 **Ehto** : Jos url-parametrina annettua myyntitapahtumaa ei löydy
+
 **Code** : `404 NOT FOUND`
+
 **Message** : `Cannot find a sales event with the id {id}`

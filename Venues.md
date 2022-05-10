@@ -4,11 +4,11 @@
 
 Listaa kaikki tietokannassa olevat tapahtumapaikat.
 
-**AUTHORIZATION** : ADMIN, SALES
-
 **URL** : `/api/venues`
 
 **METHOD** : `GET`
+
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
 
 ### Onnistunut response
 
@@ -48,9 +48,9 @@ Listaa kaikki tietokannassa olevat tapahtumapaikat.
 
 Näyttää yksittäisen tapahtumapaikan tiedot. Tapahtumapaikan Id/primary key annetaan URL:ssa.
 
-**URL** : `/api/venues/:pk`
+**URL** : `/api/venues/{id}`
 
-**URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtumapaikan venueId tietokannassa. 
+**URL-PARAMETERS** : `{id}=[Long]` jossa {id} on tapahtumapaikan venueId tietokannassa. 
 
 **METHOD** : `GET`
 
@@ -121,9 +121,9 @@ Yksittäisen tapahtumapaikan poisto tietokannasta. Paikan Id/primary key annetaa
 
 **AUTHORIZATION** : ADMIN
 
-**URL** : `/api/venues/:pk`
+**URL** : `/api/venues/{id}`
 
-**URL-PARAMETERS** : `pk=[Long]` jossa pk on paikan venueId tietokannassa. 
+**URL-PARAMETERS** : `{id}=[Long]` jossa {id} on paikan venueId tietokannassa. 
 
 **METHOD** : `DELETE`
 
@@ -131,7 +131,7 @@ Yksittäisen tapahtumapaikan poisto tietokannasta. Paikan Id/primary key annetaa
 
 **Code** : `200 OK`
 
-**Response body esim**
+**Response** :
 
 ```json
 {
@@ -145,9 +145,9 @@ Olemassa olevan tapahtumapaikan tietojen muokkaus.
 
 **AUTHORIZATION** : ADMIN
 
-**URL** : `/api/venues/:pk`
+**URL** : `/api/venues/{id}`
 
-**URL-PARAMETERS** : `pk=[Long]` jossa pk on tapahtumapaikan eventId tietokannassa. 
+**URL-PARAMETERS** : `{id}=[Long]` jossa {id} on tapahtumapaikan eventId tietokannassa. 
 
 **METHOD** : `PUT`
 

@@ -4,24 +4,31 @@
 
 Uuden ostetun lipun luonti.
 
-**AUTHORIZATION** : ADMIN, SALES
-
 **URL** : `/api/sales/`
 
 **METHOD** : `POST`
 
-**REQUEST BODY**
-Lipunmyyntitapahtuman tiedot json-muodossa **listana** (poislukien id, uniikki lippukoodi sekä lipuntarkistuksen OnkoLippuKäytetty-kenttä, jotka autogeneroidaan).
-Käytettävät peruskentät ovat:
-[long]'ticketTypeId', joka kuuluu valmiiksi tiettyyn tapahtumaan. **Pakollinen**
-[int]'nrOfTickets', eli kyseisten myytyjen lipputyyppien määrä. **Pakollinen** **Pienin sallittu numero on 1**
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
 
-Lisäkenttinä ovat:
+**REQUEST BODY** :
+
+Lipunmyyntitapahtuman tiedot json-muodossa **listana** (poislukien id, uniikki lippukoodi sekä lipuntarkistuksen OnkoLippuKäytetty-kenttä, jotka autogeneroidaan).
+
+Käytettävät **peruskentät** ovat:
+
+[long]'ticketTypeId', joka kuuluu valmiiksi tiettyyn tapahtumaan. **Pakollinen**
+
+[int]'nrOfTickets', eli kyseisten myytyjen lipputyyppien määrä. **Pakollinen**, **Pienin sallittu numero on 1**
+
+**Lisäkenttiä** ovat:
+
 [int]'nrOfDiscounted', kyseessä olevien alennuslipputyyppien määrä kokonaisostomäärästä.
+
 [BigDecimal]'discountPercentage', joka on alennusprosentti desimaalina. 0.1 vastaa 10 prosentin hinnanalennusta lipputyypin normaalihinnasta. **Desimaalierottaja annettava pisteenä!**
+
 Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseessä olevien lipputyyppien hinnanalennukset halutuille määrille ostettuja lippuja.
 
-**Esimerkki** ilman hinnanalennuskenttiä:
+**Esimerkki ilman hinnanalennuskenttiä**:
 
 ```json
 [
@@ -36,7 +43,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
 ]
 ```
 
-**Esimerkki** hinnanalennuskenttien kanssa:
+**Esimerkki hinnanalennuskenttien kanssa**:
 
 ```json
 [
@@ -59,7 +66,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
 
 **Code** : `201 CREATED`
 
-**Response body esim** Vastaus palauttaa tallennetun entityn
+**Response** :
 
 ```json
 {
@@ -68,7 +75,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
     "tickets": [
         {
             "ticketId": 2,
-            "ticketCode": "e55e5130-6b72-40cc-93d7-fdfe6f9aed83",
+            "ticketCode": "e55e5170-6b72-40cc-93f7-fdfe6f9aed83",
             "ticketUsed": false,
             "ticketType": {
                 "ticketTypeId": 2,
@@ -92,7 +99,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
         },
         {
             "ticketId": 3,
-            "ticketCode": "98b0b9ea-4531-44dc-96a0-6d1d46e8edaa",
+            "ticketCode": "98b0i9ea-4551-44dc-96a0-6d1d46e8edaa",
             "ticketUsed": false,
             "ticketType": {
                 "ticketTypeId": 3,
@@ -116,7 +123,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
         },
         {
             "ticketId": 4,
-            "ticketCode": "811ed243-ef7f-46bd-975f-816660477d16",
+            "ticketCode": "811edo43-ef7f-46bd-975f-816660g77d16",
             "ticketUsed": false,
             "ticketType": {
                 "ticketTypeId": 3,
@@ -140,7 +147,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
         },
         {
             "ticketId": 5,
-            "ticketCode": "272b8376-0643-44ca-b73c-733603653425",
+            "ticketCode": "272b8376-0643-44ca-b73c-73360g653425",
             "ticketUsed": false,
             "ticketType": {
                 "ticketTypeId": 3,
@@ -164,7 +171,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
         },
         {
             "ticketId": 6,
-            "ticketCode": "034307f9-aaf3-4096-adbc-6b1d719a65b2",
+            "ticketCode": "034307f9-aaf3-40d6-adbc-6b1d719a65b2",
             "ticketUsed": false,
             "ticketType": {
                 "ticketTypeId": 3,
@@ -193,9 +200,13 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
 ### Virheellinen response
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
+
 **Code** : `404 NOT FOUND`
+
 **Message** : `Cannot find a tickettype with the id {Id}`
 
 **Ehto** : Väärä lippumäärä
+
 **Code** : `400 BAD REQUEST`
+
 **Message** : `{nrOfTickets} must be greater than or equal to 1`

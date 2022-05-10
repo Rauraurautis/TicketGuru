@@ -114,7 +114,7 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 ]
 ```
 
-## Yksittäisen käyttäjien hakeminen
+## Yksittäisen käyttäjän hakeminen
 
 **URL:** `/api/users/{username}`
 **METHOD:** `POST`
@@ -237,25 +237,70 @@ Jos token puuttuu tai kirjautuminen epäonnistuu virheellisen käyttäjänimen t
 
 **URL:** `/api/role/addtouser`
 **METHOD:** `POST`
-**REQUEST BODY:** Käyttäjälle lisätään rooli tekemällä **JSON-muotoinen** pyyntö jossa on pakollisena kenttänä käyttäjätunnus (**username**) sekä käyttäjäroolin nimi (**roleName**).
+**REQUEST BODY:** Käyttäjälle lisätään rooli tekemällä **JSON-muotoinen** pyyntö jossa on pakollisena kenttänä käyttäjätunnus (**username**) sekä käyttäjäroolin nimi (**rolename**).
 
 **Esimerkki**:
 
 ```json
 {
     "username": "Jaakko",
-    "roleName": "ROLE_PROMOTOR"
+    "rolename": "ROLE_PROMOTOR"
 }
 ```
 
 ## Onnistunut response
 
-**Code** : `201 CREATED`
+**Code** : `200 OK`
+
+```json
+
+```
+
+## Käyttäjäroolin poistaminen käyttäjältä {USER}
+
+**URL:** `/api/role/removefromuser`
+**METHOD:** `DELETE`
+**REQUEST BODY:** Käyttäjältä poistetaan rooli tekemällä **JSON-muotoinen** delete-pyyntö jossa on pakollisena kenttänä käyttäjätunnus (**username**) sekä käyttäjäroolin nimi (**rolename**).
+
+**Esimerkki**:
 
 ```json
 {
-    "id": 5,
-    "name": "ROLE_PROMOTOR"
+    "username": "Jaakko",
+    "rolename": "ROLE_PROMOTOR"
 }
 ```
 
+## Onnistunut response
+
+**Code** : `200 OK`
+
+```json
+{
+    "message": "Deleted role ROLE_PROMOTOR from user Jaakko"
+}
+```
+
+## Epäonnistunut response
+
+**Ehto** : Jos käyttäjää {username} ei ole olemassa
+**Code** : `404 NOT FOUND`
+
+```json
+{
+    "timeStamp": "2022-03-10T02:15:30...",
+    "httpStatus": "NOT_FOUND",
+    "message": "User not found in the database"
+}
+```
+
+**Ehto** : Jos roolia {rolename} ei ole olemassa
+**Code** : `404 NOT FOUND`
+
+```json
+{
+    "timeStamp": "2022-03-10T02:15:30...",
+    "httpStatus": "NOT_FOUND",
+    "message": Role not found in the database"
+}
+```

@@ -88,13 +88,13 @@ public class UserRestController {
 
     @PostMapping("/role/addtouser")
     public ResponseEntity<Role> addRoleToUser(@RequestBody RoleToUserForm form) {
-        us.addRoleToUser(form.getUsername(), form.getRoleName());
+        us.addRoleToUser(form.getUsername(), form.getRolename());
         return ResponseEntity.ok().build();
     }
     
     @DeleteMapping("/role/removefromuser")
     public ResponseEntity<?> removeRoleFromUser(@RequestBody RoleToUserForm form) {
-    	return ResponseEntity.ok(us.removeRoleFromUser(form.getUsername(), form.getRoleName()));
+    	return ResponseEntity.ok(us.removeRoleFromUser(form.getUsername(), form.getRolename()));
     }
 
     @GetMapping("/token/refresh")
@@ -143,5 +143,5 @@ public class UserRestController {
 @Data
 class RoleToUserForm {
     private String username;
-    private String roleName;
+    private String rolename;
 }

@@ -82,7 +82,7 @@ Listaa kaikki tulevat tapahtumat tietokannasta.
 
 **Response** : Sama kuin kaikkien tapahtumien listaus, mutta näyttää vain tulevat tapahtumat
 
-## Tulevien tapahtumien listaus
+## Menneiden tapahtumien listaus
 
 Listaa kaikki menneet tapahtumat tietokannasta.
 
@@ -101,7 +101,6 @@ Listaa kaikki menneet tapahtumat tietokannasta.
 ## Yksittäisen tapahtuman tietojen haku
 
 Näyttää yksittäisen tapahtuman tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
-
 
 **URL** : `/api/events/{id}`
 
@@ -174,7 +173,9 @@ Uuden tapahtuman luonti ja lisäys tietokantaan.
 **REQUEST BODY** :
 
 Tapahtuman tiedot **JSON-muotoinen** Ainoa pakollinen kenttä on **eventTitle**. Kenttä **numberOfTickets** täytyy olla 0 tai suurempi. Tyhjäksi jätetyt kentät tallentuvat null-arvoina odottamaan päivitystä.
+
 Tapahtuman tapahtumapaikka annetaan sen id:nä(venueId) muodossa: `"eventVenue":{"venueId": {id}}`
+
 Tapahtuman päivämäärä tulee antaa muodossa: `"dateOfEvent":"päivä-kuukausi-vuosi tunti:minuutti"`
 
 **Esimerkki** :
@@ -230,7 +231,9 @@ Tapahtuman päivämäärä tulee antaa muodossa: `"dateOfEvent":"päivä-kuukaus
 
 ## Tapahtuman poisto
 
-Yksittäisen tapahtuman poisto tietokannasta. Mikäli tapahtumaan on jo myyty lippuja, sitä ei voi enää poistaa järjestelmästä, jotta kirjanpito ei kärsi. Tapahtuman Id/primary key annetaan URL:ssa. Poistaa samalla tapahtuman lipputyypit.
+Yksittäisen tapahtuman poisto tietokannasta. Tapahtuman Id/primary key annetaan URL:ssa. Poistaa samalla tapahtuman lipputyypit.
+
+**Mikäli tapahtumaan on jo myyty lippuja**, sitä ei voi enää poistaa järjestelmästä, jotta kirjanpito ei kärsi.
 
 **URL** : `/api/events/{id}`
 
@@ -295,7 +298,8 @@ Olemassa olevan tapahtuman tietojen muokkaus.
 **REQUEST BODY** :
 
 PAKOLLISENA kenttänä eventTitle, kuten tapahtuman luonnissakin, MUTTA puuttuvat kentät muuttuvat nulliksi jos ovat tyhjiä. Venuen jäädessä tyhjäksi se ei muutu. Lipputyyppejä ei tule antaa, ne muokataan muualta.
-Tapahtuman päivämäärä tulee antaa muodossa: `"dateOfEvent":"päivä-kuukausi-vuosi tunti:minuutti"`
+
+**Tapahtuman päivämäärä tulee antaa muodossa:** `"dateOfEvent":"päivä-kuukausi-vuosi tunti:minuutti"`
 
 **Esimerkki** :
 
@@ -351,7 +355,7 @@ Tapahtuman päivämäärä tulee antaa muodossa: `"dateOfEvent":"päivä-kuukaus
 
 **Message** : `Cannot find an event with the id {id}`
 
-## Tapahtuman lipputyyppien tietojen haku
+## Tapahtumaan myytävien lipputyyppien tietojen haku
 
 Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
 
@@ -438,6 +442,7 @@ Uuden lipputyypin luonti tapahtumalle ja lisäys tietokantaan.
 **REQUEST BODY** :
 
 Lipputyypin tiedot annetaan json-muodossa(poislukien id, joka autogeneroidaan).
+
 Tietokentät:
 
 [String] ticketTypeDescription **Pakollinen**
@@ -469,7 +474,7 @@ Tietokentät:
         "eventTitle": "FrÃ¶belin Palikat Live",
         "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
         "numberOfTickets": 250,
-        "dateOfEvent": null,
+        "dateOfEvent": 14-03-2024 21:00,
         "eventVenue": {
             "venueId": 4,
             "venueName": "Tavastia",
@@ -489,7 +494,6 @@ Tietokentät:
 **Message** : `Cannot find an event with the id {id}`
 
 
-
 **Ehto** : Jos requestbodysta puuttuu tietoja
 
 **Code** : `400 BAD REQUEST`
@@ -504,7 +508,6 @@ Tietokentät:
 **Message** : `{price} must be greater than or equal to 0`
 
 
-
 **Ehto** : Jos requestbody on rikki, esim. ei json
 
 **Code** : `400 BAD REQUEST`
@@ -515,9 +518,9 @@ Tietokentät:
 
 Yksittäisen lipputyypin poisto tietokannasta. Tapahtuman Id/primary key annetaan URL:ssa sekä lipputyypin Id/pk annetaan URL:ssa.
 
-**URL** : `/api/events/:pk/tickettypes/{id}`
+**URL** : `/api/events/{id}/tickettypes/{id}`
 
-**URL-PARAMETERS** : `{id}=[Long]` jossa ensimmäinen {id} on tapahtuman eventId tietokannassa ja toinen lipputyypin ticketTypeId.
+**URL-PARAMETERS** : `{id}=[Long]` jossa ensimmäinen {id} on tapahtuman eventId tietokannassa ja toinen {id} lipputyypin ticketTypeId.
 
 **METHOD** : `DELETE`
 
@@ -544,7 +547,6 @@ Yksittäisen lipputyypin poisto tietokannasta. Tapahtuman Id/primary key annetaa
 **Message** : `Cannot find an event with the id {id}`
 
 
-
 **Ehto** : Jos url-parametrina annettua lipputyyppiä ei löydy
 
 **Code** : `404 NOT FOUND`
@@ -555,9 +557,9 @@ Yksittäisen lipputyypin poisto tietokannasta. Tapahtuman Id/primary key annetaa
 
 Tapahtumassa olevan lipputyypin tietojen muokkaus. Tapahtuman Id/primary key annetaan URL:ssa sekä lipputyypin Id/pk annetaan URL:ssa.
 
-**URL** : `/api/events/:pk/tickettypes/{id}`
+**URL** : `/api/events/{id}/tickettypes/{id}`
 
-**URL-PARAMETERS** : `{id}=[Long]` jossa ensimmäinen {id} on tapahtuman eventId tietokannassa ja toinen lipputyypin ticketTypeId.
+**URL-PARAMETERS** : `{id}=[Long]` jossa ensimmäinen {id} on tapahtuman eventId tietokannassa ja toinen {id} lipputyypin ticketTypeId.
 
 **METHOD** : `PUT`
 
@@ -596,7 +598,7 @@ Tietokentät:
         "eventTitle": "FrÃ¶belin Palikat Live",
         "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
         "numberOfTickets": 250,
-        "dateOfEvent": null,
+        "dateOfEvent": 19-08-2022 21:00,
         "eventVenue": {
             "venueId": 4,
             "venueName": "Tavastia",
@@ -615,13 +617,11 @@ Tietokentät:
 **Message** : `Cannot find an event with the id {id}`
 
 
-
 **Ehto** : Jos url-parametrina annettua lipputyyppiä ei löydy
 
 **Code** : `404 NOT FOUND`
 
 **Message** : `Cannot find a tickettype with the id {id}`
-
 
 
 **Ehto** : Jos requestbodysta puuttuu tietoja
@@ -631,13 +631,11 @@ Tietokentät:
 **Message** : `{kenttä} must not be blank`
 
 
-
 **Ehto** : Jos requestbodyssa price-kenttä on virheellinen
 
 **Code** : `400 BAD REQUEST`
 
 **Message** : `{price} must be greater than or equal to 0`
-
 
 
 **Ehto** : Jos requestbody on rikki, esim. ei json
@@ -646,141 +644,13 @@ Tietokentät:
 
 **Message** : `Something went wrong`
 
-## Tapahtumaan ostettujen lippujen haku
-
-Näyttää yksittäisen tapahtuman lipputyyppien tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
-
-**URL** : `/api/events/{id}/tickettypes`
-
-**URL-PARAMETERS** : `{id}=[Long]` jossa {id} on tapahtuman eventId tietokannassa.
-
-**METHOD** : `GET`
-
-**AUTHORIZATION** : `ROLE_ADMIN`
-
-### Onnistunut response
-
-**Code** : `200 OK`
-
-**Esimerkki** :
-
-```json
-[
-    {
-        "ticketId": 3,
-        "ticketCode": "98b0b9ea-4531-44dc-96a0-6d1d46e8edaa",
-        "ticketUsed": false,
-        "ticketType": {
-            "ticketTypeId": 3,
-            "ticketTypeDescription": "Lastenlippu",
-            "price": 20.0,
-            "event": {
-                "eventId": 2,
-                "eventTitle": "FrÃ¶belin Palikat Live",
-                "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
-                "numberOfTickets": 250,
-                "dateOfEvent": null,
-                "eventVenue": {
-                    "venueId": 4,
-                    "venueName": "Tavastia",
-                    "venueAddress": "Urho Kekkosen katu 4, 00100",
-                    "venueCity": "Helsinki"
-                }
-            }
-        },
-        "finalPrice": 20.0
-    },
-    {
-        "ticketId": 4,
-        "ticketCode": "811ed243-ef7f-46bd-975f-816660477d16",
-        "ticketUsed": false,
-        "ticketType": {
-            "ticketTypeId": 3,
-            "ticketTypeDescription": "Lastenlippu",
-            "price": 20.0,
-            "event": {
-                "eventId": 2,
-                "eventTitle": "FrÃ¶belin Palikat Live",
-                "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
-                "numberOfTickets": 250,
-                "dateOfEvent": null,
-                "eventVenue": {
-                    "venueId": 4,
-                    "venueName": "Tavastia",
-                    "venueAddress": "Urho Kekkosen katu 4, 00100",
-                    "venueCity": "Helsinki"
-                }
-            }
-        },
-        "finalPrice": 20.0
-    },
-    {
-        "ticketId": 11,
-        "ticketCode": "606e6afb-3915-44e3-b572-274ee34a0f69",
-        "ticketUsed": false,
-        "ticketType": {
-            "ticketTypeId": 3,
-            "ticketTypeDescription": "Lastenlippu",
-            "price": 20.0,
-            "event": {
-                "eventId": 2,
-                "eventTitle": "FrÃ¶belin Palikat Live",
-                "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
-                "numberOfTickets": 250,
-                "dateOfEvent": null,
-                "eventVenue": {
-                    "venueId": 4,
-                    "venueName": "Tavastia",
-                    "venueAddress": "Urho Kekkosen katu 4, 00100",
-                    "venueCity": "Helsinki"
-                }
-            }
-        },
-        "finalPrice": 18.0
-    },
-    {
-        "ticketId": 12,
-        "ticketCode": "6a2eaeb5-2d2d-4d27-9fc5-31867ae127f9",
-        "ticketUsed": false,
-        "ticketType": {
-            "ticketTypeId": 3,
-            "ticketTypeDescription": "Lastenlippu",
-            "price": 20.0,
-            "event": {
-                "eventId": 2,
-                "eventTitle": "FrÃ¶belin Palikat Live",
-                "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
-                "numberOfTickets": 250,
-                "dateOfEvent": null,
-                "eventVenue": {
-                    "venueId": 4,
-                    "venueName": "Tavastia",
-                    "venueAddress": "Urho Kekkosen katu 4, 00100",
-                    "venueCity": "Helsinki"
-                }
-            }
-        },
-        "finalPrice": 20.0
-    }
-]
-```
-### Epäonnistunut response
-
-**Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
-
-**Code** : `404 NOT FOUND`
-
-**Message** : `Cannot find an event with the id {id}`
-
 ## Tapahtumaan ostetun yksittäisen lipun haku
 
-Näyttää yksittäisen tapahtuman yhden lipun tiedot. Lipun ticketcode annetaan url-parametrina. Parametri pakollinen.
-
-**AUTHORIZATION** : ADMIN, SALES, TICKET INSPECTOR
+Näyttää yksittäisen tapahtuman yhden lipun tiedot. Lipun ticketcode annetaan url-parametrina. **Parametri pakollinen**.
 
 **URL** : `/api/events/singleticket?ticketcode={ticketcode}`
 
-**URL-PARAMETERS** : `ticketcode=[String]` lipun yksilöllinen ticketcode
+**URL-PARAMETERS** : `{ticketcode}=[String]` lipun yksilöllinen ticketcode. Mallityyppiä: e45e9930-6b72-41dd-93d7-fdlu6f9aof83
 
 **METHOD** : `GET``
 
@@ -792,10 +662,10 @@ Näyttää yksittäisen tapahtuman yhden lipun tiedot. Lipun ticketcode annetaan
 
 **Response** :
 
-```jsonn
+```json
 {
     "ticketId": 2,
-    "ticketCode": "e55e5130-6b72-40cc-93d7-fdfe6f9aed83",
+    "ticketCode": "e55e5130-6b72-41cc-93d7-fdhe6f9aed83",
     "ticketUsed": false,
     "ticketType": {
         "ticketTypeId": 2,
@@ -871,7 +741,7 @@ Muuttaa aiemmin ostetun lipun ticketUsed-kentän arvoksi True. Default on False.
             "eventTitle": "FrÃ¶belin Palikat Live",
             "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
             "numberOfTickets": 250,
-            "dateOfEvent": null,
+            "dateOfEvent": 19-08-2022 21:00,
             "eventVenue": {
                 "venueId": 4,
                 "venueName": "Tavastia",
@@ -923,6 +793,8 @@ Näyttää yksittäisen tapahtuman kaikkien ostettujen lippujen tiedot. Tapahtum
 
 **METHOD** : `GET`
 
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
+
 ### Onnistunut response
 
 **Code** : `200 OK`
@@ -972,7 +844,7 @@ Näyttää yksittäisen tapahtuman kaikkien ostettujen lippujen tiedot. Tapahtum
                         "eventTitle": "FrÃ¶belin Palikat Live",
                         "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
                         "numberOfTickets": 250,
-                        "dateOfEvent": null,
+                        "dateOfEvent": 19-08-2022 21:00,
                         "eventVenue": {
                             "venueId": 4,
                             "venueName": "Tavastia",
@@ -1041,6 +913,7 @@ Näyttää yksittäisen tapahtuman kaikkien ostettujen lippujen tiedot. Tapahtum
     }
 ]
 ```
+
 ### Epäonnistunut response
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy

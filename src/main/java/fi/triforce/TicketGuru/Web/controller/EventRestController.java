@@ -85,7 +85,7 @@ public class EventRestController {
 		return ResponseEntity.ok(es.getEventTicketTypes(id));
 	}
 
-	// Tickettype lisäys, (String)ticketTypeDescription pakollinen, (float)price ei
+	// Tickettype lisäys, (String)ticketTypeDescription pakollinen, (BigDecimal)price ei
 	// pakollinen, jolloin -> 0, mutta ei saa olla negatiivinen, ADMIN
 	@PostMapping("/{id}/tickettypes")
 	public ResponseEntity<TicketType> ticketTypePostRest(@PathVariable(name = "id") Long eventId,
@@ -114,7 +114,7 @@ public class EventRestController {
 		return ResponseEntity.ok(es.deleteTicketType(eventId, ttId));
 	}
 
-	// Tickettype muokkaus, (String)ticketTypeDescription pakollinen, (float)price
+	// Tickettype muokkaus, (String)ticketTypeDescription pakollinen, (BigDecimal)price
 	// PAKOLLINEN tai muuten price muuttuu nollaksi, sekä se ei saa olla
 	// negatiivinen luku, ADMIN
 	@PutMapping("/{id}/tickettypes/{ttid}")

@@ -730,7 +730,7 @@ Muuttaa aiemmin ostetun lipun ticketUsed-kentän arvoksi True. Default on False.
 ```json
 {
     "ticketId": 3,
-    "ticketCode": "e55e5130-6b72-40cc-93d7-fdfe6f9aed83",
+    "ticketCode": "e55e5130-6b72-40cu-93d7-fdfe6f9aed83",
     "ticketUsed": true,
     "ticketType": {
         "ticketTypeId": 3,
@@ -787,7 +787,7 @@ Muuttaa aiemmin ostetun lipun ticketUsed-kentän arvoksi True. Default on False.
 
 Näyttää yksittäisen tapahtuman kaikkien ostettujen lippujen tiedot. Tapahtuman Id/primary key annetaan URL:ssa.
 
-**URL** : `/api/events/{id}/salesevents`
+**URL** : `/api/events/{id}/tickets`
 
 **URL-PARAMETERS** : `{id}=[Long]` jossa {id} on tapahtuman eventId tietokannassa. 
 
@@ -804,108 +804,48 @@ Näyttää yksittäisen tapahtuman kaikkien ostettujen lippujen tiedot. Tapahtum
 ```json
 [
     {
-        "salesEventId": 2,
-        "dateOfSale": "09-03-2022 00:26",
-        "tickets": [
-            {
-                "ticketId": 2,
-                "ticketCode": "e55e5130-6b72-40cc-93d7-fdfe6f9aed83",
-                "ticketType": {
-                    "ticketTypeId": 2,
-                    "ticketTypeDescription": "Lastenlippu",
-                    "price": 20.0,
-                    "event": {
-                        "eventId": 1,
-                        "eventTitle": "Lady Gaga Live",
-                        "eventDescription": "Lady Gaga, Monster Tour 2022",
-                        "numberOfTickets": 3400,
-                        "dateOfEvent": "17-04-2022 12:00",
-                        "eventVenue": {
-                            "venueId": 2,
-                            "venueName": "Tampere-talo",
-                            "venueAddress": "Yliopistonkatu 55, 33100",
-                            "venueCity": "Tampere"
-                        }
-                    }
-                },
-                "finalPrice": 20.0
-            },
-            {
-                "ticketId": 3,
-                "ticketCode": "98b0b9ea-4531-44dc-96a0-6d1d46e8edaa",
-                "ticketType": {
-                    "ticketTypeId": 3,
-                    "ticketTypeDescription": "Lastenlippu",
-                    "price": 20.0,
-                    "event": {
-                        "eventId": 2,
-                        "eventTitle": "FrÃ¶belin Palikat Live",
-                        "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
-                        "numberOfTickets": 250,
-                        "dateOfEvent": 19-08-2022 21:00,
-                        "eventVenue": {
-                            "venueId": 4,
-                            "venueName": "Tavastia",
-                            "venueAddress": "Urho Kekkosen katu 4, 00100",
-                            "venueCity": "Helsinki"
-                        }
-                    }
-                },
-                "finalPrice": 20.0
+        "ticketId": 1,
+        "ticketCode": "82999f71-6106-47ce-ae360-8ac1830033a",
+        "ticketUsed": false,
+        "ticketType": {
+            "ticketTypeDescription": "Lastenlippu",
+            "event": {
+                "eventId": 1,
+                "eventTitle": "Lady Gaga Live",
+                "eventDescription": "Lady Gaga, Monster Tour 2022",
+                "numberOfTickets": 3400,
+                "dateOfEvent": "17-04-2022 21:00",
+                "eventVenue": {
+                    "venueId": 2,
+                    "venueName": "Tampere-talo",
+                    "venueAddress": "Yliopistonkatu 55, 33100",
+                    "venueCity": "Tampere"
+                }
             }
-        ]
+        },
+        "finalPrice": 20.00
     },
     {
-        "salesEventId": 3,
-        "dateOfSale": "09-03-2022 00:42",
-        "tickets": [
-            {
-                "ticketId": 7,
-                "ticketCode": "63c9767f-e471-4cef-bf47-bf0786bd1c69",
-                "ticketType": {
-                    "ticketTypeId": 2,
-                    "ticketTypeDescription": "Lastenlippu",
-                    "price": 20.0,
-                    "event": {
-                        "eventId": 1,
-                        "eventTitle": "Lady Gaga Live",
-                        "eventDescription": "Lady Gaga, Monster Tour 2022",
-                        "numberOfTickets": 3400,
-                        "dateOfEvent": "17-04-2022 12:00",
-                        "eventVenue": {
-                            "venueId": 2,
-                            "venueName": "Tampere-talo",
-                            "venueAddress": "Yliopistonkatu 55, 33100",
-                            "venueCity": "Tampere"
-                        }
-                    }
-                },
-                "finalPrice": 16.0
-            },
-            {
-                "ticketId": 8,
-                "ticketCode": "44dd1683-d479-4241-817f-ef23c4f4541a",
-                "ticketType": {
-                    "ticketTypeId": 2,
-                    "ticketTypeDescription": "Lastenlippu",
-                    "price": 20.0,
-                    "event": {
-                        "eventId": 1,
-                        "eventTitle": "Lady Gaga Live",
-                        "eventDescription": "Lady Gaga, Monster Tour 2022",
-                        "numberOfTickets": 3400,
-                        "dateOfEvent": "17-04-2022 12:00",
-                        "eventVenue": {
-                            "venueId": 2,
-                            "venueName": "Tampere-talo",
-                            "venueAddress": "Yliopistonkatu 55, 33100",
-                            "venueCity": "Tampere"
-                        }
-                    }
-                },
-                "finalPrice": 16.0
+        "ticketId": 2,
+        "ticketCode": "338cec55-7533-4e0b-a320-b281752f8c78",
+        "ticketUsed": false,
+        "ticketType": {
+            "ticketTypeDescription": "Lastenlippu",
+            "event": {
+                "eventId": 1,
+                "eventTitle": "Lady Gaga Live",
+                "eventDescription": "Lady Gaga, Monster Tour 2022",
+                "numberOfTickets": 3400,
+                "dateOfEvent": "17-04-2022 21:00",
+                "eventVenue": {
+                    "venueId": 2,
+                    "venueName": "Tampere-talo",
+                    "venueAddress": "Yliopistonkatu 55, 33100",
+                    "venueCity": "Tampere"
+                }
             }
-        ]
+        },
+        "finalPrice": 20.00
     }
 ]
 ```

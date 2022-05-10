@@ -77,7 +77,7 @@ public class SalesService {
                     + (salesObject.getNrOfTickets() + ticketsSoldWithTicketType.size()));
             if (eventTicketsSold.get(eventTitle) > eventMaxTickets) {
                 throw new TooManyTicketsException(
-                        "This sale exceeds the max amount of tickets allowed for the event + " + eventTitle + " ("
+                        "This sale exceeds the max amount of tickets allowed for the event " + eventTitle + " ("
                                 + eventMaxTickets + " tickets max, exceeding by "
                                 + (eventTicketsSold.get(eventTitle) - eventMaxTickets) + " tickets)");
 

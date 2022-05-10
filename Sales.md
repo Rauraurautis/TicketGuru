@@ -95,7 +95,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
                     }
                 }
             },
-            "finalPrice": 20.0
+            "finalPrice": 16.0
         },
         {
             "ticketId": 3,
@@ -110,7 +110,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
                     "eventTitle": "FrÃ¶belin Palikat Live",
                     "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
                     "numberOfTickets": 250,
-                    "dateOfEvent": null,
+                    "dateOfEvent": "15-12-2022 21:00",
                     "eventVenue": {
                         "venueId": 4,
                         "venueName": "Tavastia",
@@ -123,7 +123,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
         },
         {
             "ticketId": 4,
-            "ticketCode": "811edo43-ef7f-46bd-975f-816660g77d16",
+            "ticketCode": "811edo43-ef7f-46bd-975f-846660g77d16",
             "ticketUsed": false,
             "ticketType": {
                 "ticketTypeId": 3,
@@ -134,7 +134,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
                     "eventTitle": "FrÃ¶belin Palikat Live",
                     "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
                     "numberOfTickets": 250,
-                    "dateOfEvent": null,
+                    "dateOfEvent": "15-12-2022 21:00",
                     "eventVenue": {
                         "venueId": 4,
                         "venueName": "Tavastia",
@@ -147,7 +147,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
         },
         {
             "ticketId": 5,
-            "ticketCode": "272b8376-0643-44ca-b73c-73360g653425",
+            "ticketCode": "272b8376-06f3-44ca-b73c-73360g653425",
             "ticketUsed": false,
             "ticketType": {
                 "ticketTypeId": 3,
@@ -158,7 +158,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
                     "eventTitle": "FrÃ¶belin Palikat Live",
                     "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
                     "numberOfTickets": 250,
-                    "dateOfEvent": null,
+                    "dateOfEvent": "15-12-2022 21:00",
                     "eventVenue": {
                         "venueId": 4,
                         "venueName": "Tavastia",
@@ -171,7 +171,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
         },
         {
             "ticketId": 6,
-            "ticketCode": "034307f9-aaf3-40d6-adbc-6b1d719a65b2",
+            "ticketCode": "034307f9-abf3-40d6-adbc-6b1d719a65b2",
             "ticketUsed": false,
             "ticketType": {
                 "ticketTypeId": 3,
@@ -182,7 +182,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
                     "eventTitle": "FrÃ¶belin Palikat Live",
                     "eventDescription": "FrÃ¶belin Palikat, Never Stop The Madness",
                     "numberOfTickets": 250,
-                    "dateOfEvent": null,
+                    "dateOfEvent": "15-12-2022 21:00",
                     "eventVenue": {
                         "venueId": 4,
                         "venueName": "Tavastia",
@@ -197,7 +197,7 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
 }
 ```
 
-### Virheellinen response
+### Epäonnistunut response
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
 
@@ -210,3 +210,9 @@ Nämä kaksi lisäkenttää myyntitapahtuman yhteydessä mahdollistavat kyseess�
 **Code** : `400 BAD REQUEST`
 
 **Message** : `{nrOfTickets} must be greater than or equal to 1`
+
+**Ehto** : Yritetään myydä enemmän lippuja, kuin tapahtumaan on lippuja varattu
+
+**Code** : `400 BAD REQUEST`
+
+**Message** : `This sale exceeds the max amount of tickets allowed for the event {eventName} ({eventMaxTickets} tickets max, exceeding by {ylittävä lippumäärä} tickets)`

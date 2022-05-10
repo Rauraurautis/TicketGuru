@@ -14,7 +14,7 @@ Listaa kaikki tietokannassa olevat tapahtumapaikat.
 
 **Code** : `200 OK`
 
-**Esimerkki**
+**Response** :
 
 ```json
 [
@@ -54,11 +54,13 @@ Näyttää yksittäisen tapahtumapaikan tiedot. Tapahtumapaikan Id/primary key a
 
 **METHOD** : `GET`
 
+**AUTHORIZATION** : `ROLE_ADMIN`, `ROLE_SALES`
+
 ### Onnistunut response
 
 **Code** : `200 OK`
 
-**Esimerkki**
+**Response** :
 
 ```json
 {
@@ -69,7 +71,7 @@ Näyttää yksittäisen tapahtumapaikan tiedot. Tapahtumapaikan Id/primary key a
 }
 ```
 
-### Virheellinen response
+### Epäonnistunut response
 
 **Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
 
@@ -81,16 +83,17 @@ Näyttää yksittäisen tapahtumapaikan tiedot. Tapahtumapaikan Id/primary key a
 
 Uuden tapahtumapaikan luonti ja lisäys tietokantaan.
 
-**AUTHORIZATION** : ADMIN
-
 **URL** : `/api/venues/`
 
 **METHOD** : `POST`
 
-**REQUEST BODY**
-Paikan tiedot json-muodossa (poislukien id, joka on autogeneroidaan). Kentät venueName, venueAddress ja venueCity ovat kaikki pakollisia.
+**AUTHORIZATION** : `ROLE_ADMIN`
 
-**Esimerkki**
+**REQUEST BODY** :
+
+Paikan tiedot json-muodossa (poislukien id, joka on autogeneroidaan). Kentät venueName, venueAddress ja venueCity ovat kaikki **pakollisia**.
+
+**Esimerkki** :
 
 ```json
 {
@@ -104,7 +107,7 @@ Paikan tiedot json-muodossa (poislukien id, joka on autogeneroidaan). Kentät ve
 
 **Code** : `201 Created`
 
-**Response body esim** Vastaus palauttaa tallennetun entityn
+**Response** :
 
 ```json
 {
@@ -115,17 +118,25 @@ Paikan tiedot json-muodossa (poislukien id, joka on autogeneroidaan). Kentät ve
 }
 ```
 
+### Epäonnistunut response
+
+**Ehto** : Jos pakollisia kenttiä puuttuu
+
+**Code** : `400 BAD REQUEST`
+
+**Message** : `"{pakollinen kenttä} must not be blank"`
+
 ## Tapahtumapaikan poisto
 
 Yksittäisen tapahtumapaikan poisto tietokannasta. Paikan Id/primary key annetaan URL:ssa.
-
-**AUTHORIZATION** : ADMIN
 
 **URL** : `/api/venues/{id}`
 
 **URL-PARAMETERS** : `{id}=[Long]` jossa {id} on paikan venueId tietokannassa. 
 
 **METHOD** : `DELETE`
+
+**AUTHORIZATION** : `ROLE_ADMIN`
 
 ### Onnistunut response
 
@@ -135,15 +146,21 @@ Yksittäisen tapahtumapaikan poisto tietokannasta. Paikan Id/primary key annetaa
 
 ```json
 {
-    "message": "Deleted a tickettype with the id 6"
+    "message": "Deleted a venue with the id i{d}"
 }
 ```
+
+### Epäonnistunut response
+
+**Ehto** : Jos url-parametrina annettua tapahtumaa ei löydy
+
+**Code** : `404 NOT FOUND`
+
+**Message** : `Cannot find a venue with the id {id}`
 
 ## Tapahtumapaikan muokkaus
 
 Olemassa olevan tapahtumapaikan tietojen muokkaus.
-
-**AUTHORIZATION** : ADMIN
 
 **URL** : `/api/venues/{id}`
 
@@ -151,15 +168,18 @@ Olemassa olevan tapahtumapaikan tietojen muokkaus.
 
 **METHOD** : `PUT`
 
-**REQUEST BODY**
+**AUTHORIZATION** : `ROLE_ADMIN`
+
+**REQUEST BODY** :
+
 Tapahtumapaikan tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Kentät venueName, venueAddress ja venueCity ovat kaikki pakollisia.
 
-**Esimerkki**
+**Esimerkki** :
 
 ```json
 {
 	"venueName":"Sibeliustalo",
-	"venueAddress":"Ankkurikatu 7, 15140",
+	"venueAddress":"Uusi Ankkurikatu 7, 15140",
 	"venueCity":"Suomen Chicago"
 }
 ```
@@ -168,13 +188,13 @@ Tapahtumapaikan tiedot json-muodossa(poislukien id, joka on autogeneroidaan). Ke
 
 **Code** : `200 OK`
 
-**Response body esim** Vastaus palauttaa tallennetun entityn
+**Response** :
 
 ```json
 {
 	"venueId":1,
 	"venueName":"Sibeliustalo",
-	"venueAddress":"Ankkurikatu 7, 15140",
+	"venueAddress":"Uusi Ankkurikatu 7, 15140",
 	"venueCity":"Suomen Chicago"
 }
 ```
